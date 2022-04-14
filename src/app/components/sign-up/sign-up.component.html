@@ -1,19 +1,15 @@
-<p>sign-up works!</p>
-<div>
+<div class="form">
     <h3>Sign Up</h3>
-    <a href="/login">Have an account?</a>
+    <a href="/login" class="ref">Have an account?</a>
     <form [formGroup]="authForm">
         <div class="form-group">
-            <label for="name">Username:</label>
-            <input type="text" class="form-control" id="name" name="name" required formControlName="userName">
+            <input type="text" class="form-control" id="name" name="name" required formControlName="userName" placeholder="Username">
         </div>
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required formControlName="email">
+            <input type="email" class="form-control" id="email" name="email" required formControlName="email" placeholder="Email">
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required formControlName="password">
+            <input type="password" class="form-control" id="password" name="password" required formControlName="password" placeholder="Password">
         </div>
         <button type="button" class="btn btn-primary" (click)="login()">Sign Up</button>
     </form>

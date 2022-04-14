@@ -1,17 +1,15 @@
-
-<p>sign-in works!</p>
-<div>
+<div class="form">
     <h3>Sign in</h3>
-    <a href="/register">Need an account?</a>
+    <a href="/register" class="ref">Need an account?</a>
     <form [formGroup]="authForm">
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required formControlName="email">
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" name="email" required formControlName="email" placeholder="Email">
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
             <input type="password" class="form-control" id="password" name="password" required
-                formControlName="password">
+                formControlName="password" placeholder="Password">
+        </div>
         </div>
         <button type="button" class="btn btn-primary" (click)="login()">Sign In</button>
     </form>
