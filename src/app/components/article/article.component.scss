@@ -1,0 +1,45 @@
+li {
+  list-style: none;
+}
+
+.hero {
+  background-color: rgb(74, 95, 74);
+  text-align: center;
+  color: white;
+}
+
+.heroFlex {
+  display: flex;
+  justify-content: start;
+}
+
+.aboutAuthor {
+  margin-left: 20px;
+}
+
+.followBtn {
+  margin-left: 20px;
+}
+
+.likeBtn {
+  margin-left: 5px;
+}
+
+.article::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: grey;
+  border-radius: 2px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.aboutAuthorMain {
+  justify-content: center;
+}
+
+.toLogIn {
+  text-align: center;
+}

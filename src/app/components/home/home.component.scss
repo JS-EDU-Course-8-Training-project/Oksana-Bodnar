@@ -1,3 +1,10 @@
+ul,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
 .hero {
   background-color: rgb(72, 173, 72);
   color: white;
@@ -14,8 +21,8 @@
   content: "\1F49A";
 }
 
-.articleAuthorAvatar::before {
-  content: "\01F525";
+.articleAuthorAvatar {
+  border-radius: 50px;
 }
 
 .article {
@@ -30,6 +37,13 @@
 }
 
 .articleTag {
+  margin-top: 5px;
+  font-size: 0.7rem;
+}
+
+.articleTags {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -85,10 +99,11 @@
 .tagsFlex {
   display: flex;
   flex-direction: column;
+  align-self: center;
 }
 
 .tag {
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   font-size: 0.7rem;
 }
 

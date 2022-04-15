@@ -5,46 +5,31 @@
 <section class="articlesField">
 <button class="btn btn-link" type="button">Global Feed</button>
 
-<article class="article">
-    <span class="articleAuthorAvatar"></span>
-    <a class="articleAuthorName" href="">Author</a>
-    <p class="articleDate">Date</p>
-    <h3 class="articleHead">Heading of the article</h3>
-    <p class="articleText">Some text from article</p>
-    <a class="articleReadMore" href="">Read more...</a>
-    <span class="articleHeart"> LikesNumber</span>
-    <button class="articleTag btn btn-light" type="button">Article Tag</button>
-</article>
-
-<article class="article">
-    <span class="articleAuthorAvatar"></span>
-    <a class="articleAuthorName" href="">Author</a>
-    <p class="articleDate">Date</p>
-    <h3 class="articleHead">Heading of the article</h3>
-    <p class="articleText">Some text from article</p>
-    <a class="articleReadMore" href="">Read more...</a>
-    <span class="articleHeart"> LikesNumber</span>
-    <button class="articleTag btn btn-light" type="button">Article Tag</button>
-</article>
-
-<article class="article">
-    <span class="articleAuthorAvatar"></span>
-    <a class="articleAuthorName" href="">Author</a>
-    <p class="articleDate">Date</p>
-    <h3 class="articleHead">Heading of the article</h3>
-    <p class="articleText">Some text from article</p>
-    <a class="articleReadMore" href="">Read more...</a>
-    <span class="articleHeart"> LikesNumber</span>
-    <button class="articleTag btn btn-light" type="button">Article Tag</button>
-</article>
+<ul *ngFor="let article of articles">
+    <li>
+        <article class="article">
+            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+            <a class="articleAuthorName" href="">{{article.author.username}}</a>
+            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+            <h3 class="articleHead">{{article.title}}</h3>
+            <p class="articleText">{{article.body}}</p>
+            <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+            <span class="articleHeart"> {{article.favoritesCount}}</span>
+            <div class="articleTags">
+            <ul *ngFor="let tag of article.tagList">
+                <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+            </ul>
+            </div>
+        </article>
+    </li>
+</ul>
 
 <div class="tags">
     <p class="tagsHead">Popular Tags</p>
     <div class="tagsFlex">
-    <button class="tag btn btn-secondary btn-sm" type="button">welcome</button>
-    <button class="tag btn btn-secondary btn-sm" type="button">implementations</button>
-    <button class="tag btn btn-secondary btn-sm" type="button">codebaseShow</button>
-    <button class="tag btn btn-secondary btn-sm" type="button">introduction</button>
+    <ul *ngFor="let tag of tags">
+        <li><button class="tag btn btn-secondary btn-sm" type="button">{{tag}}</button></li>
+    </ul>
     </div>
 </div>
 </section>
