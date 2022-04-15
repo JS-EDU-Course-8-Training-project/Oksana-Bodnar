@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'editor',
     loadChildren: () => import('./components/editor/editor.module').then(m => m.EditorModule)
   },
+  {
+    path: 'article/:slug',
+    loadChildren: () => import('./components/article/article.module').then(m => m.ArticleModule)
+  },
 ];
 
 @NgModule({

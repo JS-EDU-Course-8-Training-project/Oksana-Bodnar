@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { User } from 'src/shared/models/user.model';
 
-
-export type User = {
-    userName: string,
-    email: string,
-    password: string;
-};
 
 @Injectable({
   providedIn: 'root'
