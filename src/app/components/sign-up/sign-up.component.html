@@ -4,15 +4,15 @@
     <form [formGroup]="authForm" (ngSubmit)="login()">
 <!-- User Name -->
         <div class="form-group">
-            <input type="text" class="form-control" id="name" name="name" required formControlName="userName" placeholder="Username" required>
+            <input type="text" class="form-control" id="name" name="name" required formControlName="username" placeholder="Username" required>
         </div>
             <!-- User Name Validation alerts -->
-            <div *ngIf="userName!.invalid && (userName!.dirty || userName!.touched)" class="alert alert-danger">
+            <div *ngIf="username!.invalid && (username!.dirty || username!.touched)" class="alert alert-danger">
 
-                <div *ngIf="userName!.errors?.['required']">
+                <div *ngIf="username!.errors?.['required']">
                 Name is required.
                 </div>  
-                <div *ngIf="userName!.errors?.['pattern']">
+                <div *ngIf="username!.errors?.['pattern']">
                 Name is not valid.
                 </div>
             </div>
@@ -43,6 +43,10 @@
                 </div>
                 <div *ngIf="userPassword!.errors?.['minlength']">
                 Password is required. Password must be at least 8 characters long.
+                </div>
+                <div *ngIf="userPassword!.errors?.['mustBePasswordValidator']">
+                    Password must have at least one Lowercase Character, must contain at least one Digit and at least one Special
+                    Symbol.
                 </div>
                 </div>
     <button type="submit" class="btn btn-primary" (click)="login()" [disabled]="!authForm.valid">Sign Up</button>
