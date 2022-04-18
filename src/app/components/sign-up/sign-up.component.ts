@@ -38,10 +38,15 @@ export class SignUpComponent implements OnInit {
       };
       this.userService.register(this.newUser)
         .subscribe(
-          {next: (data) => this.router.navigateByUrl(''),
+          {
+            next: (data) => {
+              this.router.navigateByUrl('');
+              console.log("User is registered in")
+            },
             error: (err) => {console.log(err);
             this.toSubmit = false;
-      }}); 
+            }
+          }); 
   }
     
   

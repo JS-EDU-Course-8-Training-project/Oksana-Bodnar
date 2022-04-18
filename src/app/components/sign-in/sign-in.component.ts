@@ -31,10 +31,16 @@ export class SignInComponent  {
       };
       this.userService.logUser(this.newUser)
         .subscribe(
-          {next: (data) => this.router.navigateByUrl(''),
+          {
+            next: (data: any) => {
+              localStorage.setItem('access_token', data.user.token);
+              console.log(localStorage.getItem('access_token'));
+              this.router.navigateByUrl('');
+              console.log("User is logged in")
+            },
             error: (err) => {console.log(err);
-            this.toSubmit = false;
-      }}); 
+            this.toSubmit = false;}
+      }); 
   }
  // for validation
   get userEmail() {

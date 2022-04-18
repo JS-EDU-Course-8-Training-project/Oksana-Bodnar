@@ -6,7 +6,7 @@
 <button class="btn btn-link" type="button">Global Feed</button>
 
 <ul *ngFor="let article of articles">
-    <li>
+    <li><a [routerLink]="['/article', article.slug]">
         <article class="article">
             <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
             <a class="articleAuthorName" href="">{{article.author.username}}</a>
@@ -21,6 +21,7 @@
             </ul>
             </div>
         </article>
+        </a>
     </li>
 </ul>
 
