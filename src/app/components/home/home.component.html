@@ -1,16 +1,22 @@
+<!-- hero -->
 <div class="hero">
-<h2 class="heroLogo">conduit</h2>
+<h2 class="heroLogo">Real World Project</h2>
 <p class="heroText">A place to share your knowledge.</p>
 </div>
 <section class="articlesField">
 <button class="btn btn-link" type="button">Global Feed</button>
-
+<!-- articles -->
+<div *ngIf="articles && tags">
 <ul *ngFor="let article of articles">
     <li><a [routerLink]="['/article', article.slug]">
         <article class="article">
+        <div class="aboutAuthor">
             <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-            <a class="articleAuthorName" href="">{{article.author.username}}</a>
-            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+            <div class="authorInfo">
+                <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+            </div>
+        </div>
             <h3 class="articleHead">{{article.title}}</h3>
             <p class="articleText">{{article.body}}</p>
             <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
@@ -24,7 +30,7 @@
         </a>
     </li>
 </ul>
-
+<!-- tags -->
 <div class="tags">
     <p class="tagsHead">Popular Tags</p>
     <div class="tagsFlex">
@@ -33,4 +39,6 @@
     </ul>
     </div>
 </div>
+</div>
+
 </section>

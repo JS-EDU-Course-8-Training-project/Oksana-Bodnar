@@ -26,12 +26,12 @@
 
 <!-- User Password Validation alerts -->
 <div *ngIf="userPassword!.invalid && (userPassword!.dirty || userPassword!.touched)" class="alert alert-danger">
-
+        Password is not valid.
     <div *ngIf="userPassword!.errors?.['required']">
         Password is required.
     </div>
     <div *ngIf="userPassword!.errors?.['minlength']">
-        Password is required. Password must be at least 8 characters long.
+        Password must be at least 8 characters long.
     </div>
     <div *ngIf="userPassword!.errors?.['mustBePasswordValidator']">
         Password must have at least one Lowercase Character, must contain at least one Digit and at least one Special

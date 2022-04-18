@@ -14,6 +14,7 @@ export class UserService {
   private userModels$: BehaviorSubject<User | any> = new BehaviorSubject(null);
   constructor(private http: HttpClient, public router: Router) { }
 
+  // Add user for RF
   public setUser(username: string, email:string, password: string): void {
     this.userModels$.next({ username, email, password });
   }
@@ -22,16 +23,19 @@ export class UserService {
     return this.userModels$.getValue();
   }
 
+//  Registration of new user
   public register(user: any): Observable<NewUser> {
     return this.http.post<NewUser>('https://api.realworld.io/api/users', user)
       .pipe(catchError(this.handleError));;
   }
 
+  //  Do log in for existing user
   public logUser(user: any): Observable<NewUser> {
     return this.http.post<NewUser>('https://api.realworld.io/api/users/login', user)
-    .pipe(catchError(this.handleError));;
+    .pipe(catchError(this.handleError));
   }
 
+  //  Check registration
   getToken() {
     return localStorage.getItem('access_token');
   }
@@ -41,6 +45,7 @@ export class UserService {
     return authToken !== null ? true : false;
   }
 
+  //  do Log out for user
   doLogout() {
     let removeToken = localStorage.removeItem('access_token');
     if (removeToken == null) {
@@ -48,7 +53,7 @@ export class UserService {
     }
   }
  
-    // Error
+  // Error handling
   handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {

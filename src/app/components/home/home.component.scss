@@ -1,11 +1,9 @@
-ul,
-li {
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
+:host {
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
-a {
+a:hover {
   text-decoration: none;
   color: black;
 }
@@ -14,8 +12,8 @@ a {
   background-color: rgb(72, 173, 72);
   color: white;
   text-align: center;
-  padding-top: 20px;
-  padding-bottom: 40px;
+  padding-top: 1.3rem;
+  padding-bottom: 1.5rem;
 }
 
 .heroLogo {
@@ -27,7 +25,7 @@ a {
 }
 
 .articleAuthorAvatar {
-  border-radius: 50px;
+  border-radius: 1.5rem;
 }
 
 .article {
@@ -38,11 +36,11 @@ a {
 .articleHeart {
   position: absolute;
   right: 0px;
-  top: 20px;
+  top: 1.2rem;
 }
 
 .articleTag {
-  margin-top: 5px;
+  margin-top: 0.2rem;
   font-size: 0.7rem;
 }
 
@@ -56,18 +54,18 @@ a {
 
 .btn-link {
   color: rgb(72, 173, 72);
-  margin-top: 10px;
+  margin-top: 1.1rem;
 }
 
 .article::before {
   content: "";
   display: block;
   width: 100%;
-  height: 1px;
+  height: 0.1rem;
   background: grey;
-  border-radius: 2px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  border-radius: 0.1rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 
 .lineAfterBtn {
@@ -80,14 +78,17 @@ a {
 
 .articleDate {
   color: gray;
+  font-size: 0.7rem;
+  margin-bottom: 0px;
 }
 
 .articleText {
   color: gray;
+  width: 78%;
 }
 
 .articleReadMore {
-  color: rgb(165, 164, 164);
+  color: rgb(105, 105, 105);
 }
 
 .articlesField {
@@ -104,15 +105,24 @@ a {
 .tagsFlex {
   display: flex;
   flex-direction: column;
-  align-self: center;
 }
 
 .tag {
-  margin-bottom: 1px;
+  margin-bottom: 0.1rem;
   font-size: 0.7rem;
 }
 
 .tagsHead {
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.aboutAuthor {
+  display: flex;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
 }

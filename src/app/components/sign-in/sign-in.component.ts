@@ -18,6 +18,7 @@ export class SignInComponent  {
 
   public authForm!: FormGroup;
 
+   // RF creation
   ngOnInit(): void {
     this.authForm = new FormGroup({
       email: new FormControl('', [Validators.email,Validators.required]),
@@ -25,14 +26,14 @@ export class SignInComponent  {
     })
   }
 
-    public login(): void {
+    // User loggining, setting local storage with JWT token 
+    login(): void {
         this.newUser = {
         user: this.authForm.value
       };
       this.userService.logUser(this.newUser)
         .subscribe(
-          {
-            next: (data: any) => {
+          {next: (data: any) => {
               localStorage.setItem('access_token', data.user.token);
               console.log(localStorage.getItem('access_token'));
               this.router.navigateByUrl('');
@@ -41,8 +42,9 @@ export class SignInComponent  {
             error: (err) => {console.log(err);
             this.toSubmit = false;}
       }); 
-  }
- // for validation
+    }
+  
+ // creation data for validation
   get userEmail() {
    return this.authForm.get('email');
   } 

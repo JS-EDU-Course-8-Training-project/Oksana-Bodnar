@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-dark-color: rgb(46, 45, 45);
+  --primary-white-color: rgb(240, 234, 234);
+  --primary-light-color: rgb(92, 87, 87);
+  --primary-lightGreen-color: rgb(87, 163, 119);
+  --primary-darkGreen-color: rgb(42, 78, 57);
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+
+  a:hover {
+    text-decoration: none;
+    color: black;
+  }
+}

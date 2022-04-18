@@ -17,6 +17,7 @@ export class SignUpComponent implements OnInit {
     private userService: UserService) { }
   public authForm!: FormGroup;
 
+   // RF creation
   ngOnInit(): void {
     this.authForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
@@ -25,7 +26,7 @@ export class SignUpComponent implements OnInit {
     })
   }
 
-  
+  // User registration 
     public login(): void {
       console.log(this.authForm.getRawValue());
       this.userService.setUser(
@@ -38,8 +39,7 @@ export class SignUpComponent implements OnInit {
       };
       this.userService.register(this.newUser)
         .subscribe(
-          {
-            next: (data) => {
+          {next: (data) => {
               this.router.navigateByUrl('');
               console.log("User is registered in")
             },
@@ -50,7 +50,7 @@ export class SignUpComponent implements OnInit {
   }
     
   
-  // for validation
+ // creation data for validation
   get username() {
    return this.authForm.get('username');
   } 

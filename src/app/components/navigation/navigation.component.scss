@@ -1,0 +1,30 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navLinks {
+  display: flex;
+  align-self: center;
+  margin: 0px;
+
+  li {
+    margin-left: 1.1rem;
+  }
+
+  a {
+    color: rgb(194, 193, 193);
+  }
+  a:hover,
+  a:focus,
+  a:active {
+    color: black;
+  }
+}
+
+.logo {
+  color: rgb(32, 112, 32);
+  font-weight: bold;
+  line-height: 3rem;
+  font-size: 1.5rem;
+}

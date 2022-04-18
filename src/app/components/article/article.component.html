@@ -1,19 +1,22 @@
 <div *ngIf="article">
+    <!-- hero -->
 <section class="hero">
-    <h2 class="title">{{article.title }}</h2>
+    <h2 class="heroTitle">{{article.title }}</h2>
     <div class="heroFlex">
     <div class="aboutAuthor">
         <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+        <div class="authorInfo">
         <a class="articleAuthorName" href="">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+        </div>
     </div>
-    <button class="followBtn btn btn-light" type="button"> + Follow {{article.author.username}}</button>
-    <button class="likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}}</button>
+    <button class="btns followBtn btn btn-light" type="button"> + Follow {{article.author.username}}</button>
+    <button class="btns likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}}</button>
     </div>
 </section>
-
+<!-- article -->
 <section class="article">
-<p>{{article.body}}</p>
+<p class="articleBody">{{article.body}}</p>
 <ul>
 <ul *ngFor="let tag of article.tagList">
     <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
@@ -24,15 +27,31 @@
 <div class="heroFlex aboutAuthorMain">
 <div class="aboutAuthor">
     <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-    <a class="articleAuthorName" href="">{{article.author.username}}</a>
-    <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+    <div class="authorInfo">
+        <a class="articleAuthorName" href="">{{article.author.username}}</a>
+        <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+    
 </div>
-<button class="followBtn btn btn-light" type="button"> + Follow {{article.author.username}} </button>
-<button class="likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}} </button>
 </div>
-
+<button class="btns followBtn btn btn-light" type="button"> + Follow {{article.author.username}} </button>
+<button class="btns likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}} </button>
+</div>
+<!-- comments -->
 <div class="comments">
+    <div *ngIf="!isLogged">
 <p class="toLogIn"> <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.</p>
+    </div>
+
+            <div class="card">
+                <div class="commentContainer card-body">
+            
+                    <blockquote class="blockquote mb-0">
+                        <textarea class="element form-control" id="exampleFormControlTextarea1" rows="5"
+                            placeholder="Write your comment"></textarea>
+                    </blockquote>
+                    <button class="commentButton btn btn-success" type="button">Post Comment</button>
+                </div>
+            </div>
     <ul *ngFor="let comment of comments">
         <li>
 <div class="card">
@@ -49,7 +68,6 @@
     </div>
     </div>
 </div>
-
 </div>
 </li>
 </ul>
