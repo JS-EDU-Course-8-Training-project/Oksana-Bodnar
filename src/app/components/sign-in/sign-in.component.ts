@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
@@ -17,8 +17,8 @@ export class SignInComponent  {
 
   ngOnInit(): void {
     this.authForm = new FormGroup({
-      email: new FormControl(''),
-      password: new FormControl(''),
+      email: new FormControl('', [Validators.email,Validators.required]),
+      password: new FormControl('', [Validators.required,Validators.minLength(8)]),
     })
   }
 
@@ -29,5 +29,13 @@ export class SignInComponent  {
         this.authForm.getRawValue().password);
       this.router.navigateByUrl('').catch(e => console.log(e))
   }
+ // for validation
+  get userEmail() {
+   return this.authForm.get('email');
+  } 
+  get userPassword() {
+   return this.authForm.get('password');
+} 
+
 
 }

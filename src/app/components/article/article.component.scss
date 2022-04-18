@@ -9,6 +9,7 @@ li {
   background-color: rgb(74, 95, 74);
   text-align: center;
   color: white;
+  padding: 30px 0px;
 }
 
 .heroFlex {
@@ -62,4 +63,8 @@ li {
 
 .articleAuthorAvatar {
   border-radius: 50px;
+}
+
+.likes::before {
+  content: "\1F49A";
 }

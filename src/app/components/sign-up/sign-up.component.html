@@ -1,16 +1,51 @@
 <div class="form">
     <h3>Sign Up</h3>
     <a href="/login" class="ref">Have an account?</a>
-    <form [formGroup]="authForm">
+    <form [formGroup]="authForm" (ngSubmit)="login()">
+<!-- User Name -->
         <div class="form-group">
-            <input type="text" class="form-control" id="name" name="name" required formControlName="userName" placeholder="Username">
+            <input type="text" class="form-control" id="name" name="name" required formControlName="userName" placeholder="Username" required>
         </div>
+            <!-- User Name Validation alerts -->
+            <div *ngIf="userName!.invalid && (userName!.dirty || userName!.touched)" class="alert alert-danger">
+
+                <div *ngIf="userName!.errors?.['required']">
+                Name is required.
+                </div>  
+                <div *ngIf="userName!.errors?.['pattern']">
+                Name is not valid.
+                </div>
+            </div>
+<!-- User Email -->
         <div class="form-group">
-            <input type="email" class="form-control" id="email" name="email" required formControlName="email" placeholder="Email">
+            <input type="email" class="form-control" id="email" name="email" required formControlName="email" placeholder="Email" required>
         </div>
+            <!-- User Email Validation alerts -->
+            <div *ngIf="userEmail!.invalid && (userEmail!.dirty || userEmail!.touched)" class="alert alert-danger">
+
+                <div *ngIf="userEmail!.errors?.['required']">
+                Email is required.
+                </div>
+                <div *ngIf="userEmail!.errors?.['email']">
+                Email is required.
+                </div>
+                </div>
+<!-- User Password -->
         <div class="form-group">
-            <input type="password" class="form-control" id="password" name="password" required formControlName="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" name="password" required formControlName="password" placeholder="Password" required>
         </div>
-        <button type="button" class="btn btn-primary" (click)="login()">Sign Up</button>
+
+            <!-- User Password Validation alerts -->
+            <div *ngIf="userPassword!.invalid && (userPassword!.dirty || userPassword!.touched)" class="alert alert-danger">
+
+                <div *ngIf="userPassword!.errors?.['required']">
+                Password is required.
+                </div>
+                <div *ngIf="userPassword!.errors?.['minlength']">
+                Password is required. Password must be at least 8 characters long.
+                </div>
+                </div>
+    <button type="submit" class="btn btn-primary" (click)="login()" [disabled]="!authForm.valid">Sign Up</button>
     </form>
 </div>
+
