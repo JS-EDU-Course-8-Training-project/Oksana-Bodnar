@@ -1,1 +1,14 @@
-<p>settings works!</p>
+<div class="settingsMain">
+    <h3>Your Settings</h3>
+    <input class="element form-control" type="text" placeholder="href"
+        aria-label=".form-control-lg example">
+    <input class="element form-control" type="text" placeholder="Name"
+        aria-label="default input example">
+    <textarea class="element form-control" id="exampleFormControlTextarea1" rows="10"
+        placeholder="Short bio about you"></textarea>
+    <input class="element form-control" type="text" placeholder="Your Email" aria-label="default input example">
+    <input class="element form-control" type="text" placeholder="New Password" aria-label="default input example">
+    <button class=" btn btn-success" type="button">Update Settings</button>
+</div>
+<button class="btn-outline-danger" type="button">Log Out</button>
+{{user | json}}

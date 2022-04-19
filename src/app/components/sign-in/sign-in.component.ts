@@ -37,7 +37,9 @@ export class SignInComponent  {
               localStorage.setItem('access_token', data.user.token);
               console.log(localStorage.getItem('access_token'));
               this.router.navigateByUrl('');
-              console.log("User is logged in")
+            console.log("User is logged in");
+            console.log(data.user);
+            this.userService.setNewUser(data.user);
             },
             error: (err) => {console.log(err);
             this.toSubmit = false;}

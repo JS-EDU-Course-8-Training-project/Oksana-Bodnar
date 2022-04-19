@@ -12,9 +12,10 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
 export class SignUpComponent implements OnInit {
   toSubmit = true;
   newUser = {};
+  
 
   constructor(private router: Router,
-    private userService: UserService) { }
+  private userService: UserService) { }
   public authForm!: FormGroup;
 
    // RF creation
@@ -39,14 +40,17 @@ export class SignUpComponent implements OnInit {
       };
       this.userService.register(this.newUser)
         .subscribe(
-          {next: (data) => {
-              this.router.navigateByUrl('');
-              console.log("User is registered in")
+          {next: (data: any) => {
+            localStorage.setItem('access_token', data.user.token);
+            console.log(localStorage.getItem('access_token'));
+            console.log(data.user);
+            this.userService.setNewUser(data.user.token);
             },
             error: (err) => {console.log(err);
             this.toSubmit = false;
             }
           }); 
+     
   }
     
   

@@ -1,12 +1,11 @@
 .hero {
-  background-color: rgb(74, 95, 74);
+  background-color: var(--primary-darkGreen-color);
   color: white;
   padding: 1.5rem 0px;
 }
 
 .heroFlex {
   display: flex;
-  justify-content: start;
   font-size: 0.9rem;
   align-items: center;
   margin-bottom: 0.9rem;
@@ -15,6 +14,7 @@
 .aboutAuthor {
   margin-left: 1.3rem;
   display: flex;
+  align-items: center;
 }
 
 .followBtn {
@@ -30,7 +30,7 @@
   display: block;
   width: 100%;
   height: 0.1rem;
-  background: grey;
+  background: var(--primary-light-color);
   border-radius: 0.1rem;
   margin-top: 1.3rem;
   margin-bottom: 1.3rem;
@@ -60,7 +60,9 @@
 }
 
 .articleAuthorAvatar {
-  border-radius: 50px;
+  border-radius: 50%;
+  height: 90%;
+  align-items: center;
 }
 
 .likes::before {
@@ -90,7 +92,6 @@
 .authorInfo {
   display: flex;
   flex-direction: column;
-  justify-content: start;
 }
 
 .heroTitle {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, Subject, throwError } from 'rxjs';
 import { NewUser } from 'src/shared/models/newUser.model';
 import { User } from 'src/shared/models/user.model';
 
@@ -12,7 +12,10 @@ import { User } from 'src/shared/models/user.model';
 export class UserService {
 
   private userModels$: BehaviorSubject<User | any> = new BehaviorSubject(null);
+  private registeredUserModels$: BehaviorSubject<NewUser | any> = new BehaviorSubject({});
+
   constructor(private http: HttpClient, public router: Router) { }
+
 
   // Add user for RF
   public setUser(username: string, email:string, password: string): void {
@@ -43,6 +46,16 @@ export class UserService {
    isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;
+   }
+  
+  //  Get registered User Profiler
+  public setNewUser(user: NewUser): void {
+    this.registeredUserModels$.next(user);
+  }
+
+  getUserProfiler(): NewUser {
+    console.log(this.registeredUserModels$.getValue());
+    return this.registeredUserModels$.getValue();
   }
 
   //  do Log out for user

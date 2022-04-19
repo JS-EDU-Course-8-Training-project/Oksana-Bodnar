@@ -1,27 +1,35 @@
-a:hover {
-  text-decoration: none;
-  color: var(--primary-dark-color);
-}
+// span {
+//   content: "\2699";
+// }
 
 .hero {
-  background-color: rgb(72, 173, 72);
-  color: white;
+  padding: 2rem;
+  background-color: var(--primary-lightGreen-color);
+  position: relative;
   text-align: center;
-  padding-top: 1.3rem;
-  padding-bottom: 1.5rem;
 }
 
-.heroLogo {
-  font-weight: bold;
+.profileEditBtn {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
 }
 
-.articleHeart::before {
-  content: "\1F49A";
-}
-
-.articleAuthorAvatar {
+.profileAvatar {
   border-radius: 50%;
-  height: 90%;
+}
+
+.profileEditBtn::before {
+  content: "\2699";
+}
+
+.profileFeedsBtns {
+  color: var(--primary-light-color);
+  text-decoration: none;
+}
+
+.profileFeedsBtns:hover {
+  color: var(--primary-lightGreen-color);
 }
 
 .article {
@@ -89,28 +97,6 @@ a:hover {
 
 .articlesField {
   position: relative;
-}
-
-.tags {
-  text-align: center;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-}
-
-.tagsFlex {
-  display: flex;
-  flex-direction: column;
-}
-
-.tag {
-  margin-bottom: 0.1rem;
-  font-size: 0.7rem;
-}
-
-.tagsHead {
-  margin-bottom: 0.3rem;
-  margin-top: 0.3rem;
 }
 
 .aboutAuthor {

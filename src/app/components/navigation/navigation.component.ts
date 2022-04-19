@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-navigation',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
-
-  constructor() { }
+  public isLogged!: boolean;
+  
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.isLoggedUser();
+  }
+
+  // check if user is logged in
+  isLoggedUser() {
+    this.isLogged = this.userService.isLoggedIn();
   }
 
 }

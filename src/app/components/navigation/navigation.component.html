@@ -1,8 +1,14 @@
 <nav class="nav">
     <a class="logo" href="">Real World</a>
     <ul class="navLinks">
-        <li><a href="">Home</a></li>
-        <li><a [routerLink]="['/login']">Sign In</a></li>
-        <li><a [routerLink]="['/register']">Sign Up</a></li>
+        <li><a [routerLink]="['']">Home</a></li>
+
+        <li *ngIf="isLogged"><a [routerLink]="['/editor']">New Article</a></li>
+        <li *ngIf="isLogged"><a [routerLink]="['/settings']">Settings</a></li>
+        <li *ngIf="isLogged"><a [routerLink]="['/profile/:username']">NameProfile</a></li>
+        <li *ngIf="isLogged"> <button class="btn btn-outline-dark btn-sm" type="button">Log Out</button> </li>
+
+        <li *ngIf="!isLogged"><a [routerLink]="['/login']">Sign In</a></li>
+        <li *ngIf="!isLogged"><a [routerLink]="['/register']">Sign Up</a></li>
     </ul>
 </nav>

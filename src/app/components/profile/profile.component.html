@@ -1,0 +1,35 @@
+
+<!-- hero -->
+<div class="hero">
+    <img class="profileAvatar" src="https://api.realworld.io/images/smiley-cyrus.jpeg" alt="">
+    <h2 class="profileName">Name</h2>
+    <a class="profileEditBtn btn btn-light" [routerLink]="[]">Edit Profile Settings</a>
+</div>
+
+    <button class="profileFeedsBtns btn btn-link" type="button">My Articles</button>
+    <button class="profileFeedsBtns btn btn-link" type="button">Favourite Articles</button>
+    <!-- articles -->
+    <div *ngIf="">
+        <ul *ngFor="">
+            <li><a [routerLink]="[]">
+                    <article class="article">
+                        <div class="aboutAuthor">
+                            <img class="articleAuthorAvatar" src="" alt="">
+                            <div class="authorInfo">
+                                <a class="articleAuthorName" href=""></a>
+                                <p class="articleDate"></p>
+                            </div>
+                        </div>
+                        <h3 class="articleHead"></h3>
+                        <p class="articleText"></p>
+                        <a class="articleReadMore" [routerLink]="[]">Read more...</a>
+                        <span class="articleHeart"> </span>
+                        <div class="articleTags">
+                            <ul *ngFor="">
+                                <li><button class="articleTag btn btn-light btn-sm" type="button">tags</button></li>
+                            </ul>
+                        </div>
+                    </article>
+                </a>
+            </li>
+        </ul>
