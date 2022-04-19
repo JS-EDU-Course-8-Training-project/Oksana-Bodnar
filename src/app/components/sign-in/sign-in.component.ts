@@ -12,6 +12,7 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
 export class SignInComponent  {
   newUser = {};
   toSubmit = true;
+  isLogged!: boolean;
 
   constructor(private router: Router,
   private userService: UserService) { }
@@ -21,9 +22,10 @@ export class SignInComponent  {
    // RF creation
   ngOnInit(): void {
     this.authForm = new FormGroup({
-      email: new FormControl('', [Validators.email,Validators.required]),
-      password: new FormControl('', [Validators.required,Validators.minLength(8),mustBePasswordValidator(/^(\S)(?=.*[0-9])(?=.*[A-Z])/i)]),
-    })
+      email: new FormControl('', [Validators.email, Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), mustBePasswordValidator(/^(\S)(?=.*[0-9])(?=.*[A-Z])/i)]),
+    });
+    
   }
 
     // User loggining, setting local storage with JWT token 
@@ -34,16 +36,18 @@ export class SignInComponent  {
       this.userService.logUser(this.newUser)
         .subscribe(
           {next: (data: any) => {
-              localStorage.setItem('access_token', data.user.token);
-              console.log(localStorage.getItem('access_token'));
-              this.router.navigateByUrl('');
+            localStorage.setItem('access_token', data.user.token);
+            this.router.navigateByUrl('/settings')
+              .then(() => {
+            window.location.reload();
+            });
             console.log("User is logged in");
-            console.log(data.user);
-            this.userService.setNewUser(data.user);
+            this.isLogged = true;
+             
             },
             error: (err) => {console.log(err);
-            this.toSubmit = false;}
-      }); 
+            }
+          }); 
     }
   
  // creation data for validation
@@ -53,6 +57,5 @@ export class SignInComponent  {
   get userPassword() {
    return this.authForm.get('password');
 } 
-
 
 }

@@ -10,8 +10,9 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  toSubmit = true;
+  // toSubmit = true;
   newUser = {};
+  isLogged!: boolean;
   
 
   constructor(private router: Router,
@@ -38,19 +39,22 @@ export class SignUpComponent implements OnInit {
       this.newUser = {
         user: this.authForm.value
       };
+
       this.userService.register(this.newUser)
         .subscribe(
           {next: (data: any) => {
             localStorage.setItem('access_token', data.user.token);
-            console.log(localStorage.getItem('access_token'));
-            console.log(data.user);
-            this.userService.setNewUser(data.user.token);
+            this.router.navigateByUrl('/settings')
+              .then(() => {
+            window.location.reload();
+            });
+            console.log("User is logged in");
+            this.isLogged = true;
             },
             error: (err) => {console.log(err);
-            this.toSubmit = false;
-            }
+           }
           }); 
-     
+  
   }
     
   

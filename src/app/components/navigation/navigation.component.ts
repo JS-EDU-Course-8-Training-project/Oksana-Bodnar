@@ -8,16 +8,18 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavigationComponent implements OnInit {
   public isLogged!: boolean;
-  
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
-    this.isLoggedUser();
+
+  // do User Log out
+  doUserLogout() {
+    this.userService.doLogout();
   }
 
-  // check if user is logged in
-  isLoggedUser() {
+   // check if user is logged in
+  ngOnInit(): void {
     this.isLogged = this.userService.isLoggedIn();
+    this.doUserLogout;
   }
 
 }

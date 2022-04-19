@@ -1,14 +1,19 @@
-<div class="settingsMain">
+<div class="settingsMain" *ngIf="user">
     <h3>Your Settings</h3>
-    <input class="element form-control" type="text" placeholder="href"
+    <input class="element form-control" type="text" placeholder="{{user.image}}"
         aria-label=".form-control-lg example">
-    <input class="element form-control" type="text" placeholder="Name"
+    <input class="element form-control" type="text" placeholder="{{user.username}}"
         aria-label="default input example">
+        <div *ngIf="!user.bio">
     <textarea class="element form-control" id="exampleFormControlTextarea1" rows="10"
-        placeholder="Short bio about you"></textarea>
-    <input class="element form-control" type="text" placeholder="Your Email" aria-label="default input example">
+        placeholder="Short bio about you"></textarea></div>
+        <div *ngIf="user.bio">
+            <textarea class="element form-control" id="exampleFormControlTextarea1" rows="10"
+                placeholder="{{user.bio}}"></textarea>
+        </div>
+    <input class="element form-control" type="text" placeholder="{{user.email}}" aria-label="default input example">
     <input class="element form-control" type="text" placeholder="New Password" aria-label="default input example">
     <button class=" btn btn-success" type="button">Update Settings</button>
 </div>
-<button class="btn-outline-danger" type="button">Log Out</button>
-{{user | json}}
+
+<button class="btn-outline-danger" type="button" (click)="doUserLogout()">Log Out</button>

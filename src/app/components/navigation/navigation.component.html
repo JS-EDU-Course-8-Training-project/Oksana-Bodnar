@@ -6,7 +6,7 @@
         <li *ngIf="isLogged"><a [routerLink]="['/editor']">New Article</a></li>
         <li *ngIf="isLogged"><a [routerLink]="['/settings']">Settings</a></li>
         <li *ngIf="isLogged"><a [routerLink]="['/profile/:username']">NameProfile</a></li>
-        <li *ngIf="isLogged"> <button class="btn btn-outline-dark btn-sm" type="button">Log Out</button> </li>
+        <li *ngIf="isLogged"> <button class="btn btn-outline-dark btn-sm" type="button" (click)="doUserLogout()">Log Out</button> </li>
 
         <li *ngIf="!isLogged"><a [routerLink]="['/login']">Sign In</a></li>
         <li *ngIf="!isLogged"><a [routerLink]="['/register']">Sign Up</a></li>

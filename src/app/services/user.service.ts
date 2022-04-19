@@ -12,7 +12,7 @@ import { User } from 'src/shared/models/user.model';
 export class UserService {
 
   private userModels$: BehaviorSubject<User | any> = new BehaviorSubject(null);
-  private registeredUserModels$: BehaviorSubject<NewUser | any> = new BehaviorSubject({});
+  private registeredUserModels$: BehaviorSubject<NewUser | any> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, public router: Router) { }
 
@@ -49,20 +49,21 @@ export class UserService {
    }
   
   //  Get registered User Profiler
-  public setNewUser(user: NewUser): void {
-    this.registeredUserModels$.next(user);
-  }
-
-  getUserProfiler(): NewUser {
-    console.log(this.registeredUserModels$.getValue());
-    return this.registeredUserModels$.getValue();
+  public getLoggedUser() {
+    return this.http.get<NewUser>('https://api.realworld.io/api/user',)
+    .pipe(map((res: any) => {
+                  return res.user;
+              })).pipe(catchError(this.handleError));
   }
 
   //  do Log out for user
   doLogout() {
     let removeToken = localStorage.removeItem('access_token');
     if (removeToken == null) {
-      this.router.navigate(['login']);
+        this.router.navigateByUrl('/login')
+              .then(() => {
+            window.location.reload();
+            });;
     }
   }
  
@@ -77,3 +78,4 @@ export class UserService {
     return throwError(msg);
   }
 }
+

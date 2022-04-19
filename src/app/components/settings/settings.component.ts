@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
+import { NewUser } from 'src/shared/models/newUser.model';
 
 @Component({
   selector: 'app-settings',
@@ -7,18 +8,29 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  user: any;
+  user!: NewUser;
+  isLogged!: boolean;
+
   constructor(private userService: UserService) { }
+  
+  // getting user info
+    public getNewUser() {
+      return this.userService.getLoggedUser()
+    }
+  
+  // handling log out for user
+   doUserLogout() {
+    this.userService.doLogout();
+  }
+
 
   ngOnInit(): void {
-    this.getNewUser();
+    this.getNewUser()
+      .subscribe(data => {
+        console.log(data);
+        return this.user = data;
+      });
   }
-
-  getNewUser() {
-    this.user = this.userService.getUser();
-    console.log(this.user); 
-    return this.user;
-  }
-  
-
 }
+
+ 
