@@ -13,16 +13,13 @@ export class SettingsComponent implements OnInit {
 
   constructor(private userService: UserService) { }
   
-  // getting user info
-    public getNewUser() {
+  public getNewUser() {
       return this.userService.getLoggedUser()
     }
   
-  // handling log out for user
-   doUserLogout() {
+  public doUserLogout() {
     this.userService.doLogout();
   }
-
 
   ngOnInit(): void {
     this.getNewUser()

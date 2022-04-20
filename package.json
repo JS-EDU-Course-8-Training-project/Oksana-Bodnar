@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "bootstrap": "^5.1.3",
+    "jquery": "^3.6.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -37,5 +38,8 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/JS-EDU-Course-8-Training-project/Oksana-Bodnar.git",
+  "license": "MIT"
 }

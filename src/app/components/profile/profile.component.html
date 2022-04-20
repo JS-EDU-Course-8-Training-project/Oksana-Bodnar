@@ -6,30 +6,58 @@
     <a class="profileEditBtn btn btn-light" [routerLink]="[]">Edit Profile Settings</a>
 </div>
 
-    <button class="profileFeedsBtns btn btn-link" type="button">My Articles</button>
-    <button class="profileFeedsBtns btn btn-link" type="button">Favourite Articles</button>
+    <button class="profileFeedsBtns btn btn-link" type="button" (click)="showOwnArticles()">My Articles</button>
+    <button class="profileFeedsBtns btn btn-link" type="button" (click)="showFavouriteArticles()">Favourite Articles</button>
     <!-- articles -->
-    <div *ngIf="">
-        <ul *ngFor="">
-            <li><a [routerLink]="[]">
+    <div *ngIf="articles">
+    <ul *ngFor="let article of articles">
+        <div *ngIf="article.favorited && isFavourite">
+        <li><a [routerLink]="['/article', article.slug]">
+                <article class="article">
+                    <div class="aboutAuthor">
+                        <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                        <div class="authorInfo">
+                            <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                        </div>
+                    </div>
+                    <h3 class="articleHead">{{article.title}}</h3>
+                    <p class="articleText">{{article.body}}</p>
+                    <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                    <span class="articleHeart"> {{article.favoritesCount}}</span>
+                    <div class="articleTags">
+                        <ul *ngFor="let tag of article.tagList">
+                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                        </ul>
+                    </div>
+                </article>
+            </a>
+        </li>
+        </div>
+<!-- own  -->
+        <div *ngIf="article.author.username === user.username && isOwn">
+            <li><a [routerLink]="['/article', article.slug]">
                     <article class="article">
                         <div class="aboutAuthor">
-                            <img class="articleAuthorAvatar" src="" alt="">
+                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
                             <div class="authorInfo">
-                                <a class="articleAuthorName" href=""></a>
-                                <p class="articleDate"></p>
+                                <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
                             </div>
                         </div>
-                        <h3 class="articleHead"></h3>
-                        <p class="articleText"></p>
-                        <a class="articleReadMore" [routerLink]="[]">Read more...</a>
-                        <span class="articleHeart"> </span>
+                        <h3 class="articleHead">{{article.title}}</h3>
+                        <p class="articleText">{{article.body}}</p>
+                        <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                        <span class="articleHeart"> {{article.favoritesCount}}</span>
                         <div class="articleTags">
-                            <ul *ngFor="">
-                                <li><button class="articleTag btn btn-light btn-sm" type="button">tags</button></li>
+                            <ul *ngFor="let tag of article.tagList">
+                                <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
                             </ul>
                         </div>
                     </article>
                 </a>
             </li>
-        </ul>
+        </div>
+    </ul>
+    
+    </div>

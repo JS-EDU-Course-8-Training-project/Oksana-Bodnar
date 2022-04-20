@@ -1,10 +1,26 @@
-// span {
-//   content: "\2699";
-// }
+// разобраться, почему не подключаются с styles.scss
+ul,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-dark-color);
+
+  a:hover,
+  a:active {
+    text-decoration: none;
+    color: var(--primary-dark-color);
+  }
+}
+//
 
 .hero {
   padding: 2rem;
-  background-color: var(--primary-lightGreen-color);
+  background-color: rgb(137, 209, 167);
   position: relative;
   text-align: center;
 }
@@ -34,7 +50,7 @@
 
 .article {
   position: relative;
-  width: 70%;
+  width: 90%;
 }
 
 .articleHeart {
@@ -88,7 +104,7 @@
 
 .articleText {
   color: gray;
-  width: 78%;
+  width: 90%;
 }
 
 .articleReadMore {
@@ -107,4 +123,10 @@
 .authorInfo {
   display: flex;
   flex-direction: column;
+}
+
+.articleAuthorAvatar {
+  border-radius: 50%;
+  height: 90%;
+  max-height: 2rem;
 }

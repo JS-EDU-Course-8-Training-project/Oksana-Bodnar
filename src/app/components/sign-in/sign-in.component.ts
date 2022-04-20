@@ -10,16 +10,14 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent  {
-  newUser = {};
-  toSubmit = true;
-  isLogged!: boolean;
+  public newUser = {};
+  public isLogged!: boolean;
 
   constructor(private router: Router,
   private userService: UserService) { }
 
   public authForm!: FormGroup;
 
-   // RF creation
   ngOnInit(): void {
     this.authForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
@@ -28,8 +26,7 @@ export class SignInComponent  {
     
   }
 
-    // User loggining, setting local storage with JWT token 
-    login(): void {
+  public login(): void {
         this.newUser = {
         user: this.authForm.value
       };
@@ -38,23 +35,18 @@ export class SignInComponent  {
           {next: (data: any) => {
             localStorage.setItem('access_token', data.user.token);
             this.router.navigateByUrl('/settings')
-              .then(() => {
-            window.location.reload();
-            });
             console.log("User is logged in");
-            this.isLogged = true;
-             
-            },
-            error: (err) => {console.log(err);
-            }
+            this.isLogged = true;},
+            error: (err) => {console.log(err);}
           }); 
     }
   
- // creation data for validation
-  get userEmail() {
+   // creation data for validation
+  public get userEmail() {
    return this.authForm.get('email');
   } 
-  get userPassword() {
+
+  public get userPassword() {
    return this.authForm.get('password');
 } 
 

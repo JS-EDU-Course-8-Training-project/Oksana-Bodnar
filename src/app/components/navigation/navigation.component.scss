@@ -1,3 +1,15 @@
+// разобраться, почему не подключаются с styles.scss
+a {
+  text-decoration: none;
+  color: var(--primary-dark-color);
+
+  a:hover,
+  a:active {
+    text-decoration: none;
+    color: var(--primary-dark-color);
+  }
+}
+//
 .nav {
   display: flex;
   justify-content: space-between;

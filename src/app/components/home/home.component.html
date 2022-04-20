@@ -4,10 +4,13 @@
 <p class="heroText">A place to share your knowledge.</p>
 </div>
 <section class="articlesField">
+<button class="btn btn-link" type="button"  >Your Feed</button>
 <button class="btn btn-link" type="button">Global Feed</button>
 <!-- articles -->
 <div *ngIf="articles && tags">
+
 <ul *ngFor="let article of articles">
+<!-- <div *ngIf="article.author.username === user.username"> -->
     <li><a [routerLink]="['/article', article.slug]">
         <article class="article">
         <div class="aboutAuthor">
@@ -29,6 +32,7 @@
         </article>
         </a>
     </li>
+  <!-- </div>   -->
 </ul>
 <!-- tags -->
 <div class="tags">

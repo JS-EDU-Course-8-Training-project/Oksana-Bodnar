@@ -10,16 +10,14 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  // toSubmit = true;
-  newUser = {};
-  isLogged!: boolean;
+ public newUser = {};
+ public isLogged!: boolean;
   
 
   constructor(private router: Router,
   private userService: UserService) { }
   public authForm!: FormGroup;
 
-   // RF creation
   ngOnInit(): void {
     this.authForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
@@ -28,8 +26,7 @@ export class SignUpComponent implements OnInit {
     })
   }
 
-  // User registration 
-    public login(): void {
+  public login(): void {
       console.log(this.authForm.getRawValue());
       this.userService.setUser(
         this.authForm.getRawValue().username,
@@ -40,32 +37,27 @@ export class SignUpComponent implements OnInit {
         user: this.authForm.value
       };
 
-      this.userService.register(this.newUser)
+    this.userService.register(this.newUser)
         .subscribe(
           {next: (data: any) => {
             localStorage.setItem('access_token', data.user.token);
             this.router.navigateByUrl('/settings')
-              .then(() => {
-            window.location.reload();
-            });
             console.log("User is logged in");
-            this.isLogged = true;
-            },
-            error: (err) => {console.log(err);
-           }
+            this.isLogged = true},
+            error: (err) => {console.log(err);}
           }); 
   
   }
     
   
  // creation data for validation
-  get username() {
+  public get username() {
    return this.authForm.get('username');
   } 
-  get userEmail() {
+  public get userEmail() {
    return this.authForm.get('email');
   } 
-  get userPassword() {
+  public get userPassword() {
    return this.authForm.get('password');
   }
 }

@@ -16,8 +16,6 @@ export class UserService {
 
   constructor(private http: HttpClient, public router: Router) { }
 
-
-  // Add user for RF
   public setUser(username: string, email:string, password: string): void {
     this.userModels$.next({ username, email, password });
   }
@@ -26,29 +24,24 @@ export class UserService {
     return this.userModels$.getValue();
   }
 
-//  Registration of new user
   public register(user: any): Observable<NewUser> {
     return this.http.post<NewUser>('https://api.realworld.io/api/users', user)
       .pipe(catchError(this.handleError));;
   }
 
-  //  Do log in for existing user
   public logUser(user: any): Observable<NewUser> {
     return this.http.post<NewUser>('https://api.realworld.io/api/users/login', user)
     .pipe(catchError(this.handleError));
   }
 
-  //  Check registration
-  getToken() {
+ public getToken() {
     return localStorage.getItem('access_token');
   }
 
-   isLoggedIn(): boolean {
-    let authToken = localStorage.getItem('access_token');
-    return authToken !== null ? true : false;
+  public isLoggedIn(): boolean {
+    return localStorage.getItem('access_token') ? true : false;
    }
   
-  //  Get registered User Profiler
   public getLoggedUser() {
     return this.http.get<NewUser>('https://api.realworld.io/api/user',)
     .pipe(map((res: any) => {
@@ -56,19 +49,13 @@ export class UserService {
               })).pipe(catchError(this.handleError));
   }
 
-  //  do Log out for user
-  doLogout() {
+  public doLogout() {
     let removeToken = localStorage.removeItem('access_token');
-    if (removeToken == null) {
+    if (removeToken === null) {
         this.router.navigateByUrl('/login')
-              .then(() => {
-            window.location.reload();
-            });;
-    }
-  }
+    }}
  
-  // Error handling
-  handleError(error: HttpErrorResponse) {
+  public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;

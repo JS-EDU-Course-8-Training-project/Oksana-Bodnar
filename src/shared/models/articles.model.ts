@@ -1,3 +1,5 @@
+import { Author } from "./author.model";
+
 export interface Articles {
   slug: string;
   title: string;
@@ -8,11 +10,6 @@ export interface Articles {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
-  author: {
-    username: string;
-    bio: string;
-    image: string;
-    following: boolean;
-  };
+  author: Author;
 }
  

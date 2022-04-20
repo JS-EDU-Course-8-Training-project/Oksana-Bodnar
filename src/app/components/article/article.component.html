@@ -10,8 +10,8 @@
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
         </div>
     </div>
-    <button class="btns followBtn btn btn-light" type="button"> + Follow {{article.author.username}}</button>
-    <button class="btns likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}}</button>
+    <button class="btns followBtn btn btn-light" type="button" (click)="follow()"> + Follow {{article.author.username}}</button>
+    <button class="btns likes likeBtn btn btn-outline-success" type="button" (click)="like()">Favourite Article {{article.favoritesCount}}</button>
     </div>
 </section>
 <!-- article -->
@@ -34,7 +34,7 @@
 </div>
 </div>
 <button class="btns followBtn btn btn-light" type="button"> + Follow {{article.author.username}} </button>
-<button class="btns likes likeBtn btn btn-outline-success" type="button">Favourite Article {{article.favoritesCount}} </button>
+<button class="btns likes likeBtn btn btn-outline-success" type="button" (click)="follow()">Favourite Article {{article.favoritesCount}} </button>
 </div>
 <!-- comments -->
 <div class="comments">
@@ -44,12 +44,13 @@
 
             <div class="card">
                 <div class="commentContainer card-body">
-            
+            <form [formGroup]="newCommentForm" (ngSubmit)="publish()">
                     <blockquote class="blockquote mb-0">
-                        <textarea class="element form-control" id="exampleFormControlTextarea1" rows="5"
-                            placeholder="Write your comment"></textarea>
+                        <textarea class="element form-control" rows="5"
+                            placeholder="Write your comment" required formControlName="body"></textarea>
                     </blockquote>
-                    <button class="commentButton btn btn-success" type="button">Post Comment</button>
+                    <button class="commentButton btn btn-success" type="button" (click)="publish()">Post Comment</button>
+                </form>
                 </div>
             </div>
     <ul *ngFor="let comment of comments">

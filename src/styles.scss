@@ -3,6 +3,7 @@
   --primary-white-color: rgb(240, 234, 234);
   --primary-light-color: rgb(92, 87, 87);
   --primary-lightGreen-color: rgb(137, 209, 167);
+  --home-color: rgb(67, 161, 107);
   --primary-darkGreen-color: rgb(63, 107, 82);
 }
 
@@ -17,7 +18,8 @@ a {
   text-decoration: none;
   color: var(--primary-dark-color);
 
-  a:hover {
+  a:hover,
+  a:active {
     text-decoration: none;
     color: var(--primary-dark-color);
   }

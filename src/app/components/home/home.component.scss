@@ -1,14 +1,28 @@
-a:hover {
-  text-decoration: none;
-  color: var(--primary-dark-color);
+// разобраться, почему не подключаются с styles.scss
+ul,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
 
+a {
+  text-decoration: none;
+  color: var(--primary-dark-color);
+
+  a:hover,
+  a:active {
+    text-decoration: none;
+    color: var(--primary-dark-color);
+  }
+}
+//
+
 .hero {
-  background-color: rgb(72, 173, 72);
+  background-color: var(--home-color);
   color: white;
   text-align: center;
-  padding-top: 1.3rem;
-  padding-bottom: 1.5rem;
+  padding: 1.7rem;
 }
 
 .heroLogo {
@@ -22,11 +36,12 @@ a:hover {
 .articleAuthorAvatar {
   border-radius: 50%;
   height: 90%;
+  max-height: 2rem;
 }
 
 .article {
   position: relative;
-  width: 70%;
+  width: 80%;
 }
 
 .articleHeart {

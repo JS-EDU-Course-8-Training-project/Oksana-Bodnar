@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from 'src/app/services/getArticles.service';
+import { GetArticleService } from 'src/app/services/getArticles.service';
+import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
+import { NewUser } from 'src/shared/models/newUser.model';
 import { Tags } from 'src/shared/models/tags.model';
 
 
@@ -8,17 +10,18 @@ import { Tags } from 'src/shared/models/tags.model';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [HttpService]
+  providers: [GetArticleService]
 })
    
 export class HomeComponent implements OnInit {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: GetArticleService, private userService: UserService) { }
   public articles!: Articles[];
   public tags!: Tags[];
+  public user!: NewUser;
 
-  // get all articles from api
-  getArticles() {
+
+ public getArticles() {
     this.httpService
       .getAllArticles()
       .subscribe(data => {
@@ -26,18 +29,28 @@ export class HomeComponent implements OnInit {
       })
   }
 
-  // get all tags from api
-  getTags() {
+ public getTags() {
     this.httpService
       .getTags()
       .subscribe(data => {
       this.tags = data;})
   }
 
-  // invoking fns for getting needed data
   ngOnInit() {
     this.getArticles();
     this.getTags();
+      
+    this.getNewUser()
+     .subscribe(data => {
+        console.log(data);
+        return this.user = data;
+      });
   }
+
+  public getNewUser() {
+      return this.userService.getLoggedUser()
+  }
+  
+  
 
 }

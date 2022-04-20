@@ -1,9 +1,11 @@
 <div>
+    <form [formGroup]="newArticleForm" (ngSubmit)="publish()">
 <input class="element form-control form-control-lg" type="text" placeholder="Article Title"
-    aria-label=".form-control-lg example">
-<input class="element form-control" type="text" placeholder="What's this article about?" aria-label="default input example" >
-<textarea class="element form-control" id="exampleFormControlTextarea1" rows="10" placeholder="Write your article"></textarea>
-<input class="element form-control" type="text" placeholder="Enter tags" aria-label="default input example">
-<button class="commentButton btn btn-success" type="button">Publish Article</button>
+    aria-label=".form-control-lg example" required formControlName="title">
+<input class="element form-control" type="text" placeholder="What's this article about?" aria-label="default input example" required formControlName="description">
+<textarea class="element form-control" rows="10" placeholder="Write your article" required formControlName="body"></textarea>
+<input class="element form-control" type="text" placeholder="Enter tags" aria-label="default input example" required formControlName="tagList">
+<button class="commentButton btn btn-success" type="button" (click)="publish()">Publish Article</button>
+</form>
 </div>
 
