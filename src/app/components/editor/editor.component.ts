@@ -15,18 +15,9 @@ import { crateArticle } from 'src/shared/models/createArticle.model';
 export class EditorComponent implements OnInit {
 
   public newArticleForm!: FormGroup;
-  newArticle!: crateArticle;
-  constructor(private router: Router,
-  private createArticleService: CreateAerticleService) { }
+  public newArticle!: crateArticle;
 
-//   export interface crateArticle {
-//     "title": "string";
-//     "description": "string";
-//     "body": "string";
-//     "tagList": [
-//         "string"
-//     ];
-// };
+  constructor(private router: Router, private createArticleService: CreateAerticleService) { }
 
   ngOnInit(): void {
         this.newArticleForm = new FormGroup({

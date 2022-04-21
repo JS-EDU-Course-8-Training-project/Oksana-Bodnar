@@ -15,14 +15,34 @@ import { NewComment } from 'src/shared/models/newComment.model';
 })
 export class ArticleComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
-  public href!: string;
   public slug!: string;
   public article!: Articles;
   public comments!: Comments[];
   public newComment!: NewComment;
   public isLogged!: boolean;
   public newCommentForm!: FormGroup;
+  public clickedLike = false;
+  public clickedFollow = false;
+  public href!: string;
+
+  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
+
+
+    ngOnInit(): void {
+    
+    this.getSlug();
+    this.getArticle().subscribe(data => {
+      this.article = data;
+    });
+    this.getComments().subscribe(data => {
+      this.comments = data;
+    });
+    this.isLogged = this.userService.isLoggedIn();
+    
+     this.newCommentForm = new FormGroup({
+      body: new FormControl(''),
+     })
+  }
   
   
 public getSlug() {
@@ -44,43 +64,61 @@ public getComments(): Observable<Comments[]> {
               })).pipe(catchError(this.handleError));
   }
 
-  ngOnInit(): void {
-    
-    this.getSlug();
-    this.getArticle().subscribe(data => {
-      this.article = data;
-    });
-    this.getComments().subscribe(data => {
-      this.comments = data;
-    });
-    this.isLogged = this.userService.isLoggedIn();
-    
-     this.newCommentForm = new FormGroup({
-      body: new FormControl(''),
-     })
-  }
+
   
     
-   public publish(): void {
+public publish(): void {
    this.newComment = this.newCommentForm.value;
     console.log(this.newComment);
       this.postCommentService(this.newComment)
         .subscribe(
           {
-            next: (data: any) => {
+            next: () => {
             this.router.navigateByUrl(`article/${this.href}`)
             console.log("Comment Published!")},
             error: (err) => {console.log(err);}
           }); 
     }
  
-  public postCommentService(comment: NewComment): Observable<Comments> {
+public postCommentService(comment: NewComment): Observable<Comments> {
     return this.http.post<Comments>(`https://api.realworld.io/api/articles/${this.href}/comments`, { comment })
     .pipe(map((res: any) => {
                   return res.comments;
               })).pipe(catchError(this.handleError));
 }
+  
+public followService() {
+      return this.http.post(`https://api.realworld.io/api/profiles/${this.article.author.username}/follow`, {})
+      .pipe(catchError(this.handleError));
+  }
+  
+public follow() {
+        this.followService()
+        .subscribe(
+          {next: () => {
+            // this.router.navigateByUrl(`article/${this.href}`)
+            console.log(this.article.favoritesCount);
+            console.log("follow!")},
+            error: (err) => {console.log(err);}
+          }); 
+  }
 
+public likeService() {
+    return this.http.post(`https://api.realworld.io/api/articles/${this.href}/favorite`, {})
+      .pipe(catchError(this.handleError));
+  }
+
+public like(): void {
+      this.likeService()
+        .subscribe(
+          {next: () => {
+            // this.router.navigateByUrl(`article/${this.href}`)
+
+            console.log("like!")},
+            error: (err) => {console.log(err);}
+          }); 
+  }
+  
 public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
@@ -90,40 +128,4 @@ public handleError(error: HttpErrorResponse) {
     }
     return throwError(msg);
 }
-  
-    public followService() {
-      return this.http.post(`https://api.realworld.io/api/profiles/${this.article.author.username}/follow`, {})
-    .pipe(map((res: any) => {
-                  return res;
-    }))
-      .pipe(catchError(this.handleError));
-  }
-  
-  public follow() {
-        this.followService()
-        .subscribe(
-          {next: (data: any) => {
-            this.router.navigateByUrl(`article/${this.href}`)
-            console.log("like!")},
-            error: (err) => {console.log(err);}
-          }); 
-  }
-
-  public likeService(): Observable<Articles> {
-    return this.http.post(`https://api.realworld.io/api/articles/${this.href}/favorite`, {})
-    .pipe(map((res: any) => {
-                  return res;
-    }))
-      .pipe(catchError(this.handleError));
-  }
-
-  public like(): void {
-      this.likeService()
-        .subscribe(
-          {next: (data: any) => {
-            this.router.navigateByUrl(`article/${this.href}`)
-            console.log("like!")},
-            error: (err) => {console.log(err);}
-          }); 
-    }
 }

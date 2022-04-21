@@ -4,7 +4,7 @@
     <form [formGroup]="authForm" (ngSubmit)="login()">
 <!-- User Name -->
         <div class="form-group">
-            <input type="text" class="form-control" id="name" name="name" required formControlName="username" placeholder="Username" required>
+            <input type="text" class="form-control" name="name" required formControlName="username" placeholder="Username" required>
         </div>
             <!-- User Name Validation alerts -->
             <div *ngIf="username!.invalid && (username!.dirty || username!.touched)" class="alert alert-danger">
@@ -18,7 +18,7 @@
             </div>
 <!-- User Email -->
         <div class="form-group">
-            <input type="email" class="form-control" id="email" name="email" required formControlName="email" placeholder="Email" required>
+            <input type="email" class="form-control" name="email" required formControlName="email" placeholder="Email" required>
         </div>
             <!-- User Email Validation alerts -->
             <div *ngIf="userEmail!.invalid && (userEmail!.dirty || userEmail!.touched)" class="alert alert-danger">
@@ -32,7 +32,7 @@
                 </div>
 <!-- User Password -->
         <div class="form-group">
-            <input type="password" class="form-control" id="password" name="password" required formControlName="password" placeholder="Password" required>
+            <input type="password" class="form-control" name="password" required formControlName="password" placeholder="Password" required>
         </div>
 
             <!-- User Password Validation alerts -->
@@ -52,4 +52,3 @@
     <button type="submit" class="btn btn-primary" (click)="login()" [disabled]="!authForm.valid">Sign Up</button>
     </form>
 </div>
-

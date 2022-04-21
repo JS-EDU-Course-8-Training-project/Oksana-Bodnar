@@ -2,13 +2,7 @@
   background-color: var(--primary-darkGreen-color);
   color: white;
   padding: 1.5rem 0px;
-}
-
-.heroFlex {
-  display: flex;
-  font-size: 0.9rem;
   align-items: center;
-  margin-bottom: 0.9rem;
 }
 
 .aboutAuthor {
@@ -25,6 +19,10 @@
   margin-left: 0.5rem;
 }
 
+.likeBtn::before {
+  content: "\1F49A";
+}
+
 .article::after {
   content: "";
   display: block;
@@ -36,22 +34,12 @@
   margin-bottom: 1.3rem;
 }
 
-.aboutAuthorMain {
-  justify-content: center;
-}
-
 .toLogIn {
   text-align: center;
 }
 
 .blockquote {
   font-size: 1rem;
-}
-
-.aboutAuthorComment {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .articleDateComment {
@@ -65,9 +53,8 @@
   max-height: 2rem;
   align-items: center;
 }
-
-.likes::before {
-  content: "\1F49A";
+.articleAuthorName {
+  color: var(--primary-dark-color);
 }
 
 .commentContainer {
@@ -81,22 +68,13 @@
   right: 0.3rem;
 }
 
-.btns {
+.btn {
   height: 50%;
 }
 
 .articleDate {
   font-size: 0.7rem;
   margin-bottom: 0px;
-}
-
-.authorInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-.heroTitle {
-  text-align: center;
 }
 
 .card-header {

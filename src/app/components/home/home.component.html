@@ -1,26 +1,27 @@
 <!-- hero -->
 <div class="hero">
-<h2 class="heroLogo">Real World Project</h2>
-<p class="heroText">A place to share your knowledge.</p>
+<h2>Real World Project</h2>
+<p>A place to share your knowledge.</p>
 </div>
-<section class="articlesField">
-<button class="btn btn-link" type="button"  >Your Feed</button>
-<button class="btn btn-link" type="button">Global Feed</button>
-<!-- articles -->
-<div *ngIf="articles && tags">
 
-<ul *ngFor="let article of articles">
-<!-- <div *ngIf="article.author.username === user.username"> -->
+<!-- articles -->
+<section>
+<button class="btn btn-link" type="button" (click)="showYourFeed()" [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
+<button class="btn btn-link" type="button" (click)="showAllArticles()" [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
+
+<div *ngIf="isOwnFeed">
+<ul *ngFor="let article of articlesFeed">
+
     <li><a [routerLink]="['/article', article.slug]">
         <article class="article">
-        <div class="aboutAuthor">
+        <div class="d-flex align-items-center">
             <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-            <div class="authorInfo">
+            <div class="d-flex flex-column">
                 <a class="articleAuthorName" href="">{{article.author.username}}</a>
                 <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
             </div>
         </div>
-            <h3 class="articleHead">{{article.title}}</h3>
+            <h3>{{article.title}}</h3>
             <p class="articleText">{{article.body}}</p>
             <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
             <span class="articleHeart"> {{article.favoritesCount}}</span>
@@ -32,17 +33,45 @@
         </article>
         </a>
     </li>
-  <!-- </div>   -->
+   
 </ul>
+</div>
+
+<div *ngIf="isGlobal">
+    <ul *ngFor="let article of articles">
+
+<li><a [routerLink]="['/article', article.slug]">
+        <article class="article">
+            <div class="d-flex align-items-center">
+                <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                <div class="d-flex flex-column">
+                    <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                    <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                </div>
+            </div>
+            <h3>{{article.title}}</h3>
+            <p class="articleText">{{article.body}}</p>
+            <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+            <span class="articleHeart"> {{article.favoritesCount}}</span>
+            <div class="articleTags">
+                <ul *ngFor="let tag of article.tagList">
+                    <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                </ul>
+            </div>
+        </article>
+    </a>
+</li>
+    </ul>
+</div>
 <!-- tags -->
 <div class="tags">
     <p class="tagsHead">Popular Tags</p>
-    <div class="tagsFlex">
+    <div class="d-flex flex-column">
     <ul *ngFor="let tag of tags">
         <li><button class="tag btn btn-secondary btn-sm" type="button">{{tag}}</button></li>
     </ul>
     </div>
 </div>
-</div>
+
 
 </section>

@@ -14,7 +14,7 @@ public postArticle(article: crateArticle): Observable<Articles> {
     .pipe(catchError(this.handleError));
 }
     
-  public handleError(error: HttpErrorResponse) {
+public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;

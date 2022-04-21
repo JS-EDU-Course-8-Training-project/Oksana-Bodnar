@@ -1,11 +1,11 @@
-<nav class="nav">
-    <a class="logo" href="">Real World</a>
-    <ul class="navLinks">
+<nav class="d-flex justify-content-around">
+    <a class="navbar-brand logo" href="">Real World</a>
+    <ul class="navLinks d-flex justify-content-aroun align-items-center">
         <li><a [routerLink]="['']">Home</a></li>
 
         <li *ngIf="isLogged"><a [routerLink]="['/editor']">New Article</a></li>
         <li *ngIf="isLogged"><a [routerLink]="['/settings']">Settings</a></li>
-        <li *ngIf="isLogged"><a [routerLink]="['/profile/:username']">NameProfile</a></li>
+        <li *ngIf="isLogged"><a [routerLink]="['/profile/:{{user.username}}']">NameProfile</a></li>
         <li *ngIf="isLogged"> <button class="btn btn-outline-dark btn-sm" type="button" (click)="doUserLogout()">Log Out</button> </li>
 
         <li *ngIf="!isLogged"><a [routerLink]="['/login']">Sign In</a></li>

@@ -1,51 +1,48 @@
 <div *ngIf="article">
     <!-- hero -->
 <section class="hero">
-    <h2 class="heroTitle">{{article.title }}</h2>
-    <div class="heroFlex">
-    <div class="aboutAuthor">
+    <h2>{{article.title }}</h2>
+<!--  <div class="d-flex align-items-center"> -->
+    <div class="d-flex align-items-center">
         <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-        <div class="authorInfo">
+        <div class="d-flex">
         <a class="articleAuthorName" href="">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
         </div>
-    </div>
-    <button class="btns followBtn btn btn-light" type="button" (click)="follow()"> + Follow {{article.author.username}}</button>
-    <button class="btns likes likeBtn btn btn-outline-success" type="button" (click)="like()">Favourite Article {{article.favoritesCount}}</button>
-    </div>
+    <!--  </div> -->
+    <button class="followBtn btn btn-light" type="button" [disabled]="clickedFollow" (click)="follow(); clickedFollow = true;"> + Follow {{article.author.username}}</button>
+    <button class="likeBtn btn btn-outline-success" type="button" [disabled]="clickedLike" (click)="like(); clickedLike = true;">Favourite Article {{article.favoritesCount}}</button>
+</div>
 </section>
+
 <!-- article -->
 <section class="article">
 <p class="articleBody">{{article.body}}</p>
 <ul>
 <ul *ngFor="let tag of article.tagList">
-    <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+    <li><button class="btn btn-light btn-sm" type="button">{{tag}}</button></li>
 </ul>
 </ul>
 </section>
 
-<div class="heroFlex aboutAuthorMain">
+<div class="justify-content-center">
 <div class="aboutAuthor">
     <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-    <div class="authorInfo">
         <a class="articleAuthorName" href="">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-    
 </div>
-</div>
-<button class="btns followBtn btn btn-light" type="button"> + Follow {{article.author.username}} </button>
-<button class="btns likes likeBtn btn btn-outline-success" type="button" (click)="follow()">Favourite Article {{article.favoritesCount}} </button>
+<button class="followBtn btn btn-light" type="button" [disabled]="clickedFollow" (click)="follow(); clickedFollow = true;"> + Follow {{article.author.username}} </button>
+<button class="likeBtn btn btn-outline-success" type="button" [disabled]="clickedLike" (click)="like(); clickedLike = true;">Favourite Article {{ clickedLike ? article.favoritesCount + 1 : article.favoritesCount}} </button>
 </div>
 <!-- comments -->
-<div class="comments">
+
     <div *ngIf="!isLogged">
 <p class="toLogIn"> <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.</p>
     </div>
-
             <div class="card">
                 <div class="commentContainer card-body">
             <form [formGroup]="newCommentForm" (ngSubmit)="publish()">
-                    <blockquote class="blockquote mb-0">
+                    <blockquote class="blockquote">
                         <textarea class="element form-control" rows="5"
                             placeholder="Write your comment" required formControlName="body"></textarea>
                     </blockquote>
@@ -58,13 +55,12 @@
 <div class="card">
 <div class="card-body">
 
-    <blockquote class="blockquote mb-0">
+    <blockquote class="blockquote">
         <p>{{comment.body}}</p>
     </blockquote>
     <div class="card-header">
-    <div class="aboutAuthorComment">
-        <img class="articleAuthorAvatarComment" src="" alt="">
-        <a class="articleAuthorNameComment" href="">{{comment.author.username}}</a>
+    <div class="d-flex flex-row align-items-center">
+        <a href="">{{comment.author.username}}</a>
         <p class="articleDateComment">{{comment.createdAt | date:'longDate'}}</p>
     </div>
     </div>
@@ -73,5 +69,5 @@
 </li>
 </ul>
 </div>
-</div>
+
    

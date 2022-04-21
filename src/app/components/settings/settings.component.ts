@@ -8,10 +8,18 @@ import { NewUser } from 'src/shared/models/newUser.model';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  user!: NewUser;
-  isLogged!: boolean;
+  public user!: NewUser;
+  public isLogged!: boolean;
 
   constructor(private userService: UserService) { }
+
+  ngOnInit(): void {
+    this.getNewUser()
+      .subscribe(data => {
+        console.log(data);
+        return this.user = data;
+      });
+  }
   
   public getNewUser() {
       return this.userService.getLoggedUser()
@@ -21,13 +29,7 @@ export class SettingsComponent implements OnInit {
     this.userService.doLogout();
   }
 
-  ngOnInit(): void {
-    this.getNewUser()
-      .subscribe(data => {
-        console.log(data);
-        return this.user = data;
-      });
-  }
+  
 }
 
  

@@ -12,11 +12,9 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
 export class SignInComponent  {
   public newUser = {};
   public isLogged!: boolean;
-
-  constructor(private router: Router,
-  private userService: UserService) { }
-
   public authForm!: FormGroup;
+
+  constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
     this.authForm = new FormGroup({

@@ -1,32 +1,17 @@
-// разобраться, почему не подключаются с styles.scss
-ul,
-li {
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-}
-
-a {
-  text-decoration: none;
-  color: var(--primary-dark-color);
-
-  a:hover,
-  a:active {
-    text-decoration: none;
-    color: var(--primary-dark-color);
-  }
-}
-//
-
 .hero {
   background-color: var(--home-color);
   color: white;
   text-align: center;
   padding: 1.7rem;
+
+  & {
+    font-weight: bold;
+  }
 }
 
-.heroLogo {
-  font-weight: bold;
+.article {
+  position: relative;
+  width: 80%;
 }
 
 .articleHeart::before {
@@ -39,9 +24,14 @@ a {
   max-height: 2rem;
 }
 
-.article {
-  position: relative;
-  width: 80%;
+.articleAuthorName {
+  color: var(--primary-lightGreen-color);
+}
+
+.articleDate {
+  color: gray;
+  font-size: 0.7rem;
+  margin-bottom: 0px;
 }
 
 .articleHeart {
@@ -79,20 +69,6 @@ a {
   margin-bottom: 1.2rem;
 }
 
-.lineAfterBtn {
-  margin-top: 0px;
-}
-
-.articleAuthorName {
-  color: var(--primary-lightGreen-color);
-}
-
-.articleDate {
-  color: gray;
-  font-size: 0.7rem;
-  margin-bottom: 0px;
-}
-
 .articleText {
   color: gray;
   width: 78%;
@@ -100,10 +76,6 @@ a {
 
 .articleReadMore {
   color: var(--primary-light-color);
-}
-
-.articlesField {
-  position: relative;
 }
 
 .tags {
@@ -128,12 +100,6 @@ a {
   margin-top: 0.3rem;
 }
 
-.aboutAuthor {
-  display: flex;
-  align-items: center;
-}
-
-.authorInfo {
-  display: flex;
-  flex-direction: column;
+.activeBtn {
+  background-color: rgb(141, 245, 141);
 }

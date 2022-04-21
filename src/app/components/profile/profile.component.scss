@@ -1,23 +1,3 @@
-// разобраться, почему не подключаются с styles.scss
-ul,
-li {
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-}
-
-a {
-  text-decoration: none;
-  color: var(--primary-dark-color);
-
-  a:hover,
-  a:active {
-    text-decoration: none;
-    color: var(--primary-dark-color);
-  }
-}
-//
-
 .hero {
   padding: 2rem;
   background-color: rgb(137, 209, 167);
@@ -88,10 +68,6 @@ a {
   margin-bottom: 1.2rem;
 }
 
-.lineAfterBtn {
-  margin-top: 0px;
-}
-
 .articleAuthorName {
   color: var(--primary-lightGreen-color);
 }
@@ -109,20 +85,6 @@ a {
 
 .articleReadMore {
   color: var(--primary-light-color);
-}
-
-.articlesField {
-  position: relative;
-}
-
-.aboutAuthor {
-  display: flex;
-  align-items: center;
-}
-
-.authorInfo {
-  display: flex;
-  flex-direction: column;
 }
 
 .articleAuthorAvatar {

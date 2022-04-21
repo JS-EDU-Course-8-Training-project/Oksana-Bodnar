@@ -1,32 +1,13 @@
-// разобраться, почему не подключаются с styles.scss
-a {
-  text-decoration: none;
-  color: var(--primary-dark-color);
-
-  a:hover,
-  a:active {
-    text-decoration: none;
-    color: var(--primary-dark-color);
-  }
-}
-//
-.nav {
-  display: flex;
-  justify-content: space-between;
-}
-
 .navLinks {
-  display: flex;
-  align-items: center;
-  margin: 0px;
-
   li {
     margin-left: 1.1rem;
+    font-size: 1rem;
   }
 
   a {
     color: rgb(194, 193, 193);
   }
+
   a:hover,
   a:focus,
   a:active {
@@ -35,8 +16,6 @@ a {
 }
 
 .logo {
-  color: rgb(32, 112, 32);
-  font-weight: bold;
-  line-height: 3rem;
-  font-size: 1.5rem;
+  color: var(--home-color);
+  font-weight: 700;
 }

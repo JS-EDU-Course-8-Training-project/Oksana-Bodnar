@@ -1,4 +1,5 @@
 :root {
+  font-size: 16px;
   --primary-dark-color: rgb(46, 45, 45);
   --primary-white-color: rgb(240, 234, 234);
   --primary-light-color: rgb(92, 87, 87);
@@ -17,12 +18,26 @@ li {
 a {
   text-decoration: none;
   color: var(--primary-dark-color);
+}
 
-  a:hover,
-  a:active {
-    text-decoration: none;
-    color: var(--primary-dark-color);
-  }
+a:hover,
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--primary-dark-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+p {
+  margin: 0;
 }
 
 body {

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GetArticleService } from 'src/app/services/getArticles.service';
-import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
-import { NewUser } from 'src/shared/models/newUser.model';
 import { Tags } from 'src/shared/models/tags.model';
 
 
@@ -15,10 +13,20 @@ import { Tags } from 'src/shared/models/tags.model';
    
 export class HomeComponent implements OnInit {
 
-  constructor(private httpService: GetArticleService, private userService: UserService) { }
   public articles!: Articles[];
+  public articlesFeed!: Articles[];
   public tags!: Tags[];
-  public user!: NewUser;
+  public isOwnFeed = false;
+  public isGlobal = true;
+
+  constructor(private httpService: GetArticleService) { }
+
+
+  ngOnInit() {
+    this.getArticles();
+    this.getArticlesYourFeed()
+    this.getTags();
+  }
 
 
  public getArticles() {
@@ -27,30 +35,30 @@ export class HomeComponent implements OnInit {
       .subscribe(data => {
       this.articles = data;
       })
+ }
+  
+public getArticlesYourFeed() {
+    this.httpService
+      .getArticlesFeed()
+      .subscribe(data => {
+      this.articlesFeed = data;
+      })
   }
 
- public getTags() {
+public getTags() {
     this.httpService
       .getTags()
       .subscribe(data => {
       this.tags = data;})
   }
 
-  ngOnInit() {
-    this.getArticles();
-    this.getTags();
-      
-    this.getNewUser()
-     .subscribe(data => {
-        console.log(data);
-        return this.user = data;
-      });
+public showYourFeed() {
+    this.isOwnFeed = true;
+    this.isGlobal = false;
   }
 
-  public getNewUser() {
-      return this.userService.getLoggedUser()
+public showAllArticles() {
+    this.isOwnFeed = false;
+    this.isGlobal = true;
   }
-  
-  
-
 }

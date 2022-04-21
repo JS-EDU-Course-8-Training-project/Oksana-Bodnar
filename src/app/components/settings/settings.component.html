@@ -1,19 +1,15 @@
 <div class="settingsMain" *ngIf="user">
     <h3>Your Settings</h3>
-    <input class="element form-control" type="text" placeholder="{{user.image}}"
-        aria-label=".form-control-lg example">
-    <input class="element form-control" type="text" placeholder="{{user.username}}"
-        aria-label="default input example">
+    <input class="element form-control" type="text" placeholder="{{user.image}}">
+    <input class="element form-control" type="text" placeholder="{{user.username}}">
         <div *ngIf="!user.bio">
-    <textarea class="element form-control" id="exampleFormControlTextarea1" rows="10"
-        placeholder="Short bio about you"></textarea></div>
+    <textarea class="element form-control" rows="10" placeholder="Short bio about you"></textarea></div>
         <div *ngIf="user.bio">
-            <textarea class="element form-control" id="exampleFormControlTextarea1" rows="10"
-                placeholder="{{user.bio}}"></textarea>
-        </div>
-    <input class="element form-control" type="text" placeholder="{{user.email}}" aria-label="default input example">
-    <input class="element form-control" type="text" placeholder="New Password" aria-label="default input example">
-    <button class=" btn btn-success" type="button">Update Settings</button>
+    <textarea class="element form-control" rows="10" placeholder="{{user.bio}}"></textarea></div>
+
+    <input class="element form-control" type="text" placeholder="{{user.email}}">
+    <input class="element form-control" type="text" placeholder="New Password">
+    <button class="btn btn-success" type="button">Update Settings</button>
 </div>
 
 <button class="btn-outline-danger" type="button" (click)="doUserLogout()">Log Out</button>

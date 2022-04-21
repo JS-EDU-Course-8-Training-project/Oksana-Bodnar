@@ -1,11 +1,10 @@
-<div>
-    <form [formGroup]="newArticleForm" (ngSubmit)="publish()">
-<input class="element form-control form-control-lg" type="text" placeholder="Article Title"
-    aria-label=".form-control-lg example" required formControlName="title">
-<input class="element form-control" type="text" placeholder="What's this article about?" aria-label="default input example" required formControlName="description">
-<textarea class="element form-control" rows="10" placeholder="Write your article" required formControlName="body"></textarea>
-<input class="element form-control" type="text" placeholder="Enter tags" aria-label="default input example" required formControlName="tagList">
-<button class="commentButton btn btn-success" type="button" (click)="publish()">Publish Article</button>
+<div class="elements">
+<form [formGroup]="newArticleForm" (ngSubmit)="publish()">
+<input class="form-control form-control-lg" type="text" placeholder="Article Title" required formControlName="title">
+<input class="form-control" type="text" placeholder="What's this article about?" required formControlName="description">
+<textarea class="form-control" rows="10" placeholder="Write your article" required formControlName="body"></textarea>
+<input class="form-control" type="text" placeholder="Enter tags" required formControlName="tagList">
+<button class="btn btn-success" type="button" (click)="publish()">Publish Article</button>
 </form>
 </div>
 

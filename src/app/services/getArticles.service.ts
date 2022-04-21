@@ -21,6 +21,13 @@ export class GetArticleService {
                   return res.tags;
               })).pipe(catchError(this.handleError));
   }
+
+   public getArticlesFeed(): Observable<Articles[]> {
+      return this.http.get<Articles[]>('https://api.realworld.io/api/articles/feed')
+          .pipe(map((res: any) => {
+                  return res.articles;
+              })).pipe(catchError(this.handleError));
+  }
     
   public handleError(error: HttpErrorResponse) {
     let msg = '';
