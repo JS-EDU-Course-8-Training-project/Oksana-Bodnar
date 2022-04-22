@@ -78,16 +78,15 @@
   color: var(--primary-light-color);
 }
 
+.allArticles {
+  position: relative;
+}
+
 .tags {
   text-align: center;
   position: absolute;
   right: 0px;
   top: 0px;
-}
-
-.tagsFlex {
-  display: flex;
-  flex-direction: column;
 }
 
 .tag {
@@ -96,6 +95,7 @@
 }
 
 .tagsHead {
+  position: absolute;
   margin-bottom: 0.3rem;
   margin-top: 0.3rem;
 }

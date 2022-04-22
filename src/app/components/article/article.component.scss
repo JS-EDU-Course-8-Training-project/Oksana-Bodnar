@@ -2,7 +2,18 @@
   background-color: var(--primary-darkGreen-color);
   color: white;
   padding: 1.5rem 0px;
-  align-items: center;
+}
+
+.hero h2 {
+  text-align: center;
+}
+
+.aboutAuthor {
+  margin-left: 1.5rem;
+}
+
+.aboutAuthor * {
+  margin-left: 0.2rem;
 }
 
 .aboutAuthor {
@@ -35,6 +46,7 @@
 }
 
 .toLogIn {
+  margin: 0.5rem 0rem;
   text-align: center;
 }
 
@@ -66,10 +78,6 @@
   position: absolute;
   bottom: 0.3rem;
   right: 0.3rem;
-}
-
-.btn {
-  height: 50%;
 }
 
 .articleDate {

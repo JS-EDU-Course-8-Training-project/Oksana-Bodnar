@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { NewUser } from 'src/shared/models/newUser.model';
 
@@ -8,22 +8,26 @@ import { NewUser } from 'src/shared/models/newUser.model';
   styleUrls: ['./navigation.component.scss']
 
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, DoCheck {
   public isLogged!: boolean;
   public user!: NewUser;
   
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.isLogged = this.userService.isLoggedIn();
 
-    this.doUserLogout;
 
     this.getNewUser()
-    .subscribe(data => {
-    console.log(data);
-    return this.user = data;
-    });
+      .subscribe(data => {
+        console.log(data.username);
+        return this.user = data;
+      });
+  
+  }
+
+  ngDoCheck(): void {
+    //  this.isLogged = this.userService.isLoggedIn();
+    this.isLogged = this.getIfLoggedUser() ? true : false;
   }
 
 
@@ -31,10 +35,13 @@ public doUserLogout() {
     this.userService.doLogout();
   }
 
-public getNewUser() {
+ public getNewUser() {
       return this.userService.getLoggedUser()
-  }
+    }
 
+  public getIfLoggedUser() {
+    return this.userService.getLogUser();
+  }
 
 
 }

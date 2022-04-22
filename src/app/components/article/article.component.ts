@@ -4,9 +4,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 import { Articles } from 'src/shared/models/articles.model';
 import { Comments } from 'src/shared/models/comments.model';
 import { NewComment } from 'src/shared/models/newComment.model';
+import { NewUser } from 'src/shared/models/newUser.model';
 
 @Component({
   selector: 'app-article',
@@ -24,9 +26,11 @@ export class ArticleComponent implements OnInit {
   public clickedLike = false;
   public clickedFollow = false;
   public href!: string;
+  public id!: string;
+  public user!: NewUser;
 
   constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
-
+public environment = environment;
 
     ngOnInit(): void {
     
@@ -39,9 +43,14 @@ export class ArticleComponent implements OnInit {
     });
     this.isLogged = this.userService.isLoggedIn();
     
-     this.newCommentForm = new FormGroup({
-      body: new FormControl(''),
-     })
+      this.newCommentForm = new FormGroup({
+        body: new FormControl(''),
+      });
+
+      this.getNewUser()
+     .subscribe(data => {
+        return this.user = data;
+      });
   }
   
   
@@ -51,44 +60,52 @@ public getSlug() {
 
 
 public getArticle(): Observable<Articles> {
-      return this.http.get<Articles>(`https://api.realworld.io/api/articles/${this.href}`)
+      return this.http.get<Articles>(`${this.environment.url}/articles/${this.href}`, {})
+          .pipe(map((res: any) => {
+                  return res.article;
+              })).pipe(catchError(this.handleError));
+}
+  
+  public deleteArticle(): Observable<Articles> {
+      return this.http.delete<Articles>(`${this.environment.url}/articles/${this.href}`)
           .pipe(map((res: any) => {
                   return res.article;
               })).pipe(catchError(this.handleError));
   }
 
 public getComments(): Observable<Comments[]> {
-      return this.http.get<Comments[]>(`https://api.realworld.io/api/articles/${this.href}/comments`)
+      return this.http.get<Comments[]>(`${this.environment.url}/articles/${this.href}/comments`)
           .pipe(map((res: any) => {
                   return res.comments;
               })).pipe(catchError(this.handleError));
+}
+  // /articles/{slug}/comments/{id}
+  public deleteComment(): Observable<Comments> {
+      return this.http.delete<Comments>(`${this.environment.url}/articles/${this.href}/comments/${this.id}`, {})
+          .pipe(map((res: any) => {
+                  return res.comment;
+              })).pipe(catchError(this.handleError));
   }
 
-
-  
-    
 public publish(): void {
    this.newComment = this.newCommentForm.value;
-    console.log(this.newComment);
       this.postCommentService(this.newComment)
         .subscribe(
-          {
-            next: () => {
-            this.router.navigateByUrl(`article/${this.href}`)
+          {next: () => {
             console.log("Comment Published!")},
             error: (err) => {console.log(err);}
           }); 
     }
  
 public postCommentService(comment: NewComment): Observable<Comments> {
-    return this.http.post<Comments>(`https://api.realworld.io/api/articles/${this.href}/comments`, { comment })
-    .pipe(map((res: any) => {
-                  return res.comments;
-              })).pipe(catchError(this.handleError));
+    return this.http.post<Comments>(`${this.environment.url}/articles/${this.href}/comments`, { comment })
+      .pipe(map((res: any) => {
+          return res.comments;
+          })).pipe(catchError(this.handleError));
 }
   
 public followService() {
-      return this.http.post(`https://api.realworld.io/api/profiles/${this.article.author.username}/follow`, {})
+      return this.http.post(`${this.environment.url}/profiles/${this.article.author.username}/follow`, {})
       .pipe(catchError(this.handleError));
   }
   
@@ -96,7 +113,6 @@ public follow() {
         this.followService()
         .subscribe(
           {next: () => {
-            // this.router.navigateByUrl(`article/${this.href}`)
             console.log(this.article.favoritesCount);
             console.log("follow!")},
             error: (err) => {console.log(err);}
@@ -104,7 +120,7 @@ public follow() {
   }
 
 public likeService() {
-    return this.http.post(`https://api.realworld.io/api/articles/${this.href}/favorite`, {})
+    return this.http.post(`${this.environment.url}/articles/${this.href}/favorite`, {})
       .pipe(catchError(this.handleError));
   }
 
@@ -112,9 +128,22 @@ public like(): void {
       this.likeService()
         .subscribe(
           {next: () => {
-            // this.router.navigateByUrl(`article/${this.href}`)
-
             console.log("like!")},
+            error: (err) => {console.log(err);}
+          }); 
+}
+  
+   public getNewUser() {
+      return this.userService.getLoggedUser()
+   }
+  
+  delete() {
+    this.router.navigateByUrl('');
+      this.deleteArticle()
+        .subscribe(
+          {
+            next: () => {
+            console.log("delete!")},
             error: (err) => {console.log(err);}
           }); 
   }

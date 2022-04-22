@@ -15,15 +15,16 @@ export class ProfileComponent implements OnInit {
   public isOwn = true;
   public user!: NewUser;
   public articles!: Articles[];
+  public isLogged!: boolean;
 
   constructor(private httpService: GetArticleService, private userService: UserService) { }
   
   ngOnInit(): void {
+    this.isLogged = this.userService.isLoggedIn();
     this.getArticles();
     
     this.getNewUser()
      .subscribe(data => {
-        console.log(data);
         return this.user = data;
       });
   }

@@ -32,9 +32,10 @@ export class SignInComponent  {
         .subscribe(
           {next: (data: any) => {
             localStorage.setItem('access_token', data.user.token);
+            this.userService.setLoggedUser(localStorage.getItem('access_token'));
             this.router.navigateByUrl('/settings')
             console.log("User is logged in");
-            this.isLogged = true;},
+            },
             error: (err) => {console.log(err);}
           }); 
     }

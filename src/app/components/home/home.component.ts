@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GetArticleService } from 'src/app/services/getArticles.service';
+import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
 import { Tags } from 'src/shared/models/tags.model';
 
@@ -16,15 +17,19 @@ export class HomeComponent implements OnInit {
   public articles!: Articles[];
   public articlesFeed!: Articles[];
   public tags!: Tags[];
+  public isLogged!: boolean;
   public isOwnFeed = false;
   public isGlobal = true;
 
-  constructor(private httpService: GetArticleService) { }
+  constructor(private httpService: GetArticleService, private userService: UserService) { }
 
 
   ngOnInit() {
+    this.isLogged = this.userService.isLoggedIn();
     this.getArticles();
+    if (this.isLogged) { 
     this.getArticlesYourFeed()
+  }
     this.getTags();
   }
 

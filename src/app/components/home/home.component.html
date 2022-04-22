@@ -5,13 +5,12 @@
 </div>
 
 <!-- articles -->
-<section>
-<button class="btn btn-link" type="button" (click)="showYourFeed()" [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
+<section class="articles">
+<button *ngIf="isLogged" class="btn btn-link" type="button" (click)="showYourFeed()" [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
 <button class="btn btn-link" type="button" (click)="showAllArticles()" [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
-
-<div *ngIf="isOwnFeed">
+<div class="allArticles">
+<div *ngIf="isOwnFeed && isLogged">
 <ul *ngFor="let article of articlesFeed">
-
     <li><a [routerLink]="['/article', article.slug]">
         <article class="article">
         <div class="d-flex align-items-center">
@@ -64,14 +63,10 @@
     </ul>
 </div>
 <!-- tags -->
-<div class="tags">
-    <p class="tagsHead">Popular Tags</p>
-    <div class="d-flex flex-column">
+<div class="tags d-flex flex-column">
     <ul *ngFor="let tag of tags">
         <li><button class="tag btn btn-secondary btn-sm" type="button">{{tag}}</button></li>
     </ul>
-    </div>
 </div>
-
-
+</div>
 </section>

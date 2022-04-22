@@ -2,17 +2,22 @@
     <!-- hero -->
 <section class="hero">
     <h2>{{article.title }}</h2>
-<!--  <div class="d-flex align-items-center"> -->
+<div class="aboutAuthor">
     <div class="d-flex align-items-center">
         <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-        <div class="d-flex">
+        <div class="d-flex flex-column">
         <a class="articleAuthorName" href="">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
         </div>
-    <!--  </div> -->
+</div>
+<div *ngIf="article.author.username !== user.username">
     <button class="followBtn btn btn-light" type="button" [disabled]="clickedFollow" (click)="follow(); clickedFollow = true;"> + Follow {{article.author.username}}</button>
     <button class="likeBtn btn btn-outline-success" type="button" [disabled]="clickedLike" (click)="like(); clickedLike = true;">Favourite Article {{article.favoritesCount}}</button>
 </div>
+<div *ngIf="article.author.username === user.username">
+    <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
+    <button class=" btn btn-light" type="button" (click)="delete()">Delete Article</button>
+</div></div>
 </section>
 
 <!-- article -->
@@ -25,15 +30,26 @@
 </ul>
 </section>
 
-<div class="justify-content-center">
+<div class="d-flex justify-content-center">
 <div class="aboutAuthor">
     <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+    <div class="d-flex flex-column">
         <a class="articleAuthorName" href="">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
 </div>
-<button class="followBtn btn btn-light" type="button" [disabled]="clickedFollow" (click)="follow(); clickedFollow = true;"> + Follow {{article.author.username}} </button>
-<button class="likeBtn btn btn-outline-success" type="button" [disabled]="clickedLike" (click)="like(); clickedLike = true;">Favourite Article {{ clickedLike ? article.favoritesCount + 1 : article.favoritesCount}} </button>
 </div>
+<div *ngIf="article.author.username !== user.username">
+    <button class="followBtn btn btn-light" type="button" [disabled]="clickedFollow"
+        (click)="follow(); clickedFollow = true;"> + Follow {{article.author.username}}</button>
+    <button class="likeBtn btn btn-outline-success" type="button" [disabled]="clickedLike"
+        (click)="like(); clickedLike = true;">Favourite Article {{article.favoritesCount}}</button>
+</div>
+<div *ngIf="article.author.username === user.username">
+<a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
+    <button class=" btn btn-light" type="button" (click)="delete()">Delete Article</button>
+</div>
+</div>
+
 <!-- comments -->
 
     <div *ngIf="!isLogged">

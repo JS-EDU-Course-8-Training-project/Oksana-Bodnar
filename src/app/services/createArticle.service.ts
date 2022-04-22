@@ -3,14 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { Articles } from 'src/shared/models/articles.model';
 import { crateArticle } from 'src/shared/models/createArticle.model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable()
 export class CreateAerticleService {
+  public environment = environment;
   constructor(private http: HttpClient) {}
 
 public postArticle(article: crateArticle): Observable<Articles> {
-    return this.http.post<Articles>('https://api.realworld.io/api/articles', { article })
+    return this.http.post<Articles>(`${this.environment.url}/articles`, { article })
     .pipe(catchError(this.handleError));
 }
     
