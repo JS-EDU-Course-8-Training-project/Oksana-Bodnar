@@ -28,9 +28,10 @@ export class ArticleComponent implements OnInit {
   public href!: string;
   public id!: string;
   public user!: NewUser;
-
+  public environment = environment;
+  
   constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
-public environment = environment;
+
 
     ngOnInit(): void {
     

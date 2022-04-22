@@ -1,10 +1,16 @@
+
 <div class="elements">
 <form [formGroup]="newArticleForm" (ngSubmit)="publish()">
 <input class="form-control form-control-lg" type="text" placeholder="Article Title" required formControlName="title">
 <input class="form-control" type="text" placeholder="What's this article about?" required formControlName="description">
 <textarea class="form-control" rows="10" placeholder="Write your article" required formControlName="body"></textarea>
 <input class="form-control" type="text" placeholder="Enter tags" required formControlName="tagList">
+<div *ngIf="!article">
 <button class="btn btn-success" type="button" (click)="publish()">Publish Article</button>
+</div>
+<div *ngIf="article">
+    <button class="btn btn-success" type="button" (click)="update()">Update Article</button>
+</div>
 </form>
 </div>
 
