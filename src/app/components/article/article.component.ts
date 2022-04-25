@@ -2,7 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { CommentsService } from 'src/app/services/comments.service';
+import { FollowService } from 'src/app/services/follow.service';
+import { GetArticleService } from 'src/app/services/getArticles.service';
+import { LikeService } from 'src/app/services/like.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { Articles } from 'src/shared/models/articles.model';
@@ -13,134 +17,112 @@ import { NewUser } from 'src/shared/models/newUser.model';
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.scss']
+  styleUrls: ['./article.component.scss'],
+  providers: [GetArticleService, CommentsService, FollowService, LikeService]
 })
 export class ArticleComponent implements OnInit {
 
   public slug!: string;
   public article!: Articles;
-  public comments!: Comments[];
+  public comments$!: BehaviorSubject<Comments[]>;
   public newComment!: NewComment;
-  public isLogged!: boolean;
+  public isLogged!: string | null;
   public newCommentForm!: FormGroup;
-  public clickedLike = false;
-  public clickedFollow = false;
   public href!: string;
-  public id!: string;
+  public id!: number;
   public user!: NewUser;
   public environment = environment;
+  public isFollow: boolean = false;
+  public isLike: boolean = false;
+  public likeCounter!: number;
+
   
-  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private articleService: GetArticleService,
+    private commentService: CommentsService,
+    private followService: FollowService,
+    private likeService: LikeService) { }
 
 
-    ngOnInit(): void {
-    
+  ngOnInit(): void {
     this.getSlug();
-    this.getArticle().subscribe(data => {
-      this.article = data;
+
+    this.getComments();
+    this.articleService.getArticle(this.href).subscribe(data => {
+      this.likeCounter = data.favoritesCount;
+      return this.article = data
     });
-    this.getComments().subscribe(data => {
-      this.comments = data;
+    this.getNewUser().subscribe(data => { return this.user = data });
+      
+    this.newCommentForm = new FormGroup({
+      body: new FormControl(''),
     });
-    this.isLogged = this.userService.isLoggedIn();
-    
-      this.newCommentForm = new FormGroup({
-        body: new FormControl(''),
-      });
-
-      this.getNewUser()
-     .subscribe(data => {
-        return this.user = data;
-      });
   }
+
   
   
-public getSlug() {
-     this.href = this.router.url.split('/').slice(-1).toString();
+  public getSlug() {
+    this.href = this.router.url.split('/').slice(-1).toString();
+    // this.articleService.getArticleSlug(this.href);
+    this.commentService.getArticleSlug(this.href);
   }
 
-
-public getArticle(): Observable<Articles> {
-      return this.http.get<Articles>(`${this.environment.url}/articles/${this.href}`, {})
-          .pipe(map((res: any) => {
-                  return res.article;
-              })).pipe(catchError(this.handleError));
-}
-  
-  public deleteArticle(): Observable<Articles> {
-      return this.http.delete<Articles>(`${this.environment.url}/articles/${this.href}`)
-          .pipe(map((res: any) => {
-                  return res.article;
-              })).pipe(catchError(this.handleError));
+  private getComments() {
+    this.comments$ = this.commentService.comments$;
+    this.commentService.getComments().subscribe();
   }
 
-public getComments(): Observable<Comments[]> {
-      return this.http.get<Comments[]>(`${this.environment.url}/articles/${this.href}/comments`)
-          .pipe(map((res: any) => {
-                  return res.comments;
-              })).pipe(catchError(this.handleError));
-}
-  // /articles/{slug}/comments/{id}
-  public deleteComment(): Observable<Comments> {
-      return this.http.delete<Comments>(`${this.environment.url}/articles/${this.href}/comments/${this.id}`, {})
-          .pipe(map((res: any) => {
-                  return res.comment;
-              })).pipe(catchError(this.handleError));
+  public deleteComment(): void {
+    this.commentService.deleteCommentService()
+      .subscribe(() => this.getComments());
   }
 
-public publish(): void {
-   this.newComment = this.newCommentForm.value;
-      this.postCommentService(this.newComment)
-        .subscribe(
-          {next: () => {
-            console.log("Comment Published!")},
-            error: (err) => {console.log(err);}
-          }); 
-    }
- 
-public postCommentService(comment: NewComment): Observable<Comments> {
-    return this.http.post<Comments>(`${this.environment.url}/articles/${this.href}/comments`, { comment })
-      .pipe(map((res: any) => {
-          return res.comments;
-          })).pipe(catchError(this.handleError));
-}
-  
-public followService() {
-      return this.http.post(`${this.environment.url}/profiles/${this.article.author.username}/follow`, {})
-      .pipe(catchError(this.handleError));
+  public publishComment(): void {
+    this.newComment = this.newCommentForm.value;
+    this.commentService.postCommentService(this.newComment)
+      .subscribe(() => this.getComments());
+  }
+
+  public onClickFollow() {
+    this.isFollow = !this.isFollow;
+    if(this.isFollow) { this.follow() } else { this.unFollow() };
+  }
+
+   public onClickLike() {
+    this.isLike = !this.isLike;
+    if(this.isLike) { this.like() } else { this.likeDelete() };
   }
   
-public follow() {
-        this.followService()
-        .subscribe(
-          {next: () => {
-            console.log(this.article.favoritesCount);
-            console.log("follow!")},
-            error: (err) => {console.log(err);}
-          }); 
+  public follow() {
+    this.followService.follow(this.article.author.username)
+      .subscribe();
   }
 
-public likeService() {
-    return this.http.post(`${this.environment.url}/articles/${this.href}/favorite`, {})
-      .pipe(catchError(this.handleError));
+  
+  public unFollow() {
+        this.followService.unFollow(this.article.author.username)
+        .subscribe(); 
   }
 
 public like(): void {
-      this.likeService()
-        .subscribe(
-          {next: () => {
-            console.log("like!")},
-            error: (err) => {console.log(err);}
-          }); 
+      this.likeService.like(this.href)
+        .subscribe(); 
+}
+
+public likeDelete(): void {
+      this.likeService.likeDelete(this.href)
+        .subscribe(); 
 }
   
    public getNewUser() {
       return this.userService.getLoggedUser()
    }
   
-  delete() {
+  deleteArticle() {
     this.router.navigateByUrl('');
-      this.deleteArticle()
+      this.articleService.deleteArticle()
         .subscribe(
           {
             next: () => {
@@ -153,9 +135,12 @@ public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
+      console.log(msg);
     } else {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      console.log(msg);
     }
     return throwError(msg);
 }
 }
+

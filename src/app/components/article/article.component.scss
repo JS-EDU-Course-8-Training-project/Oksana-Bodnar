@@ -97,3 +97,19 @@
 .card {
   margin-top: 0.8rem;
 }
+
+.cardOwnComment {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.deleteComment {
+  margin-top: 0.5rem;
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+}
+
+.btn-secondary {
+  border-radius: 10px;
+}

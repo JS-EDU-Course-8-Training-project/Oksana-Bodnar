@@ -16,14 +16,21 @@ public postArticle(article: crateArticle): Observable<Articles> {
     .pipe(catchError(this.handleError));
 }
     
+  public postNewArticle(article: crateArticle, slug: string | null): Observable<Articles> {
+    return this.http.put<Articles>(`${this.environment.url}/articles/${slug}`, { article })
+    .pipe(catchError(this.handleError));
+}
+  
 public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
+      console.log(msg);
     } else {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      console.log(msg);
     }
     return throwError(msg);
-  }
+}
 
 }

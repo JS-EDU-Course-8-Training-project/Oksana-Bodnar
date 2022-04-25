@@ -1,15 +1,14 @@
-<div class="settingsMain" *ngIf="user">
+<div class="settingsMain" >
+<!-- *ngIf="user$ | async as user"> -->
     <h3>Your Settings</h3>
-    <input class="element form-control" type="text" placeholder="{{user.image}}">
-    <input class="element form-control" type="text" placeholder="{{user.username}}">
-        <div *ngIf="!user.bio">
-    <textarea class="element form-control" rows="10" placeholder="Short bio about you"></textarea></div>
-        <div *ngIf="user.bio">
-    <textarea class="element form-control" rows="10" placeholder="{{user.bio}}"></textarea></div>
-
-    <input class="element form-control" type="text" placeholder="{{user.email}}">
-    <input class="element form-control" type="text" placeholder="New Password">
-    <button class="btn btn-success" type="button">Update Settings</button>
+    <form [formGroup]="newSettingsForm" (ngSubmit)="publish()">
+    <input class="element form-control" type="text"  formControlName="image" placeholder="Your new image (url)">
+    <input class="element form-control" type="text"  formControlName="username" placeholder="Your new name">
+    <textarea class="element form-control" rows="10" formControlName="bio" placeholder="Your bio"></textarea>
+    <input class="element form-control" type="text"  formControlName="email" placeholder="Your email">
+    <input class="element form-control" type="text"  formControlName="password" placeholder="New Password">
+    <button class="btn btn-success" type="button" (click)="publish()">Update Settings</button>
+</form>
 </div>
 
 <button class="btn-outline-danger" type="button" (click)="doUserLogout()">Log Out</button>

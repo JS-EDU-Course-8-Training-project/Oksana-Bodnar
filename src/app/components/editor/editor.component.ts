@@ -1,9 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { CreateAerticleService } from 'src/app/services/createArticle.service';
+import { GetArticleService } from 'src/app/services/getArticles.service';
 import { environment } from 'src/environments/environment';
 import { Articles } from 'src/shared/models/articles.model';
 import { crateArticle } from 'src/shared/models/createArticle.model';
@@ -12,7 +13,7 @@ import { crateArticle } from 'src/shared/models/createArticle.model';
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
-  providers: [CreateAerticleService]
+  providers: [CreateAerticleService, GetArticleService]
 })
 
   
@@ -24,35 +25,14 @@ export class EditorComponent implements OnInit {
   public environment = environment;
    public article!: Articles;
 
-  constructor(private router: Router, private createArticleService: CreateAerticleService, private route: ActivatedRoute, private http: HttpClient) { }
+  constructor(private router: Router,
+    private createArticleService: CreateAerticleService,
+    private route: ActivatedRoute,
+    private getArticleService: GetArticleService) { }
 
   ngOnInit(): void {
-
     this.getSlug();
-    if (this.slug) {
-      this.getArticle().subscribe(data => {
-        this.article = data;
-
-        this.newArticleForm = new FormGroup({
-        title: new FormControl(this.article.title),
-        description: new FormControl(this.article.description),
-        body: new FormControl(this.article.body),
-        tagList: new FormControl(this.article.tagList),
-      });
-        
-      });
-    }
-    
-      
-    
-      this.newArticleForm = new FormGroup({
-        title: new FormControl(''),
-        description: new FormControl(''),
-        body: new FormControl(''),
-        tagList: new FormControl(['']),
-      });
-    
-
+    this.gettingArticleData();
   }
   
   public getSlug() {
@@ -61,48 +41,56 @@ export class EditorComponent implements OnInit {
     })
   }
 
-  public update() {
-     this.newArticle = this.newArticleForm.value
-    console.log(this.newArticle);
-      this.postNewArticle(this.newArticle)
-        .subscribe(
-          {next: (data: any) => {
-            this.router.navigateByUrl('')
-            console.log("Article Published!")},
-            error: (err) => {console.log(err);}
-          }); 
+  public gettingArticleData() {
+    if (this.slug) {
+      this.getArticleService.getArticle(this.slug).subscribe(data => {
+        this.article = data;
+        this.generateForm(this.article);
+       })}
+      this.updateForm();
+  
   }
 
-public postNewArticle(article: crateArticle): Observable<Articles> {
-    return this.http.put<Articles>(`${this.environment.url}/articles/${this.slug}`, { article })
-    .pipe(catchError(this.handleError));
-}
+  
 
-public getArticle(): Observable<Articles> {
-      return this.http.get<Articles>(`${this.environment.url}/articles/${this.slug}`, {})
-          .pipe(map((res: any) => {
-                  return res.article;
-              })).pipe(catchError(this.handleError));
-}
+  public generateForm(article: Articles) {
+    return this.newArticleForm = new FormGroup({
+        title: new FormControl(article.title),
+        description: new FormControl(article.description),
+        body: new FormControl(article.body),
+        tagList: new FormControl(article.tagList),
+      })
+  }
+
+  public updateForm() {
+      return  this.newArticleForm = new FormGroup({
+        title: new FormControl(''),
+        description: new FormControl(''),
+        body: new FormControl(''),
+        tagList: new FormControl(['']),
+      });
+  }
+
+  public update() {
+     this.newArticle = this.newArticleForm.value
+      this.createArticleService.postNewArticle(this.newArticle, this.slug)
+        .subscribe(()=> this.router.navigateByUrl('')); 
+  }
 
   public publish(): void {
     this.newArticle = this.newArticleForm.value
-    console.log(this.newArticle);
       this.createArticleService.postArticle(this.newArticle)
-        .subscribe(
-          {next: (data: any) => {
-            this.router.navigateByUrl('')
-            console.log("Article Published!")},
-            error: (err) => {console.log(err);}
-          }); 
+        .subscribe(() => this.router.navigateByUrl('')); 
   }
   
-  public handleError(error: HttpErrorResponse) {
+public handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
+      console.log(msg);
     } else {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      console.log(msg);
     }
     return throwError(msg);
 }

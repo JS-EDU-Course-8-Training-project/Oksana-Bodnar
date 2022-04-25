@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
+import { DOMEvent } from 'src/shared/models/domElement';
+import { NewUser } from 'src/shared/models/newUser.model';
 import { Tags } from 'src/shared/models/tags.model';
 
 
@@ -11,59 +14,73 @@ import { Tags } from 'src/shared/models/tags.model';
   styleUrls: ['./home.component.scss'],
   providers: [GetArticleService]
 })
-   
+
 export class HomeComponent implements OnInit {
 
-  public articles!: Articles[];
-  public articlesFeed!: Articles[];
-  public tags!: Tags[];
-  public isLogged!: boolean;
+  public articles$!: BehaviorSubject<Articles[] | null>;
+  public articlesFeed$!: Subject<Articles[] | null>;
+  public tags$!: Subject<Tags[] | null>;
+  public isLogged$!: Subject<NewUser | null>;
+  public token!: string | null;
   public isOwnFeed = false;
   public isGlobal = true;
+  public input!: 'default';
 
-  constructor(private httpService: GetArticleService, private userService: UserService) { }
+  constructor(private httpService: GetArticleService,
+  private userService: UserService) { }
 
 
   ngOnInit() {
-    this.isLogged = this.userService.isLoggedIn();
-    this.getArticles();
-    if (this.isLogged) { 
+    this.isLogged$ = this.userService.loggedUserModels$;
+    this.tags$ = this.httpService.tags$;
+    this.token = this.getToken();
+
+    if (this.token) { 
     this.getArticlesYourFeed()
-  }
+    }
+
+    
+    this.getArticles();
     this.getTags();
   }
 
 
- public getArticles() {
+  public getArticles() {
+    this.articles$ = this.httpService.articles$;
     this.httpService
       .getAllArticles()
-      .subscribe(data => {
-      this.articles = data;
-      })
+      .subscribe();
+  }
+  
+  public getToken() {
+     return this.userService
+       .getToken();
  }
   
-public getArticlesYourFeed() {
+  public getArticlesYourFeed() {
+    this.articlesFeed$ = this.httpService.articlesFeed$;
     this.httpService
       .getArticlesFeed()
-      .subscribe(data => {
-      this.articlesFeed = data;
-      })
+      .subscribe();
   }
 
-public getTags() {
+  public getTags() {
     this.httpService
       .getTags()
-      .subscribe(data => {
-      this.tags = data;})
+      .subscribe();
   }
 
-public showYourFeed() {
+  public showYourFeed() {
     this.isOwnFeed = true;
     this.isGlobal = false;
   }
 
-public showAllArticles() {
+  public showAllArticles() {
     this.isOwnFeed = false;
     this.isGlobal = true;
-  }
+}
+  
+  public showTag(event: DOMEvent<HTMLInputElement> | any) {
+     this.input = event.target.innerText;
+  };
 }

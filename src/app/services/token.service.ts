@@ -15,7 +15,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: UserService) {}
 
    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.auth.isLoggedIn()) {
+        if (this.auth.getToken()) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${this.auth.getToken()}`
