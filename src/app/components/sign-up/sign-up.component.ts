@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
 
@@ -9,10 +10,13 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
  public newUser = {};
  public isLogged!: boolean;
-  public authForm!: FormGroup; 
+ public authForm!: FormGroup; 
+ private subscriptionUser$!: Subscription;
+ public fieldError!: string;
+ public problemError!: string;
 
   constructor(private router: Router, private userService: UserService) { }
  
@@ -36,13 +40,19 @@ export class SignUpComponent implements OnInit {
         user: this.authForm.value
       };
 
-  this.userService.register(this.newUser)
+  this.subscriptionUser$ = this.userService.register(this.newUser)
         .subscribe(
           {next: (data: any) => {
             localStorage.setItem('access_token', data.user.token);
             this.router.navigateByUrl('/settings')
-            this.isLogged = true},
-            error: (err) => {console.log(err);}
+            this.isLogged = true;
+          },
+            error: (error) => {
+                this.fieldError = Object.keys(error.error.errors).join(',');
+                this.problemError = Object.values(error.error.errors).join(',');
+                console.log(this.fieldError);
+                console.log(this.problemError);
+            }
           });
   }
     
@@ -56,5 +66,11 @@ export class SignUpComponent implements OnInit {
   } 
   public get userPassword() {
    return this.authForm.get('password');
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptionUser$) {
+      this.subscriptionUser$.unsubscribe();
+    }
   }
 }

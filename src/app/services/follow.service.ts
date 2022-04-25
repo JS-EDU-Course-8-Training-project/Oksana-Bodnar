@@ -24,15 +24,14 @@ public environment = environment;
         })).pipe(catchError(this.handleError));
   }
   
-public handleError(error: HttpErrorResponse) {
-    let msg = '';
+  public handleError(error: HttpErrorResponse) {
+    let msg: string;
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
       console.log(msg);
     } else {
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      console.log(msg);
+    console.log(error.error);
     }
-    return throwError(msg);
+    return throwError(error);
 }
 }

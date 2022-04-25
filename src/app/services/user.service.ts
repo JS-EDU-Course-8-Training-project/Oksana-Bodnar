@@ -53,15 +53,14 @@ export class UserService {
 }
  
   public handleError(error: HttpErrorResponse) {
-    let msg = '';
+    let msg: string;
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
       console.log(msg);
     } else {
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      console.log(msg);
+    console.log(error.error);
     }
-    return throwError(msg);
+    return throwError(error);
 }
 }
 

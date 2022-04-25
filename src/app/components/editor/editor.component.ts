@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { CreateAerticleService } from 'src/app/services/createArticle.service';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { environment } from 'src/environments/environment';
@@ -17,13 +17,18 @@ import { crateArticle } from 'src/shared/models/createArticle.model';
 })
 
   
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
 
   public newArticleForm!: FormGroup;
   public newArticle!: crateArticle;
   public slug!: string | null;
   public environment = environment;
-   public article!: Articles;
+  public article!: Articles;
+  private subscriptionArticle$!: Subscription;
+  private subscriptionUpdateArticle$!: Subscription;
+  private subscriptionPublishArticle$!: Subscription;
+  
+  
 
   constructor(private router: Router,
     private createArticleService: CreateAerticleService,
@@ -43,15 +48,12 @@ export class EditorComponent implements OnInit {
 
   public gettingArticleData() {
     if (this.slug) {
-      this.getArticleService.getArticle(this.slug).subscribe(data => {
+     this.subscriptionArticle$ = this.getArticleService.getArticle(this.slug).subscribe(data => {
         this.article = data;
         this.generateForm(this.article);
        })}
-      this.updateForm();
-  
+    this.updateForm();
   }
-
-  
 
   public generateForm(article: Articles) {
     return this.newArticleForm = new FormGroup({
@@ -72,27 +74,28 @@ export class EditorComponent implements OnInit {
   }
 
   public update() {
-     this.newArticle = this.newArticleForm.value
-      this.createArticleService.postNewArticle(this.newArticle, this.slug)
+    this.newArticle = this.newArticleForm.value;
+     this.subscriptionUpdateArticle$ = this.createArticleService.postNewArticle(this.newArticle, this.slug)
         .subscribe(()=> this.router.navigateByUrl('')); 
   }
 
   public publish(): void {
     this.newArticle = this.newArticleForm.value
-      this.createArticleService.postArticle(this.newArticle)
+     this.subscriptionPublishArticle$ = this.createArticleService.postArticle(this.newArticle)
         .subscribe(() => this.router.navigateByUrl('')); 
   }
   
-public handleError(error: HttpErrorResponse) {
-    let msg = '';
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      console.log(msg);
+  ngOnDestroy() {
+    if (this.subscriptionArticle$) {
+      this.subscriptionArticle$.unsubscribe();
     }
-    return throwError(msg);
-}
+    if (this.subscriptionUpdateArticle$) {
+      this.subscriptionUpdateArticle$.unsubscribe();
+    }
+    if (this.subscriptionPublishArticle$) {
+      this.subscriptionPublishArticle$.unsubscribe();
+    }
+
+    }
 
 }

@@ -4,8 +4,7 @@
         <li><a [routerLink]="['']">Home</a></li>
         <li *ngIf="isLoggedUser$ | async"><a [routerLink]="['/editor']">New Article</a></li>
         <li *ngIf="isLoggedUser$ | async"><a [routerLink]="['/settings']">Settings</a></li>
-        <!-- !!! change -->
-        <li *ngIf="isLoggedUser$ | async"> <a [routerLink]="['/profile', 'isLoggedUser.username']">User Name</a></li>
+        <li *ngIf="(isLoggedUser$ | async) as user"> <a [routerLink]="['/profile', user.username]">{{user.username}}</a></li>
         <li *ngIf="isLoggedUser$ | async"> <button class="btn btn-outline-dark btn-sm" type="button" (click)="doUserLogout()">Log Out</button> </li>
         <li *ngIf="!(isLoggedUser$ | async)"><a [routerLink]="['/login']">Sign In</a></li>
         <li *ngIf="!(isLoggedUser$ | async)"><a [routerLink]="['/register']">Sign Up</a></li>

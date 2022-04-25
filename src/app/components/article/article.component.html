@@ -2,81 +2,70 @@
     <!-- hero -->
 <section class="hero">
     <h2>{{article.title }}</h2>
-<div class="aboutAuthor d-flex flex-row">
-    <div class="d-flex align-items-center">
-        <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-        <div class="d-flex flex-column">
-        <a class="articleAuthorName" href="">{{article.author.username}}</a>
-        <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+        <div class="aboutAuthor d-flex flex-row">
+            <div class="d-flex align-items-center">
+            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                <div class="d-flex flex-column">
+                <a class="articleAuthorName" [routerLink]="['/profile', user.username]">{{article.author.username}}</a>
+                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                </div>
+
+        <div *ngIf="article.author.username !== user.username" class=" d-flex flex-row">
+                <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }" 
+                (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' : '')}}</button>
+
+                <button [ngClass]="{'btn btn-secondary' : isLike === true, 'btn btn-outline-success' : isLike === false }" 
+                (click)="onClickLike()">{{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite Article' : '')}} {{likeCounter}}</button>
         </div>
-
-<div *ngIf="article.author.username !== user.username" class=" d-flex flex-row">
-
-<button [ngClass]="{'btn btn-secondary' : isFollow === true,
-    'btn btn-outline-success' : isFollow === false }" (click)="onClickFollow()">
-    {{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' : '')}}
-</button>
-
-<button [ngClass]="{'btn btn-secondary' : isLike === true,
-    'btn btn-outline-success' : isLike === false }" (click)="onClickLike()">
-    {{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite Article' : '')}} {{likeCounter}}
-</button>
-
-</div>
-</div>
-<div *ngIf="article.author.username === user.username">
-    <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
-    <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
-</div>
-</div>
+            </div>
+        <div *ngIf="article.author.username === user.username">
+                <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
+                <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
+        </div>
+        </div>
 
 </section>
 
 <!-- article -->
 <section class="article">
-<p class="articleBody">{{article.body}}</p>
-<ul>
-<ul *ngFor="let tag of article.tagList">
-    <li><button class="btn btn-light btn-sm" type="button">{{tag}}</button></li>
-</ul>
-</ul>
+    <p class="articleBody">{{article.body}}</p>
+    <ul *ngFor="let tag of article.tagList">
+        <li><button class="btn btn-light btn-sm" type="button">{{tag}}</button></li>
+    </ul>
 </section>
 
-<div class="d-flex justify-content-center">
-<div class="aboutAuthor">
+<div class="d-flex justify-content-center articleField">
+    <div class="aboutAuthor">
     <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-    <div class="d-flex flex-column">
-        <a class="articleAuthorName" href="">{{article.author.username}}</a>
+        <div class="d-flex flex-column">
+        <a class="articleAuthorName" [routerLink]="['/profile', user.username]">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-</div>
-</div>
-<div *ngIf="article.author.username !== user.username" class="d-flex flex-row">
+        </div>
+    </div>
 
-<button [ngClass]="{'btn-secondary' : isFollow === true,
-    'btn btn-outline-success' : isFollow === false }" (click)="onClickFollow()">
-    {{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' : '')}}
-</button>
+    <div *ngIf="article.author.username !== user.username" class=" d-flex flex-row">
+        <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }"
+            (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' :
+            '')}}</button>
+        <button [ngClass]="{'btn btn-secondary' : isLike === true, 'btn btn-outline-success' : isLike === false }"
+            (click)="onClickLike()">{{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite
+            Article' : '')}} {{likeCounter}}</button>
+    </div>
 
-<button [ngClass]="{'btn-secondary' : isLike === true,
-    'btn btn-outline-success' : isLike === false }" (click)="onClickLike()">
-    {{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite Article' : '')}} {{likeCounter}}
-</button>
-</div>
-
-<div *ngIf="article.author.username === user.username">
-<a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
-    <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
-</div>
+            <div *ngIf="article.author.username === user.username">
+            <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
+            <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
+            </div>
 </div>
 
 <!-- comments -->
 
     <div *ngIf="!user">
-<p class="toLogIn"> <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.</p>
+    <p class="toLogIn"> <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.</p>
     </div>
             <div class="card">
                 <div class="commentContainer card-body">
-            <form [formGroup]="newCommentForm" (ngSubmit)="publishComment()">
+                <form [formGroup]="newCommentForm" (ngSubmit)="publishComment()">
                     <blockquote class="blockquote">
                         <textarea class="element form-control" rows="5"
                             placeholder="Write your comment" required formControlName="body"></textarea>
@@ -85,27 +74,27 @@
                 </form>
                 </div>
             </div>
-    <div *ngIf="(comments$ | async) as comments">
- <ul *ngFor="let comment of comments">
-<li>
-<div class="card" [ngClass]="{'cardOwnComment' : comment.author.username === user.username }">
-<div class="card-body" >
 
-    <blockquote class="blockquote">
-        <p>{{comment.body}}</p>
-    </blockquote>
-    <div class="card-header">
-    <div class="d-flex flex-row align-items-center">
-        <a href="">{{comment.author.username}}</a>
-        <p class="articleDateComment">{{comment.createdAt | date:'longDate'}}</p>
+    <div *ngIf="(comments$ | async) as comments">
+        <ul *ngFor="let comment of comments">
+            <li>
+            <div class="card" [ngClass]="{'cardOwnComment' : comment.author.username === user.username }">
+                <div class="card-body" >
+                    <blockquote class="blockquote">
+                    <p>{{comment.body}}</p>
+                    </blockquote>
+                <div class="card-header">
+                    <div class="d-flex flex-row align-items-center">
+                    <a href="">{{comment.author.username}}</a>
+                    <p class="articleDateComment">{{comment.createdAt | date:'longDate'}}</p>
+                    </div>
+                </div>
+                        <button *ngIf="comment.author.username === user.username" class="deleteComment btn btn-outline-dark btn-sm"  (click)="deleteComment()">Delete comment</button>
+                </div>
+                </div>
+            </li>
+        </ul>
     </div>
-    </div>
-    <button *ngIf="comment.author.username === user.username" class="deleteComment btn btn-outline-dark btn-sm"  (click)="deleteComment()">Delete comment</button>
-</div>
-</div>
-</li>
-</ul>
-</div>
 </div>
 
    

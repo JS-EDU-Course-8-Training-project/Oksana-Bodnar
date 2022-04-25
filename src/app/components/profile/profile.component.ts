@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
@@ -11,13 +11,16 @@ import { NewUser } from 'src/shared/models/newUser.model';
   styleUrls: ['./profile.component.scss'],
   providers: [GetArticleService]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public isFavourite = false;
   public isOwn = true;
   public user!: NewUser;
   public articles$!: Subject<Articles[] | null>;
   public articles!: Articles[];
   public isLogged!: string | null;
+  private subscriptionUser$!: Subscription;
+  private subscriptionArticle$!: Subscription;
+  
 
   constructor(private httpService: GetArticleService, private userService: UserService) { }
   
@@ -27,7 +30,7 @@ export class ProfileComponent implements OnInit {
    
     this.getArticles();
     
-    this.getNewUser()
+    this.subscriptionUser$ = this.getNewUser()
      .subscribe(data => {
         return this.user = data;
       });
@@ -35,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
   public getArticles() {
      this.articles$ = this.httpService.articles$;
-    this.httpService
+     this.subscriptionArticle$ = this.httpService
       .getAllArticles()
       .subscribe(data => {
       this.articles = data;
@@ -54,6 +57,15 @@ export class ProfileComponent implements OnInit {
 
    public getNewUser() {
       return this.userService.getLoggedUser()
+   }
+  
+  ngOnDestroy() {
+    if (this.subscriptionUser$) {
+      this.subscriptionUser$.unsubscribe();
+    }
+    if (this.subscriptionArticle$) {
+      this.subscriptionArticle$.unsubscribe();
+    }
     }
   
 }

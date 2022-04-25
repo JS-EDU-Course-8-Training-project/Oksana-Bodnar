@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/shared/models/articles.model';
@@ -15,17 +15,19 @@ import { Tags } from 'src/shared/models/tags.model';
   providers: [GetArticleService]
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   public articles$!: BehaviorSubject<Articles[] | null>;
-  public articlesFeed$!: Subject<Articles[] | null>;
+  public articlesFeed$!: BehaviorSubject<Articles[] | null>;
   public tags$!: Subject<Tags[] | null>;
   public isLogged$!: Subject<NewUser | null>;
   public token!: string | null;
   public isOwnFeed = false;
   public isGlobal = true;
-  public input!: 'default';
-
+  private subscriptionArticle$!: Subscription;
+  private subscriptionArticleFeed$!: Subscription;
+  private subscriptionTags$!: Subscription;
+  
   constructor(private httpService: GetArticleService,
   private userService: UserService) { }
 
@@ -39,33 +41,33 @@ export class HomeComponent implements OnInit {
     this.getArticlesYourFeed()
     }
 
-    
     this.getArticles();
     this.getTags();
   }
 
-
   public getArticles() {
-    this.articles$ = this.httpService.articles$;
-    this.httpService
-      .getAllArticles()
-      .subscribe();
+      this.articles$ = this.httpService.articles$;
+      this.subscriptionArticle$ = this.httpService
+        .getAllArticles()
+        .subscribe();
   }
   
   public getToken() {
      return this.userService
        .getToken();
- }
+  }
   
   public getArticlesYourFeed() {
     this.articlesFeed$ = this.httpService.articlesFeed$;
-    this.httpService
+    this.subscriptionArticleFeed$ = this.httpService
       .getArticlesFeed()
-      .subscribe();
+      .subscribe(
+        val => { console.log(val) }
+      );
   }
 
   public getTags() {
-    this.httpService
+   this.subscriptionTags$ = this.httpService
       .getTags()
       .subscribe();
   }
@@ -79,8 +81,16 @@ export class HomeComponent implements OnInit {
     this.isOwnFeed = false;
     this.isGlobal = true;
 }
-  
-  public showTag(event: DOMEvent<HTMLInputElement> | any) {
-     this.input = event.target.innerText;
-  };
+
+  ngOnDestroy() {
+    if (this.subscriptionArticle$) {
+      this.subscriptionArticle$.unsubscribe();
+    }
+    if (this.subscriptionArticleFeed$) {
+      this.subscriptionArticleFeed$.unsubscribe();
+    }
+    if (this.subscriptionTags$) {
+      this.subscriptionTags$.unsubscribe();
+    }
+    }
 }

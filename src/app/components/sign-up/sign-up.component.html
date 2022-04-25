@@ -2,53 +2,43 @@
     <h3>Sign Up</h3>
     <a href="/login" class="ref">Have an account?</a>
     <form [formGroup]="authForm" (ngSubmit)="login()">
-<!-- User Name -->
         <div class="form-group">
             <input type="text" class="form-control" name="name" required formControlName="username" placeholder="Username" required>
         </div>
-            <!-- User Name Validation alerts -->
-            <div *ngIf="username!.invalid && (username!.dirty || username!.touched)" class="alert alert-danger">
-
-                <div *ngIf="username!.errors?.['required']">
-                Name is required.
-                </div>  
-                <div *ngIf="username!.errors?.['pattern']">
-                Name is not valid.
+                <div *ngIf="username!.invalid && (username!.dirty || username!.touched)" class="alert alert-danger">
+                    <div *ngIf="username!.errors?.['required']">
+                    Name is required.
+                    </div>  
+                    <div *ngIf="username!.errors?.['pattern']">
+                    Name is not valid.
+                    </div>
                 </div>
-            </div>
-<!-- User Email -->
         <div class="form-group">
             <input type="email" class="form-control" name="email" required formControlName="email" placeholder="Email" required>
         </div>
-            <!-- User Email Validation alerts -->
-            <div *ngIf="userEmail!.invalid && (userEmail!.dirty || userEmail!.touched)" class="alert alert-danger">
-
-                <div *ngIf="userEmail!.errors?.['required']">
-                Email is required.
-                </div>
-                <div *ngIf="userEmail!.errors?.['email']">
-                Email is required.
-                </div>
-                </div>
-<!-- User Password -->
+                    <div *ngIf="userEmail!.invalid && (userEmail!.dirty || userEmail!.touched)" class="alert alert-danger"> Valid Email is
+                        required.
+                        <div *ngIf="userEmail!.errors?.['required']" class="alert alert-danger">Email is required.</div>
+                    </div>
         <div class="form-group">
             <input type="password" class="form-control" name="password" required formControlName="password" placeholder="Password" required>
         </div>
-
-            <!-- User Password Validation alerts -->
-            <div *ngIf="userPassword!.invalid && (userPassword!.dirty || userPassword!.touched)" class="alert alert-danger">
-                Password is not valid.
-                <div *ngIf="userPassword!.errors?.['required']">
-                Password is required.
-                </div>
-                <div *ngIf="userPassword!.errors?.['minlength']">
-                Password is required. Password must be at least 8 characters long.
-                </div>
-                <div *ngIf="userPassword!.errors?.['mustBePasswordValidator']">
-                    Password must have at least one Lowercase Character, must contain at least one Digit and at least one Special
-                    Symbol.
-                </div>
-                </div>
+                    <div *ngIf="userPassword!.invalid && (userPassword!.dirty || userPassword!.touched)" class="alert alert-danger">
+                        Password must have at least one Lowercase Character, must contain at least one Digit and at least one Special
+                        Symbol.
+                        <div *ngIf="userPassword!.errors?.['required']">
+                            Password is required.
+                        </div>
+                        <div *ngIf="userPassword!.errors?.['minlength']">
+                            Password is required. Password must be at least 8 characters long.
+                        </div>
+                        <div *ngIf="userPassword!.errors?.['mustBePasswordValidator']">
+                            Password is not valid.
+                        </div>
+                    </div>
+                                <div *ngIf="fieldError && problemError" class="alert alert-danger">
+                                    <p>{{fieldError}}: {{problemError}}</p>
+                                </div>
     <button type="submit" class="btn btn-primary" (click)="login()" [disabled]="!authForm.valid">Sign Up</button>
     </form>
-</div>
+</div>  

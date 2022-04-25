@@ -2,25 +2,25 @@
 <!-- hero -->
 <div class="hero">
     <img class="profileAvatar" src="https://api.realworld.io/images/smiley-cyrus.jpeg" alt="">
-    <h2>Name</h2>
-    <a class="profileEditBtn btn btn-light" [routerLink]="[]">Edit Profile Settings</a>
+    <h2 *ngIf="user">{{user.username}}</h2>
+    <a class="profileEditBtn btn btn-light" [routerLink]="['/settings']">Edit Profile Settings</a>
 </div>
     <!-- articles -->
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showOwnArticles()" [ngClass]="{'btn-outline-success' : isOwn}">My Articles</button>
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showFavouriteArticles()" [ngClass]="{'btn-outline-success' : isFavourite}">Favourite Articles</button>
 
     <div *ngIf="articles$ | async as articles">
-            <ul *ngFor="let article of articles">
-                <div *ngIf="article.favorited && isFavourite && isLogged">
-                    <li><a [routerLink]="['/article', article.slug]">
-                            <article class="article">
-                                <div class="d-flex align-items-center">
-                                    <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                                    <div class="d-flex flex-column">
-                                        <a class="articleAuthorName" href="">{{article.author.username}}</a>
-                                        <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                                    </div>
-                                </div>
+        <ul *ngFor="let article of articles">
+            <div *ngIf="article.favorited && isFavourite && isLogged">
+                <li><a [routerLink]="['/article', article.slug]">
+                    <article class="article">
+                        <div class="d-flex align-items-center">
+                        <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                            <div class="d-flex flex-column">
+                            <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                            </div>
+                        </div>
                                 <h3>{{article.title}}</h3>
                                 <p class="articleText">{{article.body}}</p>
                                 <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
@@ -30,20 +30,19 @@
                                         <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
                                     </ul>
                                 </div>
-                            </article>
+                    </article>
                         </a>
-                    </li>
-                </div>
-            </ul>
-       
-       
+                </li>
+            </div>
+        </ul>
+    
 <!-- own  -->
-            <ul *ngFor="let article of articles">
-            <div *ngIf="user && article.author.username === user.username && isOwn && isLogged">
-        <li><a [routerLink]="['/article', article.slug]">
+    <ul *ngFor="let article of articles">
+        <div *ngIf="user && article.author.username === user.username && isOwn && isLogged">
+            <li><a [routerLink]="['/article', article.slug]">
                 <article class="article">
                     <div class="d-flex align-items-center">
-                        <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                    <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
                         <div class="d-flex flex-column">
                             <a class="articleAuthorName" href="">{{article.author.username}}</a>
                             <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
@@ -59,8 +58,8 @@
                         </ul>
                     </div>
                 </article>
-            </a>
-        </li>
+                </a>
+            </li>
         </div>
     </ul>
-    </div>
+</div>

@@ -10,10 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class GetArticleService {
   public environment = environment;
-  // public articles$: Subject<Articles[] | null> = new Subject();
   public articles$: BehaviorSubject<Articles[] | any> = new BehaviorSubject([]);
   public tags$: Subject<Tags[] | null> = new Subject();
-  public articlesFeed$: Subject<Articles[] | null> = new Subject();
+  public articlesFeed$: BehaviorSubject<Articles[] | any> = new BehaviorSubject([]);
   public slug!: string | null;
  
   constructor(private http: HttpClient) { }
@@ -22,6 +21,7 @@ export class GetArticleService {
       return this.http.get<Articles[]>(`${this.environment.url}/articles`)
         .pipe(map((res: any) => {
           this.articles$.next(res.articles);
+          console.log(res.articles);
                   return res.articles;
               })).pipe(catchError(this.handleError));
   }
@@ -55,22 +55,22 @@ export class GetArticleService {
 
   public getArticlesFeed(): Observable<Articles[]> {
       return this.http.get<Articles[]>(`${this.environment.url}/articles/feed`)
-        .pipe(map((res: any) => {
-          this.articlesFeed$.next(res.articles);
-                  return res.articles;
+        .pipe(map((result: any) => {
+          console.log(result.articles);
+          this.articlesFeed$.next(result.articles);
+                  return result.articles;
               })).pipe(catchError(this.handleError));
   }
     
   public handleError(error: HttpErrorResponse) {
-    let msg = '';
+    let msg: string;
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;
       console.log(msg);
     } else {
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      console.log(msg);
+    console.log(error.error);
     }
-    return throwError(msg);
+    return throwError(error);
 }
 
 }

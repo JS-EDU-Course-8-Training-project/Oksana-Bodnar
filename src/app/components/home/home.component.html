@@ -10,73 +10,65 @@
         [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
     <button class="btn btn-link" type="button" (click)="showAllArticles()"
         [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
-    <div class="allArticles">
 
-        <div *ngIf="isOwnFeed && token">
+    <div class="allArticles">
+        <div *ngIf="token && isOwnFeed">
             <ul *ngFor="let article of (articlesFeed$ | async)">
                 <li>
-                <!-- *ngFor="let tag of article.tagList" -->
-               <a [routerLink]="['/article', article.slug]">
+                    <a [routerLink]="['/article', article.slug]">
                         <article class="article">
                             <div class="d-flex align-items-center">
                                 <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                                <div class="d-flex flex-column">
-                                    <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                                    <div class="d-flex flex-column">
+                                    <p class="articleAuthorName">{{article.author.username}}</p>
                                     <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                                </div>
+                                    </div>
                             </div>
-                            <h3>{{article.title}}</h3>
-                            <p class="articleText">{{article.body}}</p>
-                            <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                            <span class="articleHeart"> {{article.favoritesCount}}</span>
-                            <div class="articleTags">
-                                <ul *ngFor="let tag of article.tagList">
-                                    <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button>
-                                    </li>
-                                </ul>
-                            </div>
+                                <h3>{{article.title}}</h3>
+                                <p class="articleText">{{article.body}}</p>
+                                <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                                <span class="articleHeart"> {{article.favoritesCount}}</span>
+                                        <div class="articleTags">
+                                        <ul *ngFor="let tag of article.tagList">
+                                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                                        </ul>
+                                        </div>
                         </article>
                     </a>
                 </li>
-        
             </ul>
         </div>
 
         <div *ngIf="isGlobal">
             <ul *ngFor="let article of (articles$ | async)">
-                <li >
-                <!-- *ngFor="let tag of article.tagList" -->
-                <a [routerLink]="['/article', article.slug]">
-                    <!-- <div *ngIf="input === tag || !input"> -->
+                <li>
+                    <a [routerLink]="['/article', article.slug]">
                         <article class="article">
                             <div class="d-flex align-items-center">
-                                <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
                                 <div class="d-flex flex-column">
-                                    <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                                    <p class="articleAuthorName">{{article.author.username}}</p>
                                     <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
                                 </div>
                             </div>
-                            <h3>{{article.title}}</h3>
-                            <p class="articleText">{{article.body}}</p>
-                            <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                            <span class="articleHeart"> {{article.favoritesCount}}</span>
-                            <div class="articleTags">
-                                <ul *ngFor="let tag of article.tagList">
-                                    <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <h3>{{article.title}}</h3>
+                                    <p class="articleText">{{article.body}}</p>
+                                    <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                                    <span class="articleHeart"> {{article.favoritesCount}}</span>
+                                        <div class="articleTags">
+                                        <ul *ngFor="let tag of article.tagList">
+                                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                                        </ul>
+                                        </div>
                         </article>
-                        <!-- </div> -->
                     </a>
                 </li>
-
             </ul>
         </div>
         <!-- tags -->
         <div class="tags d-flex flex-column">
             <ul *ngFor="let tag of (tags$ | async)">
-                <li><button class="tag btn btn-secondary btn-sm" type="button">{{tag}}</button></li>
+                <li><button class="tag btn btn-secondary btn-sm" type="button" >{{tag}}</button></li>
             </ul>
         </div>
     </div>
