@@ -22,14 +22,11 @@ import { NewUser } from 'src/shared/models/newUser.model';
 })
 export class ArticleComponent implements OnInit, OnDestroy {
 
-  // public slug!: string;
   public article!: Articles;
   public comments$!: BehaviorSubject<Comments[]>;
   public newComment!: NewComment;
-  // public isLogged!: string | null;
   public newCommentForm!: FormGroup;
   public href!: string;
-  // public id!: number;
   public user!: NewUser;
   public environment = environment;
   public isFollow: boolean = false;

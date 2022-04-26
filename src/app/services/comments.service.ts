@@ -10,15 +10,15 @@ import { NewComment } from 'src/shared/models/newComment.model';
 })
 export class CommentsService {
 
-  public environment = environment;
-  public slug!: string;
-  public id!: number;
+  private environment = environment;
+  private slug!: string;
+  private id!: number;
   public comments$: BehaviorSubject<Comments[]> = new BehaviorSubject<Comments[]>([]);
   
   
   constructor(private http: HttpClient) { }
 
-    public getArticleSlug(slug: string): string {
+  public getArticleSlug(slug: string): string {
       return this.slug = slug;
     }
   
@@ -43,7 +43,7 @@ export class CommentsService {
           })).pipe(catchError(this.handleError));
 }
 
-  public handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) {
     let msg: string;
     if (error.error instanceof ErrorEvent) {
       msg = error.error.message;

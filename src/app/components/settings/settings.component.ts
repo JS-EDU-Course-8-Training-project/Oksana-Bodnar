@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, Observable, Subject, Subscription, throwError } from 'rxjs';
+import { catchError, map, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { ChangeProfileType } from 'src/shared/models/newProfile.model';
@@ -26,12 +26,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    this.getNewUser();
-    this.generateForm();
-    this.subscriptionUser$ = this.userService.getLoggedUser().subscribe((user) => {
-      this.user = user;
-      this.updareForm(this.user);
-    });
+    // this.getNewUser();
+    // this.generateForm();
+    // this.subscriptionUser$ = this.userService.getLoggedUser().subscribe((user) => {
+    //   this.user = user;
+    //   this.updareForm(this.user);
+    // });
+    this.gettingUserData();
   }
 
   public generateForm() {
@@ -44,6 +45,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+    public gettingUserData() {
+    this.subscriptionUser$ = this.userService.getLoggedUser().subscribe((user) => {
+          this.user = user;
+          this.updareForm(this.user);
+    });
+    this.generateForm();
+  }
+
   public updareForm(user: NewUser) {
     return this.newSettingsForm.patchValue({
       image: user.image,
@@ -52,23 +61,43 @@ export class SettingsComponent implements OnInit, OnDestroy {
       email: user.email,
     });
   }
+
+    // public updareForm(user: NewUser) {
+    // return this.newSettingsForm = new FormGroup({
+    //   image: new FormControl(user.image),
+    //   username: new FormControl(user.username),
+    //   bio: new FormControl(user.bio),
+    //   email: new FormControl(user.email),
+    //   // password: new FormControl(''),
+    // });
+  // }
   
   public publish() {
     this.newUserSet = { ...this.newSettingsForm.value, token: this.user.token };
-    this.subscriptionSettings$ = this.postNewSettings(this.newUserSet).subscribe();
-    this.router.navigate(['']);
+    console.log(this.newUserSet);
+    return this.subscriptionSettings$ = this.postNewSettings(this.newUserSet).subscribe(
+       {next: (data: any) => {
+         console.log(data);
+            },
+            error: (error) => {
+                console.log(error);
+            }
+          }
+    );
+    // this.router.navigate(['']);
   }
 
   public postNewSettings(newUserSet: ChangeProfileType): Observable<ChangeProfileType> {
+    console.log({ user: newUserSet });
     return this.http.put<ChangeProfileType>(`${this.environment.url}/user`, { user: newUserSet })
-      .pipe(map((response: any) => {
+      .pipe(map((response: ChangeProfileType) => {
         return response;
-      }))
+      })).pipe(catchError(this.handleError));
   }
   
-  public getNewUser() {
-    return this.userService.getLoggedUser()
-  }
+  // public getNewUser() {
+  //   return this.userService.getLoggedUser()
+  // }
   
   public doUserLogout() {
     this.userService.doLogout();

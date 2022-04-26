@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
+import { ArticleResult } from 'src/shared/models/ArticleResult.model';
 import { Articles } from 'src/shared/models/articles.model';
 import { NewUser } from 'src/shared/models/newUser.model';
 

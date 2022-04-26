@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, Subject, throwError } fro
 import { Articles } from 'src/shared/models/articles.model';
 import { Tags } from 'src/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
+import { ArticleResult } from 'src/shared/models/ArticleResult.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,15 @@ export class GetArticleService {
                   return res.articles;
               })).pipe(catchError(this.handleError));
   }
+
+  //   public getAllArticles(): Observable<Articles> {
+  //     return this.http.get<ArticleResult>(`${this.environment.url}/articles`)
+  //       .pipe(map((res: ArticleResult) => {
+  //         this.articles$.next(res.article);
+  //         console.log(res.article);
+  //                 return res.article;
+  //             })).pipe(catchError(this.handleError));
+  // }
 
   public getTags(): Observable<Tags[]> {
       return this.http.get<Tags[]>(`${this.environment.url}/tags`)

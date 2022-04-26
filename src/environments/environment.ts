@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'https:/api.realworld.io/api'
+  url: 'https://api.realworld.io/api'
    // 'http://localhost:3000/api'
 };
 

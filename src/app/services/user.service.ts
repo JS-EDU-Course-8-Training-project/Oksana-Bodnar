@@ -38,7 +38,7 @@ export class UserService {
   }
   
   public getLoggedUser() {
-    return this.http.get<NewUser>(`${this.environment.url}/user`,)
+    return this.http.get<NewUser>(`${this.environment.url}/user`)
       .pipe(map((res: any) => {
         this.loggedUser = res.user;
         this.loggedUserModels$.next(res.user);
