@@ -1,4 +1,4 @@
-export interface NewUser {
+export interface ResponseUser {
     email: string,
     token: string,
     username: string,

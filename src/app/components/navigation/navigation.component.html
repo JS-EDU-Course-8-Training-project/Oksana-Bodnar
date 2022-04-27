@@ -1,12 +1,12 @@
 <nav class="d-flex justify-content-around">
     <a class="navbar-brand logo" href="">Real World</a>
     <ul class="navLinks d-flex justify-content-aroun align-items-center">
-        <li><a [routerLink]="['']">Home</a></li>
-        <li *ngIf="isLoggedUser$ | async"><a [routerLink]="['/editor']">New Article</a></li>
-        <li *ngIf="isLoggedUser$ | async"><a [routerLink]="['/settings']">Settings</a></li>
-        <li *ngIf="(isLoggedUser$ | async) as user"> <a [routerLink]="['/profile', user.username]">{{user.username}}</a></li>
-        <li *ngIf="isLoggedUser$ | async"> <button class="btn btn-outline-dark btn-sm" type="button" (click)="doUserLogout()">Log Out</button> </li>
-        <li *ngIf="!(isLoggedUser$ | async)"><a [routerLink]="['/login']">Sign In</a></li>
-        <li *ngIf="!(isLoggedUser$ | async)"><a [routerLink]="['/register']">Sign Up</a></li>
+<li><a [routerLink]="['']">Home</a></li>
+<ng-container *ngIf="isLoggedUser$ | async"> <li *ngFor ="let item of itemsLogged"><a [routerLink]="[item.url]">{{item.name}}</a>
+</li></ng-container>
+<ng-container *ngIf="!(isLoggedUser$ | async)"> <li *ngFor="let item of itemsNotLogged"><a [routerLink]="[item.url]">{{item.name}}</a>
+</li></ng-container>
+<li *ngIf="(isLoggedUser$ | async) as user"> <a [routerLink]="['/profile', user.username]">{{user.username}}</a></li>
+<li *ngIf="isLoggedUser$ | async"> <button class="btn btn-outline-dark btn-sm" type="button"(click)="doUserLogout()">Log Out</button> </li>
     </ul>
 </nav>

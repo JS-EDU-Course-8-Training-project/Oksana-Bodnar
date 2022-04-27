@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
+import { NewUser } from 'src/app/shared/models/newUser.model';
+import { mustBePasswordValidator } from 'src/app/shared/mustBe-password.directive';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +12,7 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnDestroy, OnInit  {
-  public newUser = {};
+  public newUser!: NewUser;
   public isLogged!: boolean;
   public authForm!: FormGroup;
   private subscriptionUser$!: Subscription;
@@ -29,13 +30,14 @@ export class SignInComponent implements OnDestroy, OnInit  {
   }
 
   public login(): void {
-  this.newUser = {user: this.authForm.value};
-     this.subscriptionUser$ = this.userService.logUser(this.newUser)
+  this.newUser = this.authForm.value;
+    this.subscriptionUser$ = this.userService.logUser({ user: this.newUser })
         .subscribe(
-          {next: (data: any) => {
-            localStorage.setItem('access_token', data.user.token);
+          {
+            next: () => {
             this.router.navigateByUrl('/settings')
-            },
+            this.isLogged = true;
+          },
             error: (error) => {
                 this.fieldError = Object.keys(error.error.errors).join(',');
                 this.problemError = Object.values(error.error.errors).join(',');

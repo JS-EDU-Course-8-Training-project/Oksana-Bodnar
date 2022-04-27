@@ -1,4 +1,4 @@
-<div *ngIf="article && user">
+<div *ngIf="article">
     <!-- hero -->
 <section class="hero">
     <h2>{{article.title }}</h2>
@@ -6,24 +6,29 @@
             <div class="d-flex align-items-center">
             <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
                 <div class="d-flex flex-column">
-                <a class="articleAuthorName" [routerLink]="['/profile', user.username]">{{article.author.username}}</a>
+                <a class="articleAuthorName" [routerLink]="['']">{{article.author.username}}</a>
                 <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
                 </div>
 
-        <div *ngIf="article.author.username !== user.username" class=" d-flex flex-row">
-                <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }" 
-                (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' : '')}}</button>
+        <div *ngIf="user && article.author.username !== user.username" class=" d-flex flex-row">
+            <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }"
+                (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' :
+                '')}}</button>
+        
+            <button [ngClass]="{'btn btn-secondary' : isLike === true, 'btn btn-outline-success' : isLike === false }"
+                (click)="onClickLike()">{{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite
+                Article' : '')}} {{likeCounter}}</button>
+        </div>
+        
+        <div *ngIf="user && article.author.username === user.username">
+            <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
+            <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
+        </div>
 
-                <button [ngClass]="{'btn btn-secondary' : isLike === true, 'btn btn-outline-success' : isLike === false }" 
-                (click)="onClickLike()">{{isLike === true ? ' - Unfavourite Article ' : (isLike === false ? ' + Favourite Article' : '')}} {{likeCounter}}</button>
-        </div>
-            </div>
-        <div *ngIf="article.author.username === user.username">
-                <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
-                <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
-        </div>
-        </div>
 
+
+        </div>
+</div>
 </section>
 
 <!-- article -->
@@ -38,12 +43,12 @@
     <div class="aboutAuthor">
     <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
         <div class="d-flex flex-column">
-        <a class="articleAuthorName" [routerLink]="['/profile', user.username]">{{article.author.username}}</a>
+        <a class="articleAuthorName" [routerLink]="['']">{{article.author.username}}</a>
         <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
         </div>
     </div>
 
-    <div *ngIf="article.author.username !== user.username" class=" d-flex flex-row">
+    <div *ngIf="user && article.author.username !== user.username" class=" d-flex flex-row">
         <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }"
             (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' :
             '')}}</button>
@@ -52,10 +57,11 @@
             Article' : '')}} {{likeCounter}}</button>
     </div>
 
-            <div *ngIf="article.author.username === user.username">
+            <div *ngIf="user && article.author.username === user.username">
             <a class=" btn btn-light" [routerLink]="['/editor', article.slug]">Edit Article</a>
             <button class=" btn btn-light" type="button" (click)="deleteArticle()">Delete Article</button>
             </div>
+
 </div>
 
 <!-- comments -->
@@ -64,7 +70,7 @@
     <p class="toLogIn"> <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.</p>
     </div>
             <div class="card">
-                <div class="commentContainer card-body">
+                <div *ngIf="user" class="commentContainer card-body">
                 <form [formGroup]="newCommentForm" (ngSubmit)="publishComment()">
                     <blockquote class="blockquote">
                         <textarea class="element form-control" rows="5"
@@ -78,7 +84,7 @@
     <div *ngIf="(comments$ | async) as comments">
         <ul *ngFor="let comment of comments">
             <li>
-            <div class="card" [ngClass]="{'cardOwnComment' : comment.author.username === user.username }">
+            <div class="card" [ngClass]="{'cardOwnComment' : user && comment.author.username === user.username }">
                 <div class="card-body" >
                     <blockquote class="blockquote">
                     <p>{{comment.body}}</p>
@@ -89,7 +95,7 @@
                     <p class="articleDateComment">{{comment.createdAt | date:'longDate'}}</p>
                     </div>
                 </div>
-                        <button *ngIf="comment.author.username === user.username" class="deleteComment btn btn-outline-dark btn-sm"  (click)="deleteComment()">Delete comment</button>
+                        <button *ngIf="user && comment.author.username === user.username" class="deleteComment btn btn-outline-dark btn-sm"  (click)="deleteComment()">Delete comment</button>
                 </div>
                 </div>
             </li>

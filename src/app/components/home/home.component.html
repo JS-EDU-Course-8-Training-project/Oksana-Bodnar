@@ -1,75 +1,61 @@
-<!-- hero -->
+
 <div class="hero">
     <h2>Real World Project</h2>
     <p>A place to share your knowledge.</p>
 </div>
 
-<!-- articles -->
-<section class="articles">
     <button *ngIf="token" class="btn btn-link" type="button" (click)="showYourFeed()"
         [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
     <button class="btn btn-link" type="button" (click)="showAllArticles()"
         [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
 
-    <div class="allArticles">
-        <div *ngIf="token && isOwnFeed">
-            <ul *ngFor="let article of (articlesFeed$ | async)">
-                <li>
-                    <a [routerLink]="['/article', article.slug]">
-                        <article class="article">
-                            <div class="d-flex align-items-center">
-                                <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                                    <div class="d-flex flex-column">
-                                    <p class="articleAuthorName">{{article.author.username}}</p>
-                                    <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                                    </div>
-                            </div>
-                                <h3>{{article.title}}</h3>
-                                <p class="articleText">{{article.body}}</p>
-                                <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                                <span class="articleHeart"> {{article.favoritesCount}}</span>
-                                        <div class="articleTags">
-                                        <ul *ngFor="let tag of article.tagList">
-                                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
-                                        </ul>
-                                        </div>
-                        </article>
-                    </a>
-                </li>
-            </ul>
-        </div>
+ <div class="allArticles">
 
-        <div *ngIf="isGlobal">
-            <ul *ngFor="let article of (articles$ | async)">
-                <li>
-                    <a [routerLink]="['/article', article.slug]">
-                        <article class="article">
-                            <div class="d-flex align-items-center">
-                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                                <div class="d-flex flex-column">
-                                    <p class="articleAuthorName">{{article.author.username}}</p>
-                                    <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                                </div>
-                            </div>
-                                    <h3>{{article.title}}</h3>
-                                    <p class="articleText">{{article.body}}</p>
-                                    <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                                    <span class="articleHeart"> {{article.favoritesCount}}</span>
-                                        <div class="articleTags">
-                                        <ul *ngFor="let tag of article.tagList">
-                                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
-                                        </ul>
-                                        </div>
-                        </article>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- tags -->
-        <div class="tags d-flex flex-column">
-            <ul *ngFor="let tag of (tags$ | async)">
-                <li><button class="tag btn btn-secondary btn-sm" type="button" >{{tag}}</button></li>
-            </ul>
-        </div>
+<ul *ngIf="(articles$ | async) as articles"> 
+    <li *ngFor="let article of articles | paginate: {
+              itemsPerPage: pageSize,
+              currentPage: page,
+              totalItems: count
+            }">
+<ng-container *ngFor="let articleTag of article.tagList"><ng-container *ngIf="input && input === articleTag">
+                    <ng-container *ngTemplateOutlet="estimateTemplate">
+                    </ng-container>       
+</ng-container></ng-container>
+
+<ng-container *ngIf="!input">
+    <ng-container *ngTemplateOutlet="estimateTemplate">
+    </ng-container>
+</ng-container>
+                               
+<ng-template #estimateTemplate>
+                                    <a [routerLink]="['/article', article.slug]">
+                                        <article class="article">
+                                            <div class="d-flex align-items-center">
+                                                <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                                                <div class="d-flex flex-column">
+                                                    <p class="articleAuthorName">{{article.author.username}}</p>
+                                                    <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                                                </div>
+                                            </div>
+                                            <h3>{{article.title}}</h3>
+                                            <p class="articleText">{{article.body}}</p>
+                                            <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                                            <span class="articleHeart"> {{article.favoritesCount}}</span>
+                                            <div class="articleTags">
+                                                <ul *ngFor="let tag of article.tagList">
+                                                    <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                                                </ul>
+                                            </div>
+                                        </article>
+                                    </a>
+        </ng-template>
+    </li>
+</ul>
+<pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+
+    <div class="tags d-flex flex-column">
+        <ul *ngFor="let tag of (tags$ | async)">
+            <li><button class="tag btn btn-secondary btn-sm" type="button" (click)="onTag($event)">{{tag}}</button></li>
+        </ul>
     </div>
-</section>
+</div> 

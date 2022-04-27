@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { catchError, map, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { ChangeProfileType } from 'src/shared/models/newProfile.model';
-import { NewUser } from 'src/shared/models/newUser.model';
+import { ChangeProfileType } from 'src/app/shared/models/newProfile.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 
 @Component({
   selector: 'app-settings',
@@ -14,24 +14,19 @@ import { NewUser } from 'src/shared/models/newUser.model';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  public user!: NewUser;
-  public user$!: Subject<NewUser | null>;
+  public user!: ResponseUser;
+  public user$!: Subject<ResponseUser | null>;
   public newSettingsForm!: FormGroup;
   public newUserSet!: ChangeProfileType;
   public environment = environment;
   private subscriptionSettings$!: Subscription;
   private subscriptionUser$!: Subscription;
+  private subscriptions$: Subscription[] = [];
   
 
   constructor(private userService: UserService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    // this.getNewUser();
-    // this.generateForm();
-    // this.subscriptionUser$ = this.userService.getLoggedUser().subscribe((user) => {
-    //   this.user = user;
-    //   this.updareForm(this.user);
-    // });
     this.gettingUserData();
   }
 
@@ -41,7 +36,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
       username: new FormControl(''),
       bio: new FormControl(''),
       email: new FormControl(''),
-      password: new FormControl(''),
     });
   }
 
@@ -50,10 +44,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.user = user;
           this.updareForm(this.user);
     });
+    this.subscriptions$.push(this.subscriptionUser$);
     this.generateForm();
   }
 
-  public updareForm(user: NewUser) {
+  public updareForm(user: ResponseUser) {
     return this.newSettingsForm.patchValue({
       image: user.image,
       username: user.username,
@@ -62,42 +57,27 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-    // public updareForm(user: NewUser) {
-    // return this.newSettingsForm = new FormGroup({
-    //   image: new FormControl(user.image),
-    //   username: new FormControl(user.username),
-    //   bio: new FormControl(user.bio),
-    //   email: new FormControl(user.email),
-    //   // password: new FormControl(''),
-    // });
-  // }
-  
   public publish() {
     this.newUserSet = { ...this.newSettingsForm.value, token: this.user.token };
-    console.log(this.newUserSet);
-    return this.subscriptionSettings$ = this.postNewSettings(this.newUserSet).subscribe(
-       {next: (data: any) => {
-         console.log(data);
-            },
-            error: (error) => {
+     this.subscriptionSettings$ = this.postNewSettings(this.newUserSet).subscribe(
+       {next: () => {
+        this.router.navigate([''])
+      },
+          error: (error) => {
                 console.log(error);
-            }
-          }
-    );
-    // this.router.navigate(['']);
+        }
+      })
+    this.subscriptions$.push(this.subscriptionSettings$);
   }
+   
 
-  public postNewSettings(newUserSet: ChangeProfileType): Observable<ChangeProfileType> {
-    console.log({ user: newUserSet });
-    return this.http.put<ChangeProfileType>(`${this.environment.url}/user`, { user: newUserSet })
-      .pipe(map((response: ChangeProfileType) => {
-        return response;
+  public postNewSettings(newUserSet: ChangeProfileType) {
+    return this.http.put<{user: ChangeProfileType }>(`${this.environment.url}/user`, { user: newUserSet })
+      .pipe(map((response: { user: ChangeProfileType }) => {
+        console.log(response.user.token);
+        localStorage.setItem('access_token', response.user.token);
       })).pipe(catchError(this.handleError));
   }
-  
-  // public getNewUser() {
-  //   return this.userService.getLoggedUser()
-  // }
   
   public doUserLogout() {
     this.userService.doLogout();
@@ -116,11 +96,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscriptionSettings$) {
-      this.subscriptionSettings$.unsubscribe();
-    }
-     if (this.subscriptionUser$) {
-      this.subscriptionUser$.unsubscribe();
-    }
-  }
+ if(this.subscriptions$) {
+        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+    }}
 }

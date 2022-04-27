@@ -1,44 +1,34 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { BehaviorSubject, catchError, map, Observable, Subject, throwError } from 'rxjs';
-import { Articles } from 'src/shared/models/articles.model';
-import { Tags } from 'src/shared/models/tags.model';
+import { Articles } from 'src/app/shared/models/articles.model';
+import { Tags } from 'src/app/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
-import { ArticleResult } from 'src/shared/models/ArticleResult.model';
+import { ArticleResult } from 'src/app/shared/models/ArticleResult.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetArticleService {
   public environment = environment;
-  public articles$: BehaviorSubject<Articles[] | any> = new BehaviorSubject([]);
+  public articles$: BehaviorSubject<Articles[]> = new BehaviorSubject([] as Articles[]);
   public tags$: Subject<Tags[] | null> = new Subject();
-  public articlesFeed$: BehaviorSubject<Articles[] | any> = new BehaviorSubject([]);
+  public articlesFeed$: BehaviorSubject<Articles[]> = new BehaviorSubject([] as Articles[]);
   public slug!: string | null;
  
   constructor(private http: HttpClient) { }
   
   public getAllArticles(): Observable<Articles[]> {
-      return this.http.get<Articles[]>(`${this.environment.url}/articles`)
-        .pipe(map((res: any) => {
+    return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?offset=0`)
+        .pipe(map((res: {articles: Articles[]}) => {
           this.articles$.next(res.articles);
-          console.log(res.articles);
                   return res.articles;
               })).pipe(catchError(this.handleError));
   }
 
-  //   public getAllArticles(): Observable<Articles> {
-  //     return this.http.get<ArticleResult>(`${this.environment.url}/articles`)
-  //       .pipe(map((res: ArticleResult) => {
-  //         this.articles$.next(res.article);
-  //         console.log(res.article);
-  //                 return res.article;
-  //             })).pipe(catchError(this.handleError));
-  // }
-
   public getTags(): Observable<Tags[]> {
-      return this.http.get<Tags[]>(`${this.environment.url}/tags`)
-        .pipe(map((res: any) => {
+      return this.http.get<{tags: Tags[]}>(`${this.environment.url}/tags`)
+        .pipe(map((res: {tags: Tags[]}) => {
           this.tags$.next(res.tags);
                   return res.tags;
               })).pipe(catchError(this.handleError));
@@ -49,24 +39,22 @@ export class GetArticleService {
   }
 
   public getArticle(slug: string | null): Observable<Articles> {
-      return this.http.get<Articles>(`${this.environment.url}/articles/${slug}`, {})
-        .pipe(map((res: any) => {
-            
+      return this.http.get< {article: Articles}>(`${this.environment.url}/articles/${slug}`, {})
+        .pipe(map((res: {article: Articles} ) => {
                   return res.article;
               })).pipe(catchError(this.handleError));
   }
 
   public deleteArticle(): Observable<Articles> {
-      return this.http.delete<Articles>(`${this.environment.url}/articles/${this.slug}`)
-          .pipe(map((res: any) => {
+      return this.http.delete<{article: Articles}>(`${this.environment.url}/articles/${this.slug}`)
+          .pipe(map((res: {article: Articles}) => {
                   return res.article;
               })).pipe(catchError(this.handleError));
   }
 
   public getArticlesFeed(): Observable<Articles[]> {
-      return this.http.get<Articles[]>(`${this.environment.url}/articles/feed`)
-        .pipe(map((result: any) => {
-          console.log(result.articles);
+    return this.http.get<{ articles: Articles[] }>(`https://api.realworld.io/api/articles/feed/?offset=0`)
+        .pipe(map((result: {articles: Articles[]}) => {
           this.articlesFeed$.next(result.articles);
                   return result.articles;
               })).pipe(catchError(this.handleError));

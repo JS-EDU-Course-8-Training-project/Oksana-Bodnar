@@ -3,4 +3,5 @@ export interface FollowedProfile {
     "bio": "string";
     "image": "string";
     "following": true;
-  }
+}
+  

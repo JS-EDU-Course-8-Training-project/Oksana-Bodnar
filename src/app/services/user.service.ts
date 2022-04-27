@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { NewUser } from 'src/shared/models/newUser.model';
-import { User } from 'src/shared/models/user.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
+import { NewUser } from 'src/app/shared/models/newUser.model';
 
 
 @Injectable({
@@ -12,9 +12,9 @@ import { User } from 'src/shared/models/user.model';
 })
 export class UserService {
   public environment = environment;
-  public loggedUser!: NewUser;
-  private userModels$: BehaviorSubject<User | any> = new BehaviorSubject(null);
-  public loggedUserModels$: Subject <NewUser | null> = new Subject();
+  public loggedUser!: ResponseUser;
+  private userModels$: BehaviorSubject<NewUser> = new BehaviorSubject({} as NewUser);
+  public loggedUserModels$: Subject <ResponseUser | null> = new Subject();
   
 
   constructor(private http: HttpClient, public router: Router) {}
@@ -23,23 +23,29 @@ export class UserService {
     this.userModels$.next({ username, email, password });
   }
 
-  public register(user: any): Observable<NewUser> {
-    return this.http.post<NewUser>(`${this.environment.url}/users`, user)
-      .pipe(catchError(this.handleError))
+  public register(user: { user: NewUser }) {
+    return this.http.post<{ user: ResponseUser }>(`${this.environment.url}/users`, user)
+        .pipe(map((res: {user: ResponseUser}) => {
+          console.log(res.user.token);
+          localStorage.setItem('access_token', res.user.token);
+  })).pipe(catchError(this.handleError));
   }
 
-  public logUser(user: any): Observable<NewUser> {
-    return this.http.post<NewUser>(`${this.environment.url}/users/login`, user)
-    .pipe(catchError(this.handleError));
+  public logUser(user: { user: NewUser }) {
+    return this.http.post<{ user: ResponseUser }>(`${this.environment.url}/users/login`, user)
+        .pipe(map((res: {user: ResponseUser}) => {
+          console.log(res.user.token);
+          localStorage.setItem('access_token', res.user.token);
+  })).pipe(catchError(this.handleError));
   }
 
  public getToken() {
     return localStorage.getItem('access_token');
   }
   
-  public getLoggedUser() {
-    return this.http.get<NewUser>(`${this.environment.url}/user`)
-      .pipe(map((res: any) => {
+  public getLoggedUser(): Observable<ResponseUser> {
+    return this.http.get<{user: ResponseUser}>(`${this.environment.url}/user`)
+      .pipe(map((res: {user: ResponseUser}) => {
         this.loggedUser = res.user;
         this.loggedUserModels$.next(res.user);
         return this.loggedUser;

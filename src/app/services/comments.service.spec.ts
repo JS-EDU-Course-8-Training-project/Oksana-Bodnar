@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommentsService } from './comments.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import {HttpClient, HttpClientModule, HttpResponse} from '@angular/common/http';
-import { Comments } from 'src/shared/models/comments.model';
+import { Comments } from 'src/app/shared/models/comments.model';
 
 
 describe('CommentsService', () => {

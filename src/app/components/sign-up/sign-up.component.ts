@@ -3,7 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
+import { NewUser } from 'src/app/shared/models/newUser.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
+import { mustBePasswordValidator } from 'src/app/shared/mustBe-password.directive';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,7 +13,7 @@ import { mustBePasswordValidator } from 'src/shared/mustBe-password.directive';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit, OnDestroy {
- public newUser = {};
+ public newUser!: NewUser;
  public isLogged!: boolean;
  public authForm!: FormGroup; 
  private subscriptionUser$!: Subscription;
@@ -35,15 +37,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
         this.authForm.getRawValue().username,
         this.authForm.getRawValue().email,
         this.authForm.getRawValue().password);
-      
-    this.newUser = {
-        user: this.authForm.value
-      };
 
-  this.subscriptionUser$ = this.userService.register(this.newUser)
-        .subscribe(
-          {next: (data: any) => {
-            localStorage.setItem('access_token', data.user.token);
+    this.newUser = this.authForm.value;
+
+    this.subscriptionUser$ = this.userService.register({user: this.newUser })
+      .subscribe(
+          {
+            next: () => {
             this.router.navigateByUrl('/settings')
             this.isLogged = true;
           },

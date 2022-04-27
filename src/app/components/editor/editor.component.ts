@@ -6,8 +6,8 @@ import { Subscription, throwError } from 'rxjs';
 import { CreateAerticleService } from 'src/app/services/createArticle.service';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { environment } from 'src/environments/environment';
-import { Articles } from 'src/shared/models/articles.model';
-import { crateArticle } from 'src/shared/models/createArticle.model';
+import { Articles } from 'src/app/shared/models/articles.model';
+import { crateArticle } from 'src/app/shared/models/createArticle.model';
 
 @Component({
   selector: 'app-editor',

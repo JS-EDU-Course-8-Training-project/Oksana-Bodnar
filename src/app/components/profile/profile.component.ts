@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
-import { ArticleResult } from 'src/shared/models/ArticleResult.model';
-import { Articles } from 'src/shared/models/articles.model';
-import { NewUser } from 'src/shared/models/newUser.model';
+import { ArticleResult } from 'src/app/shared/models/ArticleResult.model';
+import { Articles } from 'src/app/shared/models/articles.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 
 @Component({
   selector: 'app-profile',
@@ -15,12 +15,13 @@ import { NewUser } from 'src/shared/models/newUser.model';
 export class ProfileComponent implements OnInit, OnDestroy {
   public isFavourite = false;
   public isOwn = true;
-  public user!: NewUser;
-  public articles$!: Subject<Articles[] | null>;
+  public user!: ResponseUser;
+  public articles$!: BehaviorSubject<Articles[]>
   public articles!: Articles[];
   public isLogged!: string | null;
   private subscriptionUser$!: Subscription;
   private subscriptionArticle$!: Subscription;
+  private subscriptions$: Subscription[] = [];
   
 
   constructor(private httpService: GetArticleService, private userService: UserService) { }
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptionUser$ = this.getNewUser()
      .subscribe(data => {
         return this.user = data;
-      });
+     });
+    this.subscriptions$.push(this.subscriptionUser$);
   }
 
   public getArticles() {
@@ -44,6 +46,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(data => {
       this.articles = data;
       })
+    this.subscriptions$.push(this.subscriptionArticle$);
   }
 
   public showOwnArticles(): void { 
@@ -61,12 +64,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
    }
   
   ngOnDestroy() {
-    if (this.subscriptionUser$) {
-      this.subscriptionUser$.unsubscribe();
-    }
-    if (this.subscriptionArticle$) {
-      this.subscriptionArticle$.unsubscribe();
-    }
-    }
+   if(this.subscriptions$) {
+        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+    }}
   
 }

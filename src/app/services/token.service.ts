@@ -8,7 +8,6 @@ import {
 import { Observable } from 'rxjs';
 import { UserService } from './user.service';
 
-
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
@@ -18,7 +17,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (this.auth.getToken()) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `${this.auth.getToken()}`
+                    Authorization: `Token ${this.auth.getToken()}`
                 }
             });
 

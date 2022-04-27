@@ -1,65 +1,50 @@
 
-<!-- hero -->
 <div class="hero">
     <img class="profileAvatar" src="https://api.realworld.io/images/smiley-cyrus.jpeg" alt="">
     <h2 *ngIf="user">{{user.username}}</h2>
     <a class="profileEditBtn btn btn-light" [routerLink]="['/settings']">Edit Profile Settings</a>
 </div>
-    <!-- articles -->
+
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showOwnArticles()" [ngClass]="{'btn-outline-success' : isOwn}">My Articles</button>
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showFavouriteArticles()" [ngClass]="{'btn-outline-success' : isFavourite}">Favourite Articles</button>
 
-    <div *ngIf="articles$ | async as articles">
-        <ul *ngFor="let article of articles">
-            <div *ngIf="article.favorited && isFavourite && isLogged">
-                <li><a [routerLink]="['/article', article.slug]">
-                    <article class="article">
-                        <div class="d-flex align-items-center">
-                        <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                            <div class="d-flex flex-column">
-                            <a class="articleAuthorName" href="">{{article.author.username}}</a>
-                            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                            </div>
-                        </div>
-                                <h3>{{article.title}}</h3>
-                                <p class="articleText">{{article.body}}</p>
-                                <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                                <span class="articleHeart"> {{article.favoritesCount}}</span>
-                                <div class="articleTags">
-                                    <ul *ngFor="let tag of article.tagList">
-                                        <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
-                                    </ul>
-                                </div>
-                    </article>
-                        </a>
-                </li>
-            </div>
-        </ul>
-    
-<!-- own  -->
-    <ul *ngFor="let article of articles">
-        <div *ngIf="user && article.author.username === user.username && isOwn && isLogged">
-            <li><a [routerLink]="['/article', article.slug]">
-                <article class="article">
-                    <div class="d-flex align-items-center">
-                    <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                        <div class="d-flex flex-column">
-                            <a class="articleAuthorName" href="">{{article.author.username}}</a>
-                            <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                        </div>
-                    </div>
-                    <h3>{{article.title}}</h3>
-                    <p class="articleText">{{article.body}}</p>
-                    <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                    <span class="articleHeart"> {{article.favoritesCount}}</span>
-                    <div class="articleTags">
-                        <ul *ngFor="let tag of article.tagList">
-                            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
-                        </ul>
-                    </div>
-                </article>
-                </a>
-            </li>
+<div *ngIf="articles$ | async as articles">
+    <div *ngFor="let article of articles">
+        <div *ngIf="article.favorited && isFavourite && isLogged">
+                <ng-container *ngTemplateOutlet="estimateTemplate">
+                </ng-container>
         </div>
-    </ul>
+
+        <div *ngIf="user && article.author.username === user.username && isOwn && isLogged">
+                <ng-container *ngTemplateOutlet="estimateTemplate">
+                </ng-container>
+        </div>
+
+                    <ng-template #estimateTemplate>
+                        <ul>
+                            <li><a [routerLink]="['/article', article.slug]">
+                                    <article class="article">
+                                        <div class="d-flex align-items-center">
+                                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                                            <div class="d-flex flex-column">
+                                                <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                                                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                                            </div>
+                                        </div>
+                                        <h3>{{article.title}}</h3>
+                                        <p class="articleText">{{article.body}}</p>
+                                        <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                                        <span class="articleHeart"> {{article.favoritesCount}}</span>
+                                        <div class="articleTags">
+                                            <ul *ngFor="let tag of article.tagList">
+                                                <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                                            </ul>
+                                        </div>
+                                    </article>
+                                </a>
+                            </li>
+                        </ul>
+                    </ng-template>
+    </div>
 </div>
+

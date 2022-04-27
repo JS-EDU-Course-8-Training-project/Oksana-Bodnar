@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { NewUser } from 'src/shared/models/newUser.model';
+import { navItem } from 'src/app/shared/models/navItem.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 
 @Component({
   selector: 'app-navigation',
@@ -11,19 +12,38 @@ import { NewUser } from 'src/shared/models/newUser.model';
 })
 export class NavigationComponent implements OnInit{
 
-  public isLoggedUser$!: Subject<NewUser | null>;
-  public user!: NewUser;
+  public isLoggedUser$!: Subject<ResponseUser | null>;
   private subscriptionUser$!: Subscription;
+  public itemsLogged!: navItem[];
+  public itemsNotLogged!: navItem[];
+  private subscriptions$: Subscription[] = [];
   
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.isLoggedUser$ = this.userService.loggedUserModels$;
-
+    this.makeItems();
     if (this.userService.getToken()) {
-     this.subscriptionUser$ = this.getNewUser()
+      this.subscriptionUser$ = this.getNewUser()
         .subscribe()
-    }}
+    }   
+    this.subscriptions$.push(this.subscriptionUser$);
+      // this.userService.loggedUserModels$.pipe(tap))
+  }
+  
+  public makeItems() {
+      
+          this.itemsLogged = [
+            {url: '/editor', name: 'New Article'},
+            {url: '/settings', name: 'Settings'},
+          ]
+
+          this.itemsNotLogged = [
+            {url: '/login', name: 'Sign In'},
+            {url: '/register', name: 'Sign Up'},
+          ]
+    
+        }
 
   public doUserLogout() {
     this.userService.doLogout();
@@ -34,8 +54,7 @@ export class NavigationComponent implements OnInit{
   }
   
   ngOnDestroy() {
-    if (this.subscriptionUser$) {
-      this.subscriptionUser$.unsubscribe();
-    }
-    }
+   if(this.subscriptions$) {
+        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+    }}
 }

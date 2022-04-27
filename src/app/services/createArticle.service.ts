@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { Articles } from 'src/shared/models/articles.model';
-import { crateArticle } from 'src/shared/models/createArticle.model';
+import { Articles } from 'src/app/shared/models/articles.model';
+import { crateArticle } from 'src/app/shared/models/createArticle.model';
 import { environment } from 'src/environments/environment';
 
 

@@ -9,10 +9,10 @@ import { GetArticleService } from 'src/app/services/getArticles.service';
 import { LikeService } from 'src/app/services/like.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { Articles } from 'src/shared/models/articles.model';
-import { Comments } from 'src/shared/models/comments.model';
-import { NewComment } from 'src/shared/models/newComment.model';
-import { NewUser } from 'src/shared/models/newUser.model';
+import { Articles } from 'src/app/shared/models/articles.model';
+import { Comments } from 'src/app/shared/models/comments.model';
+import { NewComment } from 'src/app/shared/models/newComment.model';
+import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 
 @Component({
   selector: 'app-article',
@@ -27,7 +27,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   public newComment!: NewComment;
   public newCommentForm!: FormGroup;
   public href!: string;
-  public user!: NewUser;
+  public user!: ResponseUser;
   public environment = environment;
   public isFollow: boolean = false;
   public isLike: boolean = false;
@@ -42,6 +42,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private subscriptionLike$!: Subscription;
   private subscriptionDeleteLike$!: Subscription;
   private subscriptionDeleteArticle$!: Subscription;
+  private subscriptions$: Subscription[] = [];
   
   
   constructor(
@@ -61,9 +62,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
       this.likeCounter = data.favoritesCount;
       return this.article = data
     });
+    this.subscriptions$.push(this.subscriptionArticle$);
 
-    this.subscriptionNewUser$ = this.getNewUser().subscribe(data => { return this.user = data });
-      
+    if (this.userService.getToken()) {
+      this.subscriptionNewUser$ = this.getNewUser().subscribe(data => { return this.user = data });
+    };
+    this.subscriptions$.push(this.subscriptionNewUser$);
+
     this.newCommentForm = new FormGroup({
       body: new FormControl(''),
     });
@@ -78,18 +83,21 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   private getComments() {
     this.comments$ = this.commentService.comments$;
-   this.subscriptionComments$ = this.commentService.getComments().subscribe();
+    this.subscriptionComments$ = this.commentService.getComments().subscribe();
+    this.subscriptions$.push(this.subscriptionComments$);
   }
 
   public deleteComment(): void {
    this.subscriptionCommentsDelete$ =  this.commentService.deleteCommentService()
-      .subscribe(() => this.getComments());
+     .subscribe(() => this.getComments());
+    this.subscriptions$.push(this.subscriptionCommentsDelete$);
   }
 
   public publishComment(): void {
     this.newComment = this.newCommentForm.value;
     this.subscriptionCommentsPublish$ =   this.commentService.postCommentService(this.newComment)
       .subscribe(() => this.getComments());
+    this.subscriptions$.push(this.subscriptionCommentsPublish$);
   }
 
   public onClickFollow() {
@@ -104,27 +112,31 @@ export class ArticleComponent implements OnInit, OnDestroy {
   
   public follow() {
    this.subscriptionFollowing$ = this.followService.follow(this.article.author.username)
-      .subscribe();
+     .subscribe();
+    this.subscriptions$.push(this.subscriptionFollowing$);
   }
 
   
   public unFollow() {
     this.subscriptionUnFollowing$ = this.followService.unFollow(this.article.author.username)
-        .subscribe(); 
+      .subscribe(); 
+    this.subscriptions$.push(this.subscriptionUnFollowing$);
   }
 
 public like(): void {
      this.subscriptionLike$ = this.likeService.like(this.href)
        .subscribe(
          () => {return this.likeCounter += 1 }
-        ); 
+  ); 
+   this.subscriptions$.push(this.subscriptionLike$);
 }
 
 public likeDelete(): void {
   this.subscriptionDeleteLike$ = this.likeService.likeDelete(this.href)
     .subscribe(
       () => { return this.likeCounter -= 1 }
-        ); 
+  ); 
+  this.subscriptions$.push(this.subscriptionDeleteLike$);
 }
   
    public getNewUser() {
@@ -134,40 +146,13 @@ public likeDelete(): void {
   deleteArticle() {
     this.router.navigateByUrl('');
      this.subscriptionDeleteArticle$ = this.articleService.deleteArticle()
-        .subscribe(); 
+      .subscribe(); 
+    this.subscriptions$.push(this.subscriptionDeleteArticle$);
   }
   
   ngOnDestroy() {
-    if (this.subscriptionArticle$) {
-      this.subscriptionArticle$.unsubscribe();
-    }
-    if (this.subscriptionNewUser$) {
-      this.subscriptionNewUser$.unsubscribe();
-    }
-    if (this.subscriptionComments$) {
-      this.subscriptionComments$.unsubscribe();
-    }
-    if (this.subscriptionCommentsDelete$) {
-      this.subscriptionCommentsDelete$.unsubscribe();
-    }
-    if (this.subscriptionCommentsPublish$) {
-      this.subscriptionCommentsPublish$.unsubscribe();
-    }
-    if (this.subscriptionFollowing$) {
-      this.subscriptionFollowing$.unsubscribe;
-    }
-    if (this.subscriptionUnFollowing$) {
-      this.subscriptionUnFollowing$.unsubscribe();
-    }
-    if (this.subscriptionLike$) {
-      this.subscriptionLike$.unsubscribe();
-    }
-    if (this.subscriptionDeleteLike$) {
-      this.subscriptionDeleteLike$.unsubscribe();
-    }
-    if (this.subscriptionDeleteArticle$) {
-      this.subscriptionDeleteArticle$.unsubscribe();
-    }
-    }
+    if(this.subscriptions$) {
+        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+    }}
 }
 
