@@ -55,11 +55,18 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+
     this.getSlug();
 
     this.getComments();
+
     this.subscriptionArticle$ = this.articleService.getArticle(this.href).subscribe(data => {
       this.likeCounter = data.favoritesCount;
+
+      this.isFollow = data.author.following;
+      this.isLike = data.favorited;
+
+    
       return this.article = data
     });
     this.subscriptions$.push(this.subscriptionArticle$);

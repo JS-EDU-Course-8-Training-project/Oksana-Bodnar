@@ -1,7 +1,7 @@
 <div class="form">
     <h3>Sign in</h3>
     <a href="/register" class="ref">Need an account?</a>
-    <form [formGroup]="authForm" (ngSubmit)="login()">
+    <form [formGroup]="authForm">
 
         <div class="form-group">
             <input type="email" class="form-control" name="email" required formControlName="email" placeholder="Email">

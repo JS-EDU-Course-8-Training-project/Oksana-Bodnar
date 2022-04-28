@@ -13,22 +13,11 @@ export class LikeService {
 
   public like(href: string) {
     return this.http.post(`${this.environment.url}/articles/${href}/favorite`, {})
-      .pipe(catchError(this.handleError));
 }
 
 public likeDelete(href: string) {
     return this.http.delete(`${this.environment.url}/articles/${href}/favorite`, {})
-      .pipe(catchError(this.handleError));
 }
   
-  public handleError(error: HttpErrorResponse) {
-    let msg: string;
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-    console.log(error.error);
-    }
-    return throwError(error);
-}
+
 }

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
-import { ArticleResult } from 'src/app/shared/models/ArticleResult.model';
 import { Articles } from 'src/app/shared/models/articles.model';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 
@@ -19,6 +18,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public articles$!: BehaviorSubject<Articles[]>
   public articles!: Articles[];
   public isLogged!: string | null;
+  public page = 1;
+  public count = 0;
+  public pageSize = 3;
   private subscriptionUser$!: Subscription;
   private subscriptionArticle$!: Subscription;
   private subscriptions$: Subscription[] = [];
@@ -39,24 +41,43 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(this.subscriptionUser$);
   }
 
+  handlePageChange(event: any) {
+    this.page = event;
+  }
+
   public getArticles() {
      this.articles$ = this.httpService.articles$;
      this.subscriptionArticle$ = this.httpService
-      .getAllArticles()
+      .getAllArticles(20, 0)
       .subscribe(data => {
       this.articles = data;
       })
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
+    public getFavoritedArticles() {
+     this.articles$ = this.httpService.articles$;
+     this.subscriptionArticle$ = this.httpService
+      .getAllFavoritedArticles(20, 0, this.user.username)
+      .subscribe(data => {
+      this.articles = data;
+      })
+    this.subscriptions$.push(this.subscriptionArticle$);
+  }
+
+
   public showOwnArticles(): void { 
+    this.page = 1;
     this.isOwn = true;
     this.isFavourite = false;
+     this.getArticles();
   }
 
   public showFavouriteArticles(): void {
+    this.page = 1;
     this.isFavourite = true;
     this.isOwn = false;
+     this.getFavoritedArticles();
   }
 
    public getNewUser() {

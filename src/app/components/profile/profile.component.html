@@ -8,9 +8,15 @@
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showOwnArticles()" [ngClass]="{'btn-outline-success' : isOwn}">My Articles</button>
     <button class="profileFeedsBtns btn btn-link" type="button" (click)="showFavouriteArticles()" [ngClass]="{'btn-outline-success' : isFavourite}">Favourite Articles</button>
 
-<div *ngIf="articles$ | async as articles">
-    <div *ngFor="let article of articles">
-        <div *ngIf="article.favorited && isFavourite && isLogged">
+    <ng-container >
+<ul *ngIf="(articles$ | async) as articles">
+    <li *ngFor="let article of articles | paginate: {
+              itemsPerPage: pageSize,
+              currentPage: page,
+              totalItems: count
+            }">
+
+        <div>
                 <ng-container *ngTemplateOutlet="estimateTemplate">
                 </ng-container>
         </div>
@@ -21,8 +27,8 @@
         </div>
 
                     <ng-template #estimateTemplate>
-                        <ul>
-                            <li><a [routerLink]="['/article', article.slug]">
+ 
+                            <a [routerLink]="['/article', article.slug]">
                                     <article class="article">
                                         <div class="d-flex align-items-center">
                                             <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
@@ -42,9 +48,10 @@
                                         </div>
                                     </article>
                                 </a>
-                            </li>
-                        </ul>
                     </ng-template>
-    </div>
-</div>
+                 </li>
+        </ul>
+    </ng-container>
+    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+
 

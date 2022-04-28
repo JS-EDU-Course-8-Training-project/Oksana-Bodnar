@@ -18,20 +18,40 @@ export class GetArticleService {
  
   constructor(private http: HttpClient) { }
   
-  public getAllArticles(): Observable<Articles[]> {
-    return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?offset=0`)
+  public getAllArticles(limit: number, offset: number): Observable<Articles[]> {
+    return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}`)
         .pipe(map((res: {articles: Articles[]}) => {
           this.articles$.next(res.articles);
                   return res.articles;
-              })).pipe(catchError(this.handleError));
+              }))
   }
+
+// https://api.realworld.io/api/articles?favorited=Oksana445464&limit=5&offset=0
+    public getAllFavoritedArticles(limit: number, offset: number, userName: string): Observable<Articles[]> {
+    return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&favorited=${userName}`)
+        .pipe(map((res: {articles: Articles[]}) => {
+          this.articles$.next(res.articles);
+                  return res.articles;
+              }))
+  }
+
+  
+
+    public getAllArticlesByTag(limit: number, offset: number = 0, tag: string): Observable<Articles[]> {
+    return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&tag=${tag}`)
+        .pipe(map((res: {articles: Articles[]}) => {
+          this.articles$.next(res.articles);
+                  return res.articles;
+              }))
+  }
+
 
   public getTags(): Observable<Tags[]> {
       return this.http.get<{tags: Tags[]}>(`${this.environment.url}/tags`)
         .pipe(map((res: {tags: Tags[]}) => {
           this.tags$.next(res.tags);
                   return res.tags;
-              })).pipe(catchError(this.handleError));
+              }))
   }
 
   public getArticleSlug(slug: string): string {
@@ -42,33 +62,23 @@ export class GetArticleService {
       return this.http.get< {article: Articles}>(`${this.environment.url}/articles/${slug}`, {})
         .pipe(map((res: {article: Articles} ) => {
                   return res.article;
-              })).pipe(catchError(this.handleError));
+              }))
   }
 
   public deleteArticle(): Observable<Articles> {
       return this.http.delete<{article: Articles}>(`${this.environment.url}/articles/${this.slug}`)
           .pipe(map((res: {article: Articles}) => {
                   return res.article;
-              })).pipe(catchError(this.handleError));
+              }))
   }
 
-  public getArticlesFeed(): Observable<Articles[]> {
-    return this.http.get<{ articles: Articles[] }>(`https://api.realworld.io/api/articles/feed/?offset=0`)
+  public getArticlesFeed(limit: number, offset: number): Observable<Articles[]> {
+    return this.http.get<{ articles: Articles[] }>(`https://api.realworld.io/api/articles/feed/?limit=${limit}&offset=${offset}`)
         .pipe(map((result: {articles: Articles[]}) => {
           this.articlesFeed$.next(result.articles);
                   return result.articles;
-              })).pipe(catchError(this.handleError));
+              }))
   }
-    
-  public handleError(error: HttpErrorResponse) {
-    let msg: string;
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-    console.log(error.error);
-    }
-    return throwError(error);
-}
 
 }
+

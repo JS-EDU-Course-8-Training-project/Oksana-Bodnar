@@ -26,7 +26,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   public isOwnFeed = false;
   public isGlobal = true;
   public articles!: Articles[];
-  public input!: string;
+  public input!: string | null;
+  public page = 1;
+  public count = 0;
+  public pageSize = 3;
   private subscriptionArticle$!: Subscription;
   private subscriptionArticleFeed$!: Subscription;
   private subscriptionTags$!: Subscription;
@@ -40,34 +43,37 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isLogged$ = this.userService.loggedUserModels$;
     this.tags$ = this.httpService.tags$;
     this.token = this.getToken();
-    this.getArticles();
+    this.getArticles(10, this.page);
     this.getTags();
   }
 
-  public page = 1;
-  public count = 0;
-  public pageSize = 3;
-
   handlePageChange(event: any) {
     this.page = event;
-    this.getArticles();
   }
 
-  public getArticles() {
+  public getArticles(limit: number, page: number) {
       this.articles$ = this.httpService.articles$;
       this.subscriptionArticle$ = this.httpService
-        .getAllArticles()
+        .getAllArticles(limit, page)
         .subscribe();
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-   public getArticlesYourFeed() {
+  public getArticlesByTag(limit: number, page: number, tag: string) {
+      this.articles$ = this.httpService.articles$;
+      this.subscriptionArticle$ = this.httpService
+        .getAllArticlesByTag(limit, page, tag)
+        .subscribe();
+    this.subscriptions$.push(this.subscriptionArticle$);
+  }
+
+  public getArticlesYourFeed(limit: number, page: number) {
      this.articles$ = this.httpService.articlesFeed$;
     this.subscriptionArticleFeed$ = this.httpService
-      .getArticlesFeed()
+      .getArticlesFeed(limit, page)
       .subscribe(val => this.articles = val);
      this.subscriptions$.push(this.subscriptionArticleFeed$);
-  }
+   }
 
   public getToken() {
      return this.userService
@@ -82,11 +88,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public showYourFeed() {
+    this.page = 1;
     this.isOwnFeed = true;
     this.isGlobal = false;
     
      if (this.token) { 
-    this.getArticlesYourFeed()
+    this.getArticlesYourFeed(10, this.page)
     }
 
   }
@@ -94,15 +101,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   public showAllArticles() {
     this.isOwnFeed = false;
     this.isGlobal = true;
-
-      this.getArticles();
+    this.page = 1;
+      this.getArticles(10, this.page);
   }
   
   public onTag(event: DOMEvent<any>) {
+    this.page = 1;
     this.input = event.target.innerText;
-    console.log(event.target.innerText);
-    
+    if (this.input) {
+      this.getArticlesByTag(10, 0, this.input);
+    }
+  }
 
+  public DeleteTag() {
+    this.input = null;
+    this.showAllArticles();
   }
 
   ngOnDestroy() {

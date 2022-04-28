@@ -15,23 +15,14 @@ public environment = environment;
   public follow(name: string) {
       return this.http.post(`${this.environment.url}/profiles/${name}/follow`, {})
         .pipe(map(() => {
-              })).pipe(catchError(this.handleError));
+              }))
   }
   
   public unFollow(name: string) {
       return this.http.delete(`${this.environment.url}/profiles/${name}/follow`, {})
       .pipe(map(() => {
-        })).pipe(catchError(this.handleError));
+        }))
   }
   
-  public handleError(error: HttpErrorResponse) {
-    let msg: string;
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-    console.log(error.error);
-    }
-    return throwError(error);
-}
+
 }

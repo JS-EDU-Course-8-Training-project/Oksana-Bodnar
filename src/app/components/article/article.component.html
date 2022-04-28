@@ -11,6 +11,7 @@
                 </div>
 
         <div *ngIf="user && article.author.username !== user.username" class=" d-flex flex-row">
+
             <button [ngClass]="{'btn btn-secondary' : isFollow === true, 'btn btn-outline-success' : isFollow === false }"
                 (click)="onClickFollow()">{{isFollow === true ? ' - Unfollow' : (isFollow === false ? ' + Follow' :
                 '')}}</button>

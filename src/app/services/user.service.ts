@@ -26,17 +26,15 @@ export class UserService {
   public register(user: { user: NewUser }) {
     return this.http.post<{ user: ResponseUser }>(`${this.environment.url}/users`, user)
         .pipe(map((res: {user: ResponseUser}) => {
-          console.log(res.user.token);
           localStorage.setItem('access_token', res.user.token);
-  })).pipe(catchError(this.handleError));
+  }))
   }
 
   public logUser(user: { user: NewUser }) {
     return this.http.post<{ user: ResponseUser }>(`${this.environment.url}/users/login`, user)
         .pipe(map((res: {user: ResponseUser}) => {
-          console.log(res.user.token);
           localStorage.setItem('access_token', res.user.token);
-  })).pipe(catchError(this.handleError));
+  }))
   }
 
  public getToken() {
@@ -49,7 +47,7 @@ export class UserService {
         this.loggedUser = res.user;
         this.loggedUserModels$.next(res.user);
         return this.loggedUser;
-  })).pipe(catchError(this.handleError));
+  }))
   }
 
   public doLogout() {
@@ -58,15 +56,6 @@ export class UserService {
     this.router.navigateByUrl('/login')
 }
  
-  public handleError(error: HttpErrorResponse) {
-    let msg: string;
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-    console.log(error.error);
-    }
-    return throwError(error);
-}
+
 }
 

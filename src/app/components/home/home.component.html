@@ -8,6 +8,8 @@
         [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
     <button class="btn btn-link" type="button" (click)="showAllArticles()"
         [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
+    <button *ngIf="input" class="btn btn-link" type="button" (click)="DeleteTag()"
+            [ngClass]="{'btn-outline-success' : input}">Delete filter by {{input}}</button>
 
  <div class="allArticles">
 
@@ -17,10 +19,11 @@
               currentPage: page,
               totalItems: count
             }">
-<ng-container *ngFor="let articleTag of article.tagList"><ng-container *ngIf="input && input === articleTag">
+
+<ng-container *ngIf="input">
                     <ng-container *ngTemplateOutlet="estimateTemplate">
                     </ng-container>       
-</ng-container></ng-container>
+</ng-container>
 
 <ng-container *ngIf="!input">
     <ng-container *ngTemplateOutlet="estimateTemplate">

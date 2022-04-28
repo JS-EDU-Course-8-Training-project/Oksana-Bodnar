@@ -1,7 +1,7 @@
 <div class="form">
     <h3>Sign Up</h3>
     <a href="/login" class="ref">Have an account?</a>
-    <form [formGroup]="authForm" (ngSubmit)="login()">
+    <form [formGroup]="authForm">
         <div class="form-group">
             <input type="text" class="form-control" name="name" required formControlName="username" placeholder="Username" required>
         </div>

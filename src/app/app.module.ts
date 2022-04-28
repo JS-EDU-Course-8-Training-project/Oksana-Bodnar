@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { TokenInterceptor } from './services/token.service';
+import { ErrorHandlerInterceptor } from './services/errorHandler.service';
 
 
 @NgModule({
@@ -27,6 +28,11 @@ import { TokenInterceptor } from './services/token.service';
   providers: [{
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+  },
+  {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
       multi: true
     }],
   bootstrap: [AppComponent]

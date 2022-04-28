@@ -28,38 +28,17 @@ export class CommentsService {
           res.comments.forEach((value: Comments) => { return this.id = value.id });
           this.comments$.next(res.comments);
                 return res.comments;
-              })).pipe(catchError(this.handleError));
+              }))
   }
-
-  //  public getAllArticles(): Observable<Articles[]> {
-  //   return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles`)
-  //       .pipe(map((res: {articles: Articles[]}) => {
-  //         this.articles$.next(res.articles);
-  //                 return res.articles;
-  //             })).pipe(catchError(this.handleError));
-  // }
 
   public deleteCommentService(): Observable<null> {
       return this.http.delete<null>(`${this.environment.url}/articles/${this.slug}/comments/${this.id}`, {})
-      .pipe(catchError(this.handleError));
   }
 
   public postCommentService(comment: NewComment): Observable<Comments[]> {
     return this.http.post<{comments: Comments[]}>(`${this.environment.url}/articles/${this.slug}/comments`, { comment })
       .pipe(map((res: {comments: Comments[]}) => {
           return res.comments;
-          })).pipe(catchError(this.handleError));
+          }))
 }
-
-  private handleError(error: HttpErrorResponse) {
-    let msg: string;
-    if (error.error instanceof ErrorEvent) {
-      msg = error.error.message;
-      console.log(msg);
-    } else {
-    console.log(error.error);
-    }
-    return throwError(error);
-}
-
 }

@@ -48,14 +48,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
             this.isLogged = true;
           },
             error: (error) => {
-                this.fieldError = Object.keys(error.error.errors).join(',');
-                this.problemError = Object.values(error.error.errors).join(',');
+                this.fieldError = error.fieldError;
+                this.problemError = error.problemError;
                 console.log(this.fieldError);
                 console.log(this.problemError);
             }
           });
   }
-    
   
  // creation data for validation
   public get username() {
