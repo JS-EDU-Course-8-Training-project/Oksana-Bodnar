@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { Observable} from 'rxjs';
 import { Articles } from 'src/app/shared/models/articles.model';
 import { crateArticle } from 'src/app/shared/models/createArticle.model';
 import { environment } from 'src/environments/environment';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CreateAerticleService {
   public environment = environment;
   constructor(private http: HttpClient) {}

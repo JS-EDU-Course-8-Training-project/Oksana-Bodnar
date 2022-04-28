@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLogged$ = this.userService.loggedUserModels$;
     this.tags$ = this.httpService.tags$;
+    this.articles$ = this.httpService.articlesFeed$;
     this.token = this.getToken();
     this.getArticles(10, this.page);
     this.getTags();

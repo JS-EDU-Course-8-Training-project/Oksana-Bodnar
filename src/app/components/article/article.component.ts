@@ -65,7 +65,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
       this.isFollow = data.author.following;
       this.isLike = data.favorited;
-
     
       return this.article = data
     });

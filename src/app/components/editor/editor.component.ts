@@ -74,13 +74,23 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   public update() {
-    this.newArticle = { ... this.newArticleForm.value, tagList: this.newArticleForm.value.tagList.split(',') };
+    if (this.newArticleForm.value.tagList.length) {
+      this.newArticle = { ... this.newArticleForm.value, tagList: this.newArticleForm.value.tagList.split(',') };
+    } else {
+      this.newArticle = { ... this.newArticleForm.value };
+    }
      this.subscriptionUpdateArticle$ = this.createArticleService.postNewArticle(this.newArticle, this.slug)
-        .subscribe(()=> this.router.navigateByUrl('')); 
+      .subscribe(() => this.router.navigateByUrl('')); 
+    
   }
 
   public publish(): void {
-    this.newArticle = this.newArticleForm.value
+     if (this.newArticleForm.value.tagList.length) {
+      this.newArticle = { ... this.newArticleForm.value, tagList: this.newArticleForm.value.tagList.split(',') };
+    } else {
+      this.newArticle = { ... this.newArticleForm.value };
+     }
+    
      this.subscriptionPublishArticle$ = this.createArticleService.postArticle(this.newArticle)
         .subscribe(() => this.router.navigateByUrl('')); 
   }

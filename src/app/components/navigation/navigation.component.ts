@@ -42,7 +42,6 @@ export class NavigationComponent implements OnInit{
             {url: '/login', name: 'Sign In'},
             {url: '/register', name: 'Sign Up'},
           ]
-    
         }
 
   public doUserLogout() {
