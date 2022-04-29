@@ -1,15 +1,18 @@
-import { async, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommentsService } from './comments.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import {HttpClient, HttpClientModule, HttpResponse} from '@angular/common/http';
 import { Comments } from 'src/app/shared/models/comments.model';
+import { of } from 'rxjs';
 
 
 describe('CommentsService', () => {
 
   let service: CommentsService;
-  const dummyComments: Comments[] = [{
+  let httpMock: HttpTestingController;
+  let url = 'https://api.realworld.io/api';
+  const draftComments: Comments[] = [{
       id: 1,
       createdAt: 'some date',
       updatedAt: 'some date',
@@ -40,6 +43,8 @@ describe('CommentsService', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, HttpClientModule]
     });
     service = TestBed.inject(CommentsService);
+    httpMock = TestBed.inject(HttpTestingController);
+    
     
   });
 
@@ -47,7 +52,7 @@ describe('CommentsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get Slug and return Slug', () => {
+  it('should return Slug', () => {
     spyOn(service, 'getArticleSlug').and.callThrough();
     let a = service.getArticleSlug('slug-there');
     let b = service.getArticleSlug('another-slug');
@@ -55,19 +60,23 @@ describe('CommentsService', () => {
     expect(a).toBe('slug-there', 'should be slug-there')
     expect(b).toBe('another-slug', 'should be another-slug')
   });
-  
-  it('be able to get comments from the API using GET', () => {
     
-    service.getComments().subscribe(comments => {
-      expect(comments.length).toBe(2);
-      expect(comments).toEqual(dummyComments);
-    })
-   })
-
-  it('should get comments from BehaviourSubject', async(() => {
-    service.comments$.next(dummyComments);
-    service.getComments();
-    service.comments$.subscribe((val: Comments[]) => expect(val).toEqual(dummyComments));
-  }))
+  it('deleteCommentService should be called', () => {
+    spyOn(service, 'deleteCommentService').and.callThrough();
+    let a = service.deleteCommentService();
+    expect(a).toBeTruthy();
+  });
+  
+  it('getComments() should execute http request', waitForAsync(() => {
+    service.getComments().subscribe((res) => {
+      expect(res).toEqual(draftComments);
+    });
+  }));
+  
+  it('postCommentService() should execute http request', waitForAsync(() => {
+    service.postCommentService({body: 'some body'}).subscribe((res) => {
+      expect(res).toEqual(draftComments);
+    });
+  }));
 
   })

@@ -17,4 +17,17 @@ describe('FollowService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  
+  it('follow should be called', () => {
+    spyOn(service, 'follow').and.callThrough();
+    let a = service.follow('someName');
+    expect(a).toBeTruthy();
+  });
+
+  it('unFollow should be called', () => {
+    spyOn(service, 'unFollow').and.callThrough();
+    let a = service.unFollow('someName');
+    expect(a).toBeTruthy();
+  });
+  
 });

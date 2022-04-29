@@ -42,9 +42,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLogged$ = this.userService.loggedUserModels$;
     this.tags$ = this.httpService.tags$;
-    this.articles$ = this.httpService.articlesFeed$;
+    this.articles$ = this.httpService.articles$
     this.token = this.getToken();
-    this.getArticles(10, this.page);
+    this.getArticles(50, this.page);
     this.getTags();
   }
 
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isGlobal = false;
     
      if (this.token) { 
-    this.getArticlesYourFeed(10, this.page)
+    this.getArticlesYourFeed(50, this.page)
     }
 
   }
@@ -103,14 +103,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isOwnFeed = false;
     this.isGlobal = true;
     this.page = 1;
-      this.getArticles(10, this.page);
+      this.getArticles(50, this.page);
   }
   
   public onTag(event: DOMEvent<any>) {
     this.page = 1;
     this.input = event.target.innerText;
     if (this.input) {
-      this.getArticlesByTag(10, 0, this.input);
+      this.getArticlesByTag(50, 0, this.input);
     }
   }
 

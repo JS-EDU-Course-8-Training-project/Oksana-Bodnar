@@ -5,6 +5,7 @@ import { Articles } from 'src/app/shared/models/articles.model';
 import { Tags } from 'src/app/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
 import { ArticleResult } from 'src/app/shared/models/ArticleResult.model';
+import { crateArticle } from '../shared/models/createArticle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,6 @@ export class GetArticleService {
               }))
   }
 
-// https://api.realworld.io/api/articles?favorited=Oksana445464&limit=5&offset=0
     public getAllFavoritedArticles(limit: number, offset: number, userName: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&favorited=${userName}`)
         .pipe(map((res: {articles: Articles[]}) => {
@@ -35,8 +35,6 @@ export class GetArticleService {
               }))
   }
 
-  
-
     public getAllArticlesByTag(limit: number, offset: number = 0, tag: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&tag=${tag}`)
         .pipe(map((res: {articles: Articles[]}) => {
@@ -44,7 +42,6 @@ export class GetArticleService {
                   return res.articles;
               }))
   }
-
 
   public getTags(): Observable<Tags[]> {
       return this.http.get<{tags: Tags[]}>(`${this.environment.url}/tags`)
@@ -79,6 +76,17 @@ export class GetArticleService {
                   return result.articles;
               }))
   }
+
+  public postArticle(article: crateArticle): Observable<Articles> {
+    return this.http.post<{ article: Articles }>(`${this.environment.url}/articles`, { article })
+      .pipe(map((res: { article: Articles }) => {
+        return res.article;
+      }));
+  }
+    
+  public postUpdatedArticle(article: crateArticle, slug: string | null): Observable<Articles> {
+    return this.http.put<Articles>(`${this.environment.url}/articles/${slug}`, { article })
+}
 
 }
 

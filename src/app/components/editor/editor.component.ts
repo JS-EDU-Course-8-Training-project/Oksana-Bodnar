@@ -1,9 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, throwError } from 'rxjs';
-import { CreateAerticleService } from 'src/app/services/createArticle.service';
+import { Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { environment } from 'src/environments/environment';
 import { Articles } from 'src/app/shared/models/articles.model';
@@ -13,7 +12,7 @@ import { crateArticle } from 'src/app/shared/models/createArticle.model';
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
-  providers: [CreateAerticleService, GetArticleService]
+  providers: [ GetArticleService]
 })
 
   
@@ -31,7 +30,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   
 
   constructor(private router: Router,
-    private createArticleService: CreateAerticleService,
     private route: ActivatedRoute,
     private getArticleService: GetArticleService) { }
 
@@ -79,8 +77,10 @@ export class EditorComponent implements OnInit, OnDestroy {
     } else {
       this.newArticle = { ... this.newArticleForm.value };
     }
-     this.subscriptionUpdateArticle$ = this.createArticleService.postNewArticle(this.newArticle, this.slug)
-      .subscribe(() => this.router.navigateByUrl('')); 
+     this.subscriptionUpdateArticle$ = this.getArticleService.postUpdatedArticle(this.newArticle, this.slug)
+       .subscribe((val) => {
+         this.router.navigateByUrl('')
+       }); 
     
   }
 
@@ -90,9 +90,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     } else {
       this.newArticle = { ... this.newArticleForm.value };
      }
-    
-     this.subscriptionPublishArticle$ = this.createArticleService.postArticle(this.newArticle)
-        .subscribe(() => this.router.navigateByUrl('')); 
+     this.subscriptionPublishArticle$ = this.getArticleService.postArticle(this.newArticle)
+       .subscribe((val) => {
+         console.log(val.slug);
+         this.router.navigateByUrl('')
+       })
   }
   
   ngOnDestroy() {

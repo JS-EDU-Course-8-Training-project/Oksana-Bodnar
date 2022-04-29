@@ -17,4 +17,16 @@ describe('LikeService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+    it('like should be called', () => {
+    spyOn(service, 'like').and.callThrough();
+    let a = service.like('someArticle');
+    expect(a).toBeTruthy();
+  });
+
+  it('unFollow should be called', () => {
+    spyOn(service, 'likeDelete').and.callThrough();
+    let a = service.likeDelete('someArticle');
+    expect(a).toBeTruthy();
+  });
 });
