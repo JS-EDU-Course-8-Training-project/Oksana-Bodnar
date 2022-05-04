@@ -15,25 +15,18 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         return next.handle(request)
             .pipe(
                 catchError((error: HttpErrorResponse) => {
-                    let errorMsg = '';
+                    let errorMsg;
                     let errorObj = {};
                     if (error.error instanceof ErrorEvent) {
-                        console.log('This is client side error');
                         errorMsg = `Error: ${error.error.message}`; 
-                    } else {
-                console.log('This is server side error');
-                        errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
-                        if (error.error.errors) {
-                            let fieldError = Object.keys(error.error.errors).join(',');
-                            let problemError = Object.values(error.error.errors).join(',');
-                            console.log(fieldError);
-                            console.log(problemError);
-                        }
-                     errorObj = {
-                        fieldError: Object.keys(error.error.errors).join(','),
-                        problemError: Object.values(error.error.errors).join(',')
-                }
-                    }
+                        console.log(`This is client side error ${errorMsg}`);
+                    } else { if (error.error) {
+                        errorObj = {
+                            fieldError: Object.keys(error.error.errors).join(','),
+                            problemError: Object.values(error.error.errors).join(',')
+                        };
+                        console.log(errorObj);
+                    }}
                     return throwError(() => errorObj);
                 })
             )

@@ -107,7 +107,6 @@ describe('UserService', () => {
     it('postNewSettings should be called', waitForAsync(() => {
     const spy = spyOn(httpMock, 'put').and.returnValue(of(draftResUser));
       service.postNewSettings(draftNewUser).subscribe((data) => {
-      console.log(data)
       expect(data).toEqual(data);
     });
   }));

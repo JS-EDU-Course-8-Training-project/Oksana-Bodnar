@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+
 import { ErrorHandlerInterceptor } from './errorHandler.service';
 import { GetArticleService } from './getArticles.service';
 
@@ -38,7 +39,29 @@ describe('ErrorHandlerInterceptor', () => {
   });
     const httpRequest = httpMock.expectOne(`https://api.realworld.io/api/articles/feed/?limit=10&offset=0`);
   expect(httpRequest.error).toBeTruthy();
-}));
+  }));
+
+    it('should be called with error 400', waitForAsync(() => {
+      let response: any;
+      let errResponse: any;
+      const mockErrorResponse = { status: 400, statusText: 'Bad Request' };
+      const data = {};
+      serviceForRequest.getArticlesFeed(10, 0).subscribe(res => response = res, err => errResponse = err);
+      httpMock.expectOne(`https://api.realworld.io/api/articles/feed/?limit=10&offset=0`).flush(data, mockErrorResponse);
+      expect(errResponse).toBeTruthy();
+    }));
+
+
+
+    it('should be called with error 400', waitForAsync(() => {
+      let response: any;
+      let errResponse: any;
+      const mockErrorResponse = { status: 400, statusText: 'Bad Request' };
+      const data = {};
+      serviceForRequest.getArticlesFeed(10, 0).subscribe(res => response = res, err => errResponse = err);
+      httpMock.expectOne(`https://api.realworld.io/api/articles/feed/?limit=10&offset=0`).error(new ErrorEvent('network error'));
+      expect(errResponse).toBeTruthy();
+    }));
 
 });
 

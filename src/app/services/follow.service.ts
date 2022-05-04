@@ -14,14 +14,10 @@ public environment = environment;
 
   public follow(name: string) {
       return this.http.post(`${this.environment.url}/profiles/${name}/follow`, {})
-        .pipe(map(() => {
-              }))
   }
   
   public unFollow(name: string) {
       return this.http.delete(`${this.environment.url}/profiles/${name}/follow`, {})
-      .pipe(map(() => {
-        }))
   }
   
 

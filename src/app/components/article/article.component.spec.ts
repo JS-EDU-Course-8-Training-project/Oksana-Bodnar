@@ -62,7 +62,7 @@ describe('ArticleComponent', () => {
     }
   };
 
-    const article: Articles = {
+  const article: Articles = {
     author: {
       bio: 'bio',
       following: true,
@@ -78,6 +78,15 @@ describe('ArticleComponent', () => {
     tagList: ['tag'],
     title: 'title',
     updatedAt: 'updatedAt'
+  };
+
+      const profile = {
+    profile: {
+      bio: 'bio',
+      following: true,
+      image: 'image',
+      username: 'username'
+    }
   }
   
 
@@ -224,7 +233,5 @@ articleServiceStub.getArticle.and.returnValue(of(article))
     const subscription = component.subscriptionNewUser$ instanceof Subscription;
     expect(subscription).toBeTrue();
   });
-  
-  
 
 });

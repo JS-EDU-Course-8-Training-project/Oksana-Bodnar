@@ -116,10 +116,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   public onClickFollow() {
-    if (this.article) {
       this.isFollow = !this.isFollow;
       if (this.isFollow) { this.follow() } else { this.unFollow() };
-    }
+  
   }
 
   public onClickLike() {
@@ -130,18 +129,18 @@ export class ArticleComponent implements OnInit, OnDestroy {
   public follow() {
     if (this.article) {
       this.subscriptionFollowing$ = this.followService.follow(this.article.author.username)
-        .subscribe();
+        .subscribe()}
       this.subscriptions$.push(this.subscriptionFollowing$);
-    }
+  
   }
 
   
   public unFollow() {
     if (this.article) {
       this.subscriptionUnFollowing$ = this.followService.unFollow(this.article.author.username)
-        .subscribe();
+        .subscribe()}
       this.subscriptions$.push(this.subscriptionUnFollowing$);
-    }
+    
   }
 
 public like(): void {

@@ -5,6 +5,7 @@ import { Articles } from 'src/app/shared/models/articles.model';
 import { Tags } from 'src/app/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
 import { CreateArticle } from '../shared/models/createArticle.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class GetArticleService {
   public articlesFeed$: BehaviorSubject<Articles[]> = new BehaviorSubject([] as Articles[]);
   public slug!: string | null;
  
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public router: Router) { }
   
   public getAllArticles(limit: number, offset: number): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}`)
@@ -73,12 +74,20 @@ export class GetArticleService {
               }))
   }
 
-  public postArticle(article: CreateArticle) {
-    return this.http.post(`${this.environment.url}/articles`, { article })
+  public postArticle(article: CreateArticle): Observable<Articles> {
+    return this.http.post<{article: Articles}>(`${this.environment.url}/articles`, { article })
+      .pipe(map((res: { article: Articles }) => {
+        this.router.navigateByUrl('');
+                  return res.article;
+              }))
   }
     
-  public postUpdatedArticle(article: CreateArticle, slug: string | null) {
-    return this.http.put(`${this.environment.url}/articles/${slug}`, { article })
+  public postUpdatedArticle(article: CreateArticle, slug: string | null): Observable<Articles> {
+    return this.http.put<{article: Articles}>(`${this.environment.url}/articles/${slug}`, { article })
+       .pipe(map((res: { article: Articles }) => {
+        this.router.navigateByUrl('');
+                  return res.article;
+              }))
 }
 
 }

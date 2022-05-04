@@ -23,9 +23,9 @@ export class EditorComponent implements OnInit, OnDestroy {
   public slug!: string | null;
   public environment = environment;
   public article!: Articles;
-  private subscriptionArticle$!: Subscription;
-  private subscriptionUpdateArticle$!: Subscription;
-  private subscriptionPublishArticle$!: Subscription;
+  public subscriptionArticle$!: Subscription;
+  public subscriptionUpdateArticle$!: Subscription;
+  public subscriptionPublishArticle$!: Subscription;
   private subscriptions$: Subscription[] = [];
   
   
@@ -81,9 +81,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.newArticle = { ... this.newArticleForm.value };
     }
      this.subscriptionUpdateArticle$ = this.getArticleService.postUpdatedArticle(this.newArticle, this.slug)
-       .subscribe((val) => {
-         this.router.navigateByUrl('')
-       }); 
+       .subscribe(); 
     this.subscriptions$.push(this.subscriptionUpdateArticle$);
   }
 
@@ -93,10 +91,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     } else {
       this.newArticle = { ... this.newArticleForm.value };
      }
-     this.subscriptionPublishArticle$ = this.getArticleService.postArticle(this.newArticle)
-       .subscribe((val) => {
-         this.router.navigateByUrl('')
-       })
+    this.subscriptionPublishArticle$ = this.getArticleService.postArticle(this.newArticle)
+      .subscribe();
     this.subscriptions$.push(this.subscriptionPublishArticle$);
   }
   
