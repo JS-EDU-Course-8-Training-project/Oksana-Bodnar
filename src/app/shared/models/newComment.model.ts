@@ -1,3 +1,3 @@
 export interface NewComment {
-    "body": string;
+    body: string;
 };

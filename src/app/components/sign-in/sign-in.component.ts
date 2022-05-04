@@ -13,7 +13,6 @@ import { mustBePasswordValidator } from 'src/app/shared/mustBe-password.directiv
 })
 export class SignInComponent implements OnDestroy, OnInit  {
   public newUser!: NewUser;
-  public isLogged!: boolean;
   public authForm!: FormGroup;
   private subscriptionUser$!: Subscription;
   public fieldError!: string;
@@ -35,14 +34,11 @@ export class SignInComponent implements OnDestroy, OnInit  {
         .subscribe(
           {
             next: () => {
-            this.router.navigateByUrl('/settings')
-            this.isLogged = true;
+            // this.router.navigateByUrl('/settings')
           },
             error: (error) => {
                 this.fieldError = error.fieldError;
                 this.problemError = error.problemError;
-                console.log(this.fieldError);
-                console.log(this.problemError);
             }
           }); 
     }

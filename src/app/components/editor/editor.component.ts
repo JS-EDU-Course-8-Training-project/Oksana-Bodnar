@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { environment } from 'src/environments/environment';
 import { Articles } from 'src/app/shared/models/articles.model';
-import { crateArticle } from 'src/app/shared/models/createArticle.model';
+import { CreateArticle } from 'src/app/shared/models/createArticle.model';
 
 @Component({
   selector: 'app-editor',
@@ -19,13 +19,14 @@ import { crateArticle } from 'src/app/shared/models/createArticle.model';
 export class EditorComponent implements OnInit, OnDestroy {
 
   public newArticleForm!: FormGroup;
-  public newArticle!: crateArticle;
+  public newArticle!: CreateArticle;
   public slug!: string | null;
   public environment = environment;
   public article!: Articles;
   private subscriptionArticle$!: Subscription;
   private subscriptionUpdateArticle$!: Subscription;
   private subscriptionPublishArticle$!: Subscription;
+  private subscriptions$: Subscription[] = [];
   
   
 
@@ -49,7 +50,9 @@ export class EditorComponent implements OnInit, OnDestroy {
      this.subscriptionArticle$ = this.getArticleService.getArticle(this.slug).subscribe(data => {
         this.article = data;
         this.generateForm(this.article);
-       })}
+     })
+    }
+    this.subscriptions$.push(this.subscriptionArticle$);
     this.updateForm();
   }
 
@@ -81,7 +84,7 @@ export class EditorComponent implements OnInit, OnDestroy {
        .subscribe((val) => {
          this.router.navigateByUrl('')
        }); 
-    
+    this.subscriptions$.push(this.subscriptionUpdateArticle$);
   }
 
   public publish(): void {
@@ -92,22 +95,15 @@ export class EditorComponent implements OnInit, OnDestroy {
      }
      this.subscriptionPublishArticle$ = this.getArticleService.postArticle(this.newArticle)
        .subscribe((val) => {
-         console.log(val.slug);
          this.router.navigateByUrl('')
        })
+    this.subscriptions$.push(this.subscriptionPublishArticle$);
   }
   
   ngOnDestroy() {
-    if (this.subscriptionArticle$) {
-      this.subscriptionArticle$.unsubscribe();
-    }
-    if (this.subscriptionUpdateArticle$) {
-      this.subscriptionUpdateArticle$.unsubscribe();
-    }
-    if (this.subscriptionPublishArticle$) {
-      this.subscriptionPublishArticle$.unsubscribe();
-    }
+this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
+}
 
-    }
+    
 
 }

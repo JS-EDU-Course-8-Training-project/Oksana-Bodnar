@@ -16,7 +16,6 @@ export class NavigationComponent implements OnInit{
   private subscriptionUser$!: Subscription;
   public itemsLogged!: navItem[];
   public itemsNotLogged!: navItem[];
-  private subscriptions$: Subscription[] = [];
   
   constructor(private userService: UserService) { }
 
@@ -27,8 +26,6 @@ export class NavigationComponent implements OnInit{
       this.subscriptionUser$ = this.getNewUser()
         .subscribe()
     }   
-    this.subscriptions$.push(this.subscriptionUser$);
-      // this.userService.loggedUserModels$.pipe(tap))
   }
   
   public makeItems() {
@@ -53,7 +50,7 @@ export class NavigationComponent implements OnInit{
   }
   
   ngOnDestroy() {
-   if(this.subscriptions$) {
-        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+   if(this.subscriptionUser$) {
+     this.subscriptionUser$.unsubscribe();
     }}
 }

@@ -55,13 +55,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-    public getFavoritedArticles() {
-     this.articles$ = this.httpService.articles$;
-     this.subscriptionArticle$ = this.httpService
-      .getAllFavoritedArticles(20, 0, this.user.username)
-      .subscribe(data => {
-      this.articles = data;
-      })
+  public getFavoritedArticles() {
+      this.articles$ = this.httpService.articles$;
+    if (this.user) {
+      this.subscriptionArticle$ = this.httpService
+        .getAllFavoritedArticles(20, 0, this.user.username)
+        .subscribe(data => {
+          this.articles = data;
+        })
+    }
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
@@ -74,10 +76,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public showFavouriteArticles(): void {
-    this.page = 1;
-    this.isFavourite = true;
-    this.isOwn = false;
-     this.getFavoritedArticles();
+      this.page = 1;
+      this.isFavourite = true;
+      this.isOwn = false;
+      this.getFavoritedArticles();
   }
 
    public getNewUser() {
@@ -85,8 +87,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
    }
   
   ngOnDestroy() {
-   if(this.subscriptions$) {
-        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
-    }}
+
+        this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
+    }
   
 }

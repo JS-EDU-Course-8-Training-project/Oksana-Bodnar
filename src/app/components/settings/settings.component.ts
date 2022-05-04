@@ -58,21 +58,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   public publish() {
-    this.newUserSet = { ...this.newSettingsForm.value, token: this.user.token };
-     this.subscriptionSettings$ = this.postNewSettings(this.newUserSet).subscribe(
-       {next: () => {
-        this.router.navigate([''])
-      }
-      })
+    if (this.user) {
+      this.newUserSet = { ...this.newSettingsForm.value, token: this.user.token };
+      this.subscriptionSettings$ = this.userService.postNewSettings(this.newUserSet).subscribe()
+    }
     this.subscriptions$.push(this.subscriptionSettings$);
-  }
-   
-
-  public postNewSettings(newUserSet: ChangeProfileType) {
-    return this.http.put<{user: ChangeProfileType }>(`${this.environment.url}/user`, { user: newUserSet })
-      .pipe(map((response: { user: ChangeProfileType }) => {
-        localStorage.setItem('access_token', response.user.token);
-      }))
   }
   
   public doUserLogout() {
@@ -81,7 +71,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
- if(this.subscriptions$) {
-        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
-    }}
+
+        this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
+  }
 }

@@ -1,26 +1,44 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ErrorHandlerInterceptor } from './errorHandler.service';
+import { GetArticleService } from './getArticles.service';
 
 describe('ErrorHandlerInterceptor', () => {
   let service: ErrorHandlerInterceptor;
-  // let httpClient;
-  // let httpMock;
-
-  //   httpClient = TestBed.inject(HttpClient);
-  //   httpMock = TestBed.inject(HttpTestingController);
+  let serviceForRequest: GetArticleService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule],
+       providers: [
+        GetArticleService,
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: ErrorHandlerInterceptor,
+          multi: true,
+        },
+      ],
     });
     service = TestBed.inject(ErrorHandlerInterceptor);
+    serviceForRequest = TestBed.inject(GetArticleService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  
+  it('should be called with error', waitForAsync(() => {
+  serviceForRequest.getArticlesFeed(10, 0).subscribe(response => {
+    expect(response).toBeFalsy();
+  });
+    const httpRequest = httpMock.expectOne(`https://api.realworld.io/api/articles/feed/?limit=10&offset=0`);
+  expect(httpRequest.error).toBeTruthy();
+}));
+
 });
+

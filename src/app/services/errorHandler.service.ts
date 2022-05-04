@@ -22,11 +22,13 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                         errorMsg = `Error: ${error.error.message}`; 
                     } else {
                 console.log('This is server side error');
-                errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
-                let fieldError = Object.keys(error.error.errors).join(',');
-                let problemError = Object.values(error.error.errors).join(',');
-                console.log(fieldError);
-                console.log(problemError);
+                        errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
+                        if (error.error.errors) {
+                            let fieldError = Object.keys(error.error.errors).join(',');
+                            let problemError = Object.values(error.error.errors).join(',');
+                            console.log(fieldError);
+                            console.log(problemError);
+                        }
                      errorObj = {
                         fieldError: Object.keys(error.error.errors).join(','),
                         problemError: Object.values(error.error.errors).join(',')

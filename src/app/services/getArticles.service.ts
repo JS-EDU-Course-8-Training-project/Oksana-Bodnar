@@ -4,8 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, Subject, throwError } fro
 import { Articles } from 'src/app/shared/models/articles.model';
 import { Tags } from 'src/app/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
-import { ArticleResult } from 'src/app/shared/models/ArticleResult.model';
-import { crateArticle } from '../shared/models/createArticle.model';
+import { CreateArticle } from '../shared/models/createArticle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +46,7 @@ export class GetArticleService {
       return this.http.get<{tags: Tags[]}>(`${this.environment.url}/tags`)
         .pipe(map((res: {tags: Tags[]}) => {
           this.tags$.next(res.tags);
-                  return res.tags;
+          return res.tags;
               }))
   }
 
@@ -57,35 +56,29 @@ export class GetArticleService {
 
   public getArticle(slug: string | null): Observable<Articles> {
       return this.http.get< {article: Articles}>(`${this.environment.url}/articles/${slug}`, {})
-        .pipe(map((res: {article: Articles} ) => {
+        .pipe(map((res: { article: Articles }) => {
                   return res.article;
               }))
   }
 
-  public deleteArticle(): Observable<Articles> {
-      return this.http.delete<{article: Articles}>(`${this.environment.url}/articles/${this.slug}`)
-          .pipe(map((res: {article: Articles}) => {
-                  return res.article;
-              }))
+  public deleteArticle() {
+    return this.http.delete<null>(`${this.environment.url}/articles/${this.slug}`)
   }
 
   public getArticlesFeed(limit: number, offset: number): Observable<Articles[]> {
-    return this.http.get<{ articles: Articles[] }>(`https://api.realworld.io/api/articles/feed/?limit=${limit}&offset=${offset}`)
+    return this.http.get<{ articles: Articles[] }>(`${this.environment.url}/articles/feed/?limit=${limit}&offset=${offset}`)
         .pipe(map((result: {articles: Articles[]}) => {
           this.articlesFeed$.next(result.articles);
                   return result.articles;
               }))
   }
 
-  public postArticle(article: crateArticle): Observable<Articles> {
-    return this.http.post<{ article: Articles }>(`${this.environment.url}/articles`, { article })
-      .pipe(map((res: { article: Articles }) => {
-        return res.article;
-      }));
+  public postArticle(article: CreateArticle) {
+    return this.http.post(`${this.environment.url}/articles`, { article })
   }
     
-  public postUpdatedArticle(article: crateArticle, slug: string | null): Observable<Articles> {
-    return this.http.put<Articles>(`${this.environment.url}/articles/${slug}`, { article })
+  public postUpdatedArticle(article: CreateArticle, slug: string | null) {
+    return this.http.put(`${this.environment.url}/articles/${slug}`, { article })
 }
 
 }

@@ -120,7 +120,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.subscriptions$) {
-        this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
-    }}
+    this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
+  }
 }

@@ -1,51 +1,57 @@
-import { async, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommentsService } from './comments.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import {HttpClient, HttpClientModule, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Comments } from 'src/app/shared/models/comments.model';
 import { of } from 'rxjs';
 
 
 describe('CommentsService', () => {
 
+  const draftComments: { comments: Comments[]} = {
+    comments:  [{
+        id: 1,
+        createdAt: 'some date',
+        updatedAt: 'some date',
+        body: 'some body',
+        author: {
+          username: 'some name',
+          bio: 'some bio',
+          image: 'some href image',
+          following: true,
+        }
+      }, {
+        id: 2,
+        createdAt: 'some date',
+        updatedAt: 'some date',
+        body: 'some body',
+        author: {
+          username: 'some name',
+          bio: 'some bio',
+          image: 'some href image',
+          following: false,
+        }
+      }]
+  }
+
   let service: CommentsService;
-  let httpMock: HttpTestingController;
-  let url = 'https://api.realworld.io/api';
-  const draftComments: Comments[] = [{
-      id: 1,
-      createdAt: 'some date',
-      updatedAt: 'some date',
-      body: 'some body',
-      author: {
-        username: 'some name',
-        bio: 'some bio',
-        image: 'some href image',
-        following: true,
-      }
-    }, {
-      id: 2,
-      createdAt: 'some date',
-      updatedAt: 'some date',
-      body: 'some body',
-      author: {
-        username: 'some name',
-        bio: 'some bio',
-        image: 'some href image',
-        following: false,
-      }
-    }];
-  
-  
+  let httpMock = {
+    get: jasmine.createSpyObj(of(draftComments)),
+    put: jasmine.createSpyObj(of(draftComments)),
+    post: jasmine.createSpyObj(of(draftComments)),
+    delete: jasmine.createSpyObj(of())
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, HttpClientModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, HttpClientModule],
+        providers: [
+          { provide: HttpClient, useValue: httpMock },
+        ]
     });
     service = TestBed.inject(CommentsService);
-    httpMock = TestBed.inject(HttpTestingController);
-    
-    
+
   });
 
   it('should be created', () => {
@@ -55,28 +61,30 @@ describe('CommentsService', () => {
   it('should return Slug', () => {
     spyOn(service, 'getArticleSlug').and.callThrough();
     let a = service.getArticleSlug('slug-there');
-    let b = service.getArticleSlug('another-slug');
-
     expect(a).toBe('slug-there', 'should be slug-there')
-    expect(b).toBe('another-slug', 'should be another-slug')
   });
     
-  it('deleteCommentService should be called', () => {
-    spyOn(service, 'deleteCommentService').and.callThrough();
-    let a = service.deleteCommentService();
-    expect(a).toBeTruthy();
-  });
-  
-  it('getComments() should execute http request', waitForAsync(() => {
-    service.getComments().subscribe((res) => {
-      expect(res).toEqual(draftComments);
-    });
+ it('deleteCommentService should be called', waitForAsync(() => {    
+   const spy = spyOn(httpMock, 'delete').and.returnValue(of());
+
+   const data = service.deleteCommentService().subscribe();
+   expect(data).toBeTruthy();
   }));
-  
-  it('postCommentService() should execute http request', waitForAsync(() => {
-    service.postCommentService({body: 'some body'}).subscribe((res) => {
-      expect(res).toEqual(draftComments);
+
+ 
+  it('postCommentService() should execute http request', waitForAsync(() => {    
+    const spy = spyOn(httpMock, 'post').and.returnValue(of(draftComments));
+    service.postCommentService({body: 'body'}).subscribe((data) => {
+      expect(data).toEqual(draftComments.comments);
     });
   }));
 
+  it('getComments() should check return value', waitForAsync(() => {
+    const spy = spyOn(httpMock, 'get').and.returnValue(of(draftComments));
+    service.getComments().subscribe((data) => {
+      expect(data).toEqual(draftComments.comments);
+    });
   })
+);
+})
+  
