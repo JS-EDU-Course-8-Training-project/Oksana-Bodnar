@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,15 +10,13 @@ export class FollowService {
 
 public environment = environment;
   
-  constructor(private http: HttpClient) { }
+constructor(private http: HttpClient) { }
 
-  public follow(name: string) {
-      return this.http.post(`${this.environment.url}/profiles/${name}/follow`, {})
-  }
+public follow(name: string): Observable<Object>  {
+  return this.http.post(`${this.environment.url}/profiles/${name}/follow`, {})
+}
   
-  public unFollow(name: string) {
-      return this.http.delete(`${this.environment.url}/profiles/${name}/follow`, {})
-  }
-  
-
+public unFollow(name: string): Observable<Object> {
+  return this.http.delete(`${this.environment.url}/profiles/${name}/follow`, {})
+}
 }

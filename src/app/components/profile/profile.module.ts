@@ -4,8 +4,6 @@ import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
-
-
 @NgModule({
   declarations: [
     ProfileComponent

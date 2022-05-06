@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
@@ -11,6 +11,7 @@ import { mustBePasswordValidator } from 'src/app/shared/mustBe-password.directiv
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
+  
 export class SignInComponent implements OnDestroy, OnInit  {
   public newUser!: NewUser;
   public authForm!: FormGroup;
@@ -31,31 +32,24 @@ export class SignInComponent implements OnDestroy, OnInit  {
   public login(): void {
   this.newUser = this.authForm.value;
     this.subscriptionUser$ = this.userService.logUser({ user: this.newUser })
-        .subscribe(
-          {
-            next: () => {
-            // this.router.navigateByUrl('/settings')
-          },
-            error: (error) => {
-                this.fieldError = error.fieldError;
-                this.problemError = error.problemError;
-            }
-          }); 
-    }
+        .subscribe({next: () => {},
+                  error: (error) => {
+                    this.fieldError = error.fieldError;
+                    this.problemError = error.problemError;
+          }
+        })
+  }
   
    // creation data for validation
-  public get userEmail() {
+  public get userEmail(): AbstractControl | null {
    return this.authForm.get('email');
   } 
 
-  public get userPassword() {
+  public get userPassword(): AbstractControl | null {
    return this.authForm.get('password');
   } 
   
   ngOnDestroy() {
-    if (this.subscriptionUser$) {
-      this.subscriptionUser$.unsubscribe();
-    }
+    if (this.subscriptionUser$) {this.subscriptionUser$.unsubscribe()}
   }
-
 }

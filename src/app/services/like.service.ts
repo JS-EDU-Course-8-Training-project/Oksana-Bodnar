@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,13 +11,11 @@ export class LikeService {
   
   constructor(private http: HttpClient) { }
 
-  public like(href: string) {
+  public like(href: string): Observable<Object> {
     return this.http.post(`${this.environment.url}/articles/${href}/favorite`, {})
-}
+  }
 
-public likeDelete(href: string) {
+  public likeDelete(href: string): Observable<Object> {
     return this.http.delete(`${this.environment.url}/articles/${href}/favorite`, {})
-}
-  
-
+  }
 }

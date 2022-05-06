@@ -5,37 +5,36 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { ResponseUser } from '../shared/models/ResponseUser.model';
-
 import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
   
-      const user = {
-      user: {
-        username: 'someName',
-        email: 'someEmail',
-        password: 'somePassword'
-      }
-      };
+  const user = {
+    user: {
+      username: 'someName',
+      email: 'someEmail',
+      password: 'somePassword'
+    }
+  };
   
-   const draftResUser: { user: ResponseUser} = {
-    user:  {
+  const draftResUser: { user: ResponseUser } = {
+    user: {
+      email: 'email',
+      token: 'token',
+      username: 'username',
+      bio: 'bio',
+      image: 'href'
+    }
+  };
+  
+  const draftNewUser: ResponseUser = {
     email: 'email',
     token: 'token',
     username: 'username',
     bio: 'bio',
     image: 'href'
-      }
-   }
-  
-     const draftNewUser: ResponseUser = {
-    email: 'email',
-    token: 'token',
-    username: 'username',
-    bio: 'bio',
-    image: 'href'
-   }
+  }
   
    let httpMock = {
     get: jasmine.createSpyObj(of(draftResUser)),
@@ -47,7 +46,7 @@ describe('UserService', () => {
   class RouterStub {
         url = '';
         navigateByUrl(commands: any[], extras?: any) { }
-      }
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,7 +55,6 @@ describe('UserService', () => {
       { provide: Router, useClass: RouterStub }]
     });
     service = TestBed.inject(UserService);
- 
   });
 
   it('should be created', () => {
@@ -102,11 +100,10 @@ describe('UserService', () => {
     });
   }));
 
-    it('postNewSettings should be called', waitForAsync(() => {
+  it('postNewSettings should be called', waitForAsync(() => {
     const spy = spyOn(httpMock, 'put').and.returnValue(of(draftResUser));
-      service.postNewSettings(draftNewUser).subscribe((data) => {
+    service.postNewSettings(draftNewUser).subscribe((data) => {
       expect(data).toEqual(data);
     });
   }));
-
 });

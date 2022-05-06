@@ -16,6 +16,5 @@ export class IsNotLoggedGuard implements CanActivate {
       return false;
     }
       return true;
-      
   }
 }

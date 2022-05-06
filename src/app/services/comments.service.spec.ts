@@ -6,7 +6,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Comments } from 'src/app/shared/models/comments.model';
 import { of } from 'rxjs';
 
-
 describe('CommentsService', () => {
 
   const draftComments: { comments: Comments[]} = {
@@ -36,6 +35,7 @@ describe('CommentsService', () => {
   }
 
   let service: CommentsService;
+
   let httpMock = {
     get: jasmine.createSpyObj(of(draftComments)),
     put: jasmine.createSpyObj(of(draftComments)),
@@ -47,11 +47,9 @@ describe('CommentsService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, HttpClientModule],
         providers: [
-          { provide: HttpClient, useValue: httpMock },
-        ]
+          { provide: HttpClient, useValue: httpMock }]
     });
     service = TestBed.inject(CommentsService);
-
   });
 
   it('should be created', () => {
@@ -66,7 +64,6 @@ describe('CommentsService', () => {
     
  it('deleteCommentService should be called', waitForAsync(() => {    
    const spy = spyOn(httpMock, 'delete').and.returnValue(of());
-
    const data = service.deleteCommentService().subscribe();
    expect(data).toBeTruthy();
   }));
@@ -83,8 +80,7 @@ describe('CommentsService', () => {
     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftComments));
     service.getComments().subscribe((data) => {
       expect(data).toEqual(draftComments.comments);
-    });
-  })
-);
+    })
+  }));
 })
   

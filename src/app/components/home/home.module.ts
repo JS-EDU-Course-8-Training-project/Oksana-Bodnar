@@ -4,9 +4,6 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
-
-
-
 @NgModule({
   declarations: [
     HomeComponent,

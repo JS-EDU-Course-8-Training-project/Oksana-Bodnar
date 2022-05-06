@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { BehaviorSubject, catchError, map, Observable, Subject, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { Articles } from 'src/app/shared/models/articles.model';
 import { Tags } from 'src/app/shared/models/tags.model';
 import { environment } from 'src/environments/environment';
@@ -23,24 +23,24 @@ export class GetArticleService {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}`)
         .pipe(map((res: {articles: Articles[]}) => {
           this.articles$.next(res.articles);
-                  return res.articles;
-              }))
+          return res.articles;
+        }))
   }
 
-    public getAllFavoritedArticles(limit: number, offset: number, userName: string): Observable<Articles[]> {
+  public getAllFavoritedArticles(limit: number, offset: number, userName: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&favorited=${userName}`)
         .pipe(map((res: {articles: Articles[]}) => {
           this.articles$.next(res.articles);
-                  return res.articles;
-              }))
+          return res.articles;
+        }))
   }
 
-    public getAllArticlesByTag(limit: number, offset: number = 0, tag: string): Observable<Articles[]> {
+  public getAllArticlesByTag(limit: number, offset: number = 0, tag: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&tag=${tag}`)
         .pipe(map((res: {articles: Articles[]}) => {
           this.articles$.next(res.articles);
-                  return res.articles;
-              }))
+          return res.articles;
+        }))
   }
 
   public getTags(): Observable<Tags[]> {
@@ -48,7 +48,7 @@ export class GetArticleService {
         .pipe(map((res: {tags: Tags[]}) => {
           this.tags$.next(res.tags);
           return res.tags;
-              }))
+        }))
   }
 
   public getArticleSlug(slug: string): string {
@@ -58,11 +58,11 @@ export class GetArticleService {
   public getArticle(slug: string | null): Observable<Articles> {
       return this.http.get< {article: Articles}>(`${this.environment.url}/articles/${slug}`, {})
         .pipe(map((res: { article: Articles }) => {
-                  return res.article;
-              }))
+          return res.article;
+        }))
   }
 
-  public deleteArticle() {
+  public deleteArticle(): Observable<null> {
     return this.http.delete<null>(`${this.environment.url}/articles/${this.slug}`)
   }
 
@@ -70,25 +70,24 @@ export class GetArticleService {
     return this.http.get<{ articles: Articles[] }>(`${this.environment.url}/articles/feed/?limit=${limit}&offset=${offset}`)
         .pipe(map((result: {articles: Articles[]}) => {
           this.articlesFeed$.next(result.articles);
-                  return result.articles;
-              }))
+          return result.articles;
+        }))
   }
 
   public postArticle(article: CreateArticle): Observable<Articles> {
     return this.http.post<{article: Articles}>(`${this.environment.url}/articles`, { article })
       .pipe(map((res: { article: Articles }) => {
         this.router.navigateByUrl('');
-                  return res.article;
-              }))
+        return res.article;
+      }))
   }
     
   public postUpdatedArticle(article: CreateArticle, slug: string | null): Observable<Articles> {
     return this.http.put<{article: Articles}>(`${this.environment.url}/articles/${slug}`, { article })
        .pipe(map((res: { article: Articles }) => {
         this.router.navigateByUrl('');
-                  return res.article;
-              }))
-}
-
+        return res.article;
+      }))
+  }
 }
 

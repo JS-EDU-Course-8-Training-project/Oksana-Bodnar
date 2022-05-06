@@ -20,26 +20,26 @@ export class CommentsService {
 
   public getArticleSlug(slug: string): string {
       return this.slug = slug;
-    }
+  }
   
   public getComments(): Observable<Comments[]> {
       return this.http.get< {comments: Comments[]} >(`${this.environment.url}/articles/${this.slug}/comments`)
         .pipe(map((res: {comments: Comments[]}) => {
           res.comments.forEach((value: Comments) => { return this.id = value.id });
           this.comments$.next(res.comments);
-                return res.comments;
-              }))
+            return res.comments;
+        }))
   }
 
   public deleteCommentService(): Observable<null> {
-      return this.http.delete<null>(`${this.environment.url}/articles/${this.slug}/comments/${this.id}`, {})
+    return this.http.delete<null>(`${this.environment.url}/articles/${this.slug}/comments/${this.id}`, {})
   }
 
   public postCommentService(comment: NewComment): Observable<Comments[]> {
     return this.http.post<{comments: Comments[]}>(`${this.environment.url}/articles/${this.slug}/comments`, { comment })
       .pipe(map((res: {comments: Comments[]}) => {
-          return res.comments;
-          }))
-}
+        return res.comments;
+    }))
+  }
 
 }

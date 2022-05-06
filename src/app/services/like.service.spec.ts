@@ -11,6 +11,7 @@ describe('LikeService', () => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, RouterTestingModule ]
     });
+    
     service = TestBed.inject(LikeService);
   });
 
@@ -18,7 +19,7 @@ describe('LikeService', () => {
     expect(service).toBeTruthy();
   });
 
-    it('like should be called', () => {
+  it('like should be called', () => {
     spyOn(service, 'like').and.callThrough();
     let a = service.like('someArticle');
     expect(a).toBeTruthy();

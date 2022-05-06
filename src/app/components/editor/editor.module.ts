@@ -4,8 +4,6 @@ import { EditorComponent } from './editor.component';
 import { EditorRoutingModule } from './editor-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
     EditorComponent

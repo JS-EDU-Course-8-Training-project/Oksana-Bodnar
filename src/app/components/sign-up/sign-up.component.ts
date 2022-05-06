@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
@@ -21,7 +21,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router, private userService: UserService) { }
  
-
   ngOnInit(): void {
     this.authForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
@@ -31,41 +30,35 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   public login(): void {
-      console.log(this.authForm.getRawValue());
-      this.userService.setUser(
+    this.userService.setUser(
         this.authForm.getRawValue().username,
         this.authForm.getRawValue().email,
-        this.authForm.getRawValue().password);
+        this.authForm.getRawValue().password
+    );
 
     this.newUser = this.authForm.value;
 
     this.subscriptionUser$ = this.userService.register({user: this.newUser })
-      .subscribe(
-          {
-            next: () => {
-            // this.router.navigateByUrl('/settings')
-          },
+      .subscribe({next: () => {},
             error: (error) => {
                 this.fieldError = error.fieldError;
-                this.problemError = error.problemError;
-            }
-          });
+              this.problemError = error.problemError;
+        }
+      })
   }
   
  // creation data for validation
-  public get username() {
+  public get username(): AbstractControl | null {
    return this.authForm.get('username');
   } 
-  public get userEmail() {
+  public get userEmail(): AbstractControl | null {
    return this.authForm.get('email');
   } 
-  public get userPassword() {
+  public get userPassword(): AbstractControl | null {
    return this.authForm.get('password');
   }
 
   ngOnDestroy() {
-    if (this.subscriptionUser$) {
-      this.subscriptionUser$.unsubscribe();
-    }
+    if (this.subscriptionUser$) {this.subscriptionUser$.unsubscribe()}
   }
 }

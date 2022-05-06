@@ -19,11 +19,11 @@ describe('SignUpComponent', () => {
         schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
       .compileComponents();
-    fixture = TestBed.createComponent(SignUpComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    
+      fixture = TestBed.createComponent(SignUpComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
   });
-
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -33,7 +33,6 @@ describe('SignUpComponent', () => {
     let spy = spyOn(component, 'login').and.callThrough();
     spy.calls.reset();
     component.login();
-
     expect(spy).toBeTruthy();
   });
   

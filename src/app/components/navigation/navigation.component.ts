@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, Subscription, tap } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { navItem } from 'src/app/shared/models/navItem.model';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
@@ -8,7 +8,6 @@ import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
-
 })
 export class NavigationComponent implements OnInit{
 
@@ -23,34 +22,30 @@ export class NavigationComponent implements OnInit{
     this.isLoggedUser$ = this.userService.loggedUserModels$;
     this.makeItems();
     if (this.userService.getToken()) {
-      this.subscriptionUser$ = this.getNewUser()
-        .subscribe()
+      this.subscriptionUser$ = this.getNewUser().subscribe()
     }   
   }
   
-  public makeItems() {
-      
-          this.itemsLogged = [
-            {url: '/editor', name: 'New Article'},
-            {url: '/settings', name: 'Settings'},
-          ]
+  public makeItems(): void {
+      this.itemsLogged = [
+        {url: '/editor', name: 'New Article'},
+        {url: '/settings', name: 'Settings'},
+      ]
+      this.itemsNotLogged = [
+        {url: '/login', name: 'Sign In'},
+        {url: '/register', name: 'Sign Up'},
+      ]
+  }
 
-          this.itemsNotLogged = [
-            {url: '/login', name: 'Sign In'},
-            {url: '/register', name: 'Sign Up'},
-          ]
-        }
-
-  public doUserLogout() {
+  public doUserLogout(): void {
     this.userService.doLogout();
   }
 
-  public getNewUser() {
-      return this.userService.getLoggedUser()
+  public getNewUser(): Observable<ResponseUser> {
+    return this.userService.getLoggedUser()
   }
   
   ngOnDestroy() {
-   if(this.subscriptionUser$) {
-     this.subscriptionUser$.unsubscribe();
-    }}
+   if(this.subscriptionUser$) {this.subscriptionUser$.unsubscribe()}
+  }
 }

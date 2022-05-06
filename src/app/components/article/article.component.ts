@@ -1,8 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommentsService } from 'src/app/services/comments.service';
 import { FollowService } from 'src/app/services/follow.service';
 import { GetArticleService } from 'src/app/services/getArticles.service';
@@ -44,7 +43,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
   public subscriptionDeleteArticle$!: Subscription;
   private subscriptions$: Subscription[] = [];
   
-  
   constructor(
     private router: Router,
     private userService: UserService,
@@ -53,48 +51,40 @@ export class ArticleComponent implements OnInit, OnDestroy {
     private followService: FollowService,
     private likeService: LikeService) { }
 
-
-  ngOnInit(): void {
-
+  ngOnInit() {
     this.getSlug();
-
     this.getComments();
-
     this.getArticle();
- 
     this.provideUser();
-
     this.newCommentForm = new FormGroup({
       body: new FormControl(''),
     });
   }
 
-  public getArticle() {
+  public getArticle(): void {
       this.subscriptionArticle$ = this.articleService.getArticle(this.href).subscribe(data => {
-      this.likeCounter = data.favoritesCount;
-
-      this.isFollow = data.author.following;
-      this.isLike = data.favorited;
-    
-      return this.article = data
-  });
+        this.likeCounter = data.favoritesCount;
+        this.isFollow = data.author.following;
+        this.isLike = data.favorited;
+        return this.article = data
+      })
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-  public provideUser() {
-        if (this.userService.getToken()) {
+  public provideUser(): void {
+    if (this.userService.getToken()) {
       this.subscriptionNewUser$ = this.userService.getLoggedUser().subscribe(data => { return this.user = data });
     };
     this.subscriptions$.push(this.subscriptionNewUser$);
   }
   
-  public getSlug() {
+  public getSlug(): void {
     this.href = this.router.url.split('/').slice(-1).toString();
     this.articleService.getArticleSlug(this.href);
     this.commentService.getArticleSlug(this.href);
   }
 
-  public getComments() {
+  public getComments(): void {
     this.comments$ = this.commentService.comments$;
     this.subscriptionComments$ = this.commentService.getComments().subscribe();
     this.subscriptions$.push(this.subscriptionComments$);
@@ -115,59 +105,50 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(this.subscriptionCommentsPublish$);
   }
 
-  public onClickFollow() {
+  public onClickFollow(): void {
       this.isFollow = !this.isFollow;
-      if (this.isFollow) { this.follow() } else { this.unFollow() };
-  
+      this.isFollow ? this.follow() : this.unFollow();
   }
 
-  public onClickLike() {
+  public onClickLike(): void {
     this.isLike = !this.isLike;
-    if(this.isLike) { this.like() } else { this.likeDelete() };
+    this.isLike ? this.like() : this.likeDelete();
   }
   
-  public follow() {
+  public follow(): void {
     if (this.article) {
-      this.subscriptionFollowing$ = this.followService.follow(this.article.author.username)
-        .subscribe()}
-      this.subscriptions$.push(this.subscriptionFollowing$);
-  
+      this.subscriptionFollowing$ = this.followService.follow(this.article.author.username).subscribe();
+    }
+    this.subscriptions$.push(this.subscriptionFollowing$);
   }
 
-  
-  public unFollow() {
+  public unFollow(): void {
     if (this.article) {
-      this.subscriptionUnFollowing$ = this.followService.unFollow(this.article.author.username)
-        .subscribe()}
-      this.subscriptions$.push(this.subscriptionUnFollowing$);
-    
+      this.subscriptionUnFollowing$ = this.followService.unFollow(this.article.author.username).subscribe();
+    }
+    this.subscriptions$.push(this.subscriptionUnFollowing$);
   }
 
-public like(): void {
-     this.subscriptionLike$ = this.likeService.like(this.href)
-       .subscribe(
-         () => {return this.likeCounter += 1 }
-  ); 
-   this.subscriptions$.push(this.subscriptionLike$);
-}
+  public like(): void {
+    this.subscriptionLike$ = this.likeService.like(this.href)
+      .subscribe(() => { return this.likeCounter += 1 });
+    this.subscriptions$.push(this.subscriptionLike$);
+  }
 
-public likeDelete(): void {
-  this.subscriptionDeleteLike$ = this.likeService.likeDelete(this.href)
-    .subscribe(
-      () => { return this.likeCounter -= 1 }
-  ); 
-  this.subscriptions$.push(this.subscriptionDeleteLike$);
-}
+  public likeDelete(): void {
+    this.subscriptionDeleteLike$ = this.likeService.likeDelete(this.href)
+      .subscribe(() => { return this.likeCounter -= 1 }); 
+    this.subscriptions$.push(this.subscriptionDeleteLike$);
+  }
   
-  deleteArticle() {
+  public deleteArticle(): void {
     this.router.navigateByUrl('');
-     this.subscriptionDeleteArticle$ = this.articleService.deleteArticle()
-      .subscribe(); 
+    this.subscriptionDeleteArticle$ = this.articleService.deleteArticle().subscribe();
     this.subscriptions$.push(this.subscriptionDeleteArticle$);
   }
   
   ngOnDestroy() {
-        this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
+    this.subscriptions$.forEach((subscription) => { if (subscription) { subscription.unsubscribe() } });
   }
 }
 

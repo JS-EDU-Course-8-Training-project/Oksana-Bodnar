@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/app/shared/models/articles.model';
@@ -11,6 +11,7 @@ import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
   styleUrls: ['./profile.component.scss'],
   providers: [GetArticleService]
 })
+  
 export class ProfileComponent implements OnInit, OnDestroy {
   public isFavourite = false;
   public isOwn = true;
@@ -25,48 +26,38 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private subscriptionArticle$!: Subscription;
   private subscriptions$: Subscription[] = [];
   
-
   constructor(private httpService: GetArticleService, private userService: UserService) { }
   
   ngOnInit(): void {
     this.isLogged = this.userService.getToken();
     this.articles$ = this.httpService.articles$;
-   
     this.getArticles();
     
-    this.subscriptionUser$ = this.getNewUser()
-     .subscribe(data => {
+    this.subscriptionUser$ = this.getNewUser().subscribe(data => {
         return this.user = data;
      });
     this.subscriptions$.push(this.subscriptionUser$);
   }
 
-  handlePageChange(event: any) {
+  handlePageChange(event: number): void {
     this.page = event;
   }
 
-  public getArticles() {
+  public getArticles(): void {
      this.articles$ = this.httpService.articles$;
-     this.subscriptionArticle$ = this.httpService
-      .getAllArticles(20, 0)
-      .subscribe(data => {
-      this.articles = data;
-      })
+     this.subscriptionArticle$ = this.httpService.getAllArticles(20, 0).subscribe(data => {
+        this.articles = data})
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-  public getFavoritedArticles() {
-      this.articles$ = this.httpService.articles$;
+  public getFavoritedArticles(): void {
+    this.articles$ = this.httpService.articles$;
     if (this.user) {
-      this.subscriptionArticle$ = this.httpService
-        .getAllFavoritedArticles(20, 0, this.user.username)
-        .subscribe(data => {
-          this.articles = data;
-        })
+      this.subscriptionArticle$ = this.httpService.getAllFavoritedArticles(20, 0, this.user.username)
+        .subscribe(data => {this.articles = data})
     }
     this.subscriptions$.push(this.subscriptionArticle$);
   }
-
 
   public showOwnArticles(): void { 
     this.page = 1;
@@ -82,13 +73,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.getFavoritedArticles();
   }
 
-   public getNewUser() {
+   public getNewUser(): Observable<ResponseUser> {
       return this.userService.getLoggedUser()
    }
   
   ngOnDestroy() {
-
-        this.subscriptions$.forEach((subscription) => {if (subscription) { subscription.unsubscribe() } })
-    }
-  
+    this.subscriptions$.forEach((subscription) => { if (subscription) { subscription.unsubscribe() } })
+  }
 }

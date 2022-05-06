@@ -7,9 +7,6 @@ import { DOMEvent } from 'src/app/shared/models/domElement';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 import { Tags } from 'src/app/shared/models/tags.model';
 
-
-
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -38,7 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private httpService: GetArticleService,
   private userService: UserService) { }
 
-
   ngOnInit() {
     this.isLogged$ = this.userService.loggedUserModels$;
     this.tags$ = this.httpService.tags$;
@@ -48,65 +44,55 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getTags();
   }
 
-  handlePageChange(event: any) {
+  handlePageChange(event: number): void {
     this.page = event;
   }
 
-  public getArticles(limit: number, page: number) {
+  public getArticles(limit: number, page: number): void {
       this.articles$ = this.httpService.articles$;
-      this.subscriptionArticle$ = this.httpService
-        .getAllArticles(limit, page)
-        .subscribe();
-    this.subscriptions$.push(this.subscriptionArticle$);
+      this.subscriptionArticle$ = this.httpService.getAllArticles(limit, page).subscribe();
+      this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-  public getArticlesByTag(limit: number, page: number, tag: string) {
+  public getArticlesByTag(limit: number, page: number, tag: string): void {
       this.articles$ = this.httpService.articles$;
-      this.subscriptionArticle$ = this.httpService
-        .getAllArticlesByTag(limit, page, tag)
-        .subscribe();
-    this.subscriptions$.push(this.subscriptionArticle$);
+      this.subscriptionArticle$ = this.httpService.getAllArticlesByTag(limit, page, tag).subscribe();
+      this.subscriptions$.push(this.subscriptionArticle$);
   }
 
-  public getArticlesYourFeed(limit: number, page: number) {
-     this.articles$ = this.httpService.articlesFeed$;
-    this.subscriptionArticleFeed$ = this.httpService
-      .getArticlesFeed(limit, page)
-      .subscribe(val => this.articles = val);
-     this.subscriptions$.push(this.subscriptionArticleFeed$);
+  public getArticlesYourFeed(limit: number, page: number): void {
+      this.articles$ = this.httpService.articlesFeed$;
+      this.subscriptionArticleFeed$ = this.httpService.getArticlesFeed(limit, page).subscribe(val => this.articles = val);
+      this.subscriptions$.push(this.subscriptionArticleFeed$);
    }
 
-  public getToken() {
-     return this.userService
-       .getToken();
+  public getToken(): string | null {
+    return this.userService.getToken();
   }
   
-  public getTags() {
-    this.subscriptionTags$ = this.httpService
-      .getTags()
-      .subscribe();
+  public getTags(): void {
+    this.subscriptionTags$ = this.httpService.getTags().subscribe();
     this.subscriptions$.push(this.subscriptionTags$);
   }
 
-  public showYourFeed() {
+  public showYourFeed(): void {
     this.page = 1;
     this.isOwnFeed = true;
     this.isGlobal = false;
     
-     if (this.token) { 
-    this.getArticlesYourFeed(50, this.page)
+    if (this.token) { 
+      this.getArticlesYourFeed(50, this.page)
     }
-
   }
 
-  public showAllArticles() {
+  public showAllArticles(): void {
     this.isOwnFeed = false;
     this.isGlobal = true;
     this.page = 1;
-      this.getArticles(50, this.page);
+    this.getArticles(50, this.page);
   }
   
-  public onTag(event: DOMEvent<any>) {
+  public onTag(event: DOMEvent<any>): void {
     this.page = 1;
     this.input = event.target.innerText;
     if (this.input) {
@@ -114,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  public DeleteTag() {
+  public DeleteTag(): void {
     this.input = null;
     this.showAllArticles();
   }

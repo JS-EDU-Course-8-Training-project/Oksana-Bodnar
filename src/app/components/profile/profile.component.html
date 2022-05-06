@@ -16,7 +16,7 @@
               totalItems: count
             }">
 
-        <div>
+        <div *ngIf="user && isFavourite && isLogged">
                 <ng-container *ngTemplateOutlet="estimateTemplate">
                 </ng-container>
         </div>

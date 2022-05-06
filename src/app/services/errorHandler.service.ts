@@ -24,8 +24,8 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                         errorObj = {
                             fieldError: Object.keys(error.error.errors).join(','),
                             problemError: Object.values(error.error.errors).join(',')
-                        };
-                        console.log(errorObj);
+                        }
+                    console.log(errorObj);
                     }}
                     return throwError(() => errorObj);
                 })

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subscription } from 'rxjs';
 import { CommentsService } from 'src/app/services/comments.service';
@@ -10,40 +10,12 @@ import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/app/shared/models/articles.model';
 import { Comments } from 'src/app/shared/models/comments.model';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
-
 import { ArticleComponent } from './article.component';
 
 describe('ArticleComponent', () => {
-  let component: ArticleComponent;
-  let fixture: ComponentFixture<ArticleComponent>;
 
-    const draftComments: Comments[] = [{
-      id: 1,
-      createdAt: 'some date',
-      updatedAt: 'some date',
-      body: 'some body',
-      author: {
-        username: 'some name',
-        bio: 'some bio',
-        image: 'some href image',
-        following: true,
-      }
-    }, {
-      id: 2,
-      createdAt: 'some date',
-      updatedAt: 'some date',
-      body: 'some body',
-      author: {
-        username: 'some name',
-        bio: 'some bio',
-        image: 'some href image',
-        following: false,
-      }
-      }];
-  
   const draftArticles: { article: Articles } = {
-    article:
-    {
+    article: {
       slug: 'some-slug',
       title: 'some title',
       description: 'description',
@@ -80,16 +52,6 @@ describe('ArticleComponent', () => {
     updatedAt: 'updatedAt'
   };
 
-      const profile = {
-    profile: {
-      bio: 'bio',
-      following: true,
-      image: 'image',
-      username: 'username'
-    }
-  }
-  
-
   const draftResUser: { user: ResponseUser } = {
     user: {
       email: 'email',
@@ -100,12 +62,13 @@ describe('ArticleComponent', () => {
     }
   };
   
+  let component: ArticleComponent;
+  let fixture: ComponentFixture<ArticleComponent>;
   const articleServiceStub = jasmine.createSpyObj('GetArticleService', ['deleteArticle', 'getArticle']);
   const commentServiceStub = jasmine.createSpyObj('CommentsService', ['']);
   const userServiceStub = jasmine.createSpyObj('UserService', ['getNewUser', 'getToken', 'getLoggedUser']);
   const followServiceStub = jasmine.createSpyObj('FollowService', ['unFollow', 'follow']);
-
-articleServiceStub.getArticle.and.returnValue(of(article))
+  // articleServiceStub.getArticle.and.returnValue(of(article));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -124,9 +87,9 @@ articleServiceStub.getArticle.and.returnValue(of(article))
     })
       .compileComponents();
     
-    fixture = TestBed.createComponent(ArticleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();    
+      fixture = TestBed.createComponent(ArticleComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();    
   });
 
   it('should create', () => {
@@ -138,79 +101,69 @@ articleServiceStub.getArticle.and.returnValue(of(article))
       spy.calls.reset();
       component.deleteComment();
       expect(spy).toHaveBeenCalled();
-    
-
   });
 
-    it('publishComment should be called', () => {
+  it('publishComment should be called', () => {
       let spy = spyOn(component, 'publishComment').and.callThrough();
       spy.calls.reset();
       component.publishComment();
-
       expect(spy).toHaveBeenCalled();
-    });
+  });
 
-    it('onClickFollow should be called', () => {
+  it('onClickFollow should be called', () => {
       let spy = spyOn(component, 'onClickFollow').and.callThrough();
       spy.calls.reset();
       component.onClickFollow();
-
       expect(spy).toHaveBeenCalled();
-    });
+  });
   
-    it('onClickLike should be called', () => {
+  it('onClickLike should be called', () => {
       let spy = spyOn(component, 'onClickLike').and.callThrough();
       spy.calls.reset();
       component.onClickLike();
-
       expect(spy).toHaveBeenCalled();
-    });
+  });
   
-     it('follow should be called', () => {
-       let spy = spyOn(component, 'follow').and.callThrough();
-       spy.calls.reset();
+  it('follow should be called', () => {
+      let spy = spyOn(component, 'follow').and.callThrough();
+      spy.calls.reset();
       component.follow();
-
-       expect(spy).toHaveBeenCalled();
-
-     });
-  
-     it('unFollow should be called', () => {
-       let spy = spyOn(component, 'unFollow').and.callThrough();
-       spy.calls.reset();
-      component.unFollow();
-
       expect(spy).toHaveBeenCalled();
-     });
+  });
   
-    it('likeDelete should be called', () => {
-       let spy = spyOn(component, 'likeDelete').and.callThrough();
-       spy.calls.reset();
+  it('unFollow should be called', () => {
+      let spy = spyOn(component, 'unFollow').and.callThrough();
+      spy.calls.reset();
+      component.unFollow();
+      expect(spy).toHaveBeenCalled();
+  });
+  
+  it('likeDelete should be called', () => {
+      let spy = spyOn(component, 'likeDelete').and.callThrough();
+      spy.calls.reset();
       component.likeDelete();
+      expect(spy).toHaveBeenCalled();
+  });
 
-     expect(spy).toHaveBeenCalled();
-     });
-
-      it('deleteArticle should be called', () => {
-    articleServiceStub.deleteArticle.and.returnValue(of(null))
-    component.deleteArticle();
-        const subscription = component.subscriptionDeleteArticle$ instanceof Subscription;
-    expect(subscription).toBeTrue();
-      });
+  it('deleteArticle should be called', () => {
+      articleServiceStub.deleteArticle.and.returnValue(of(null))
+      component.deleteArticle();
+      const subscription = component.subscriptionDeleteArticle$ instanceof Subscription;
+      expect(subscription).toBeTrue();
+  });
   
   it('getArticle should have Subscription', () => {
-    articleServiceStub.getArticle.and.returnValue(of(draftArticles))
-    component.getArticle();
-    const subscription = component.subscriptionArticle$ instanceof Subscription;
-    expect(subscription).toBeTrue();
+      articleServiceStub.getArticle.and.returnValue(of(draftArticles))
+      component.getArticle();
+      const subscription = component.subscriptionArticle$ instanceof Subscription;
+      expect(subscription).toBeTrue();
   });
 
-    it('provideUser should have Subscription', () => {
+  it('provideUser should have Subscription', () => {
       userServiceStub.getLoggedUser.and.returnValue(of(draftResUser))
       userServiceStub.getToken.and.returnValue(of('token'))
-     component.provideUser();
-    const subscription = component.subscriptionNewUser$ instanceof Subscription;
-    expect(subscription).toBeTrue();
+      component.provideUser();
+      const subscription = component.subscriptionNewUser$ instanceof Subscription;
+      expect(subscription).toBeTrue();
   });
-
 });
