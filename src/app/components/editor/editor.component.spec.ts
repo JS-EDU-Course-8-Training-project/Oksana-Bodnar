@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { Articles } from 'src/app/shared/models/articles.model';
-import { CreateArticle } from 'src/app/shared/models/createArticle.model';
 
 import { EditorComponent } from './editor.component';
 

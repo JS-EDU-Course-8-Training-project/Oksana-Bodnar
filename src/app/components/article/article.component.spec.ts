@@ -149,7 +149,7 @@ articleServiceStub.getArticle.and.returnValue(of(article))
 
       expect(spy).toHaveBeenCalled();
     });
-  // change
+
     it('onClickFollow should be called', () => {
       let spy = spyOn(component, 'onClickFollow').and.callThrough();
       spy.calls.reset();
@@ -166,7 +166,6 @@ articleServiceStub.getArticle.and.returnValue(of(article))
       expect(spy).toHaveBeenCalled();
     });
   
-  // change
      it('follow should be called', () => {
        let spy = spyOn(component, 'follow').and.callThrough();
        spy.calls.reset();
@@ -176,7 +175,6 @@ articleServiceStub.getArticle.and.returnValue(of(article))
 
      });
   
-  // change
      it('unFollow should be called', () => {
        let spy = spyOn(component, 'unFollow').and.callThrough();
        spy.calls.reset();
@@ -199,25 +197,6 @@ articleServiceStub.getArticle.and.returnValue(of(article))
         const subscription = component.subscriptionDeleteArticle$ instanceof Subscription;
     expect(subscription).toBeTrue();
       });
-  
-  // doesn't work
-  // it('getArticle should change the articles', waitForAsync(() => {
-  //   articleServiceStub.getArticle.and.returnValue(of(article));
-  //   component.getArticle();
-  //   fixture.detectChanges()
-  //   expect(component.article).toEqual(article);
-  //   expect(component.likeCounter).toBeTruthy();
-  //   expect(component.isFollow).toBeTruthy();
-  //   expect(component.isLike).toBeTruthy();
-  // }));
-
-  //     it('provideUser should be called', () => {
-  //    let spy = spyOn(component, 'provideUser').and.callThrough();
-  //      spy.calls.reset();
-  //     component.provideUser();
-
-  //     expect(spy).toHaveBeenCalled();
-  //     })
   
   it('getArticle should have Subscription', () => {
     articleServiceStub.getArticle.and.returnValue(of(draftArticles))

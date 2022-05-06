@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { DOMEvent } from 'src/app/shared/models/domElement';
 
 import { HomeComponent } from './home.component';
 
@@ -68,7 +69,14 @@ describe('HomeComponent', () => {
     component.DeleteTag();
 
     expect(spy).toBeTruthy();
-      });
+    });
   
+     it('handlePageChange should be called', () => {
+    let spy = spyOn(component, 'handlePageChange').and.callThrough();
+    spy.calls.reset();
+    component.handlePageChange(1);
 
+    expect(spy).toBeTruthy();
+     });
+  
 });

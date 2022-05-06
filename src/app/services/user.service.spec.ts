@@ -10,8 +10,6 @@ import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
-
-     
   
       const user = {
       user: {

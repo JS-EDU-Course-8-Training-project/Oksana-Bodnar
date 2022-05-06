@@ -1,6 +1,6 @@
-
+<div *ngIf="user">
 <div class="hero">
-    <img class="profileAvatar" src="https://api.realworld.io/images/smiley-cyrus.jpeg" alt="">
+    <img class="profileAvatar" src="{{user.image}}" alt="">
     <h2 *ngIf="user">{{user.username}}</h2>
     <a class="profileEditBtn btn btn-light" [routerLink]="['/settings']">Edit Profile Settings</a>
 </div>
@@ -54,4 +54,4 @@
     </ng-container>
     <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
 
-
+</div>
