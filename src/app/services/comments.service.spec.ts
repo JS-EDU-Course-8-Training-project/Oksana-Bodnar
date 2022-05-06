@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Comments } from 'src/app/shared/models/comments.model';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('CommentsService', () => {
 
@@ -43,11 +44,17 @@ describe('CommentsService', () => {
     delete: jasmine.createSpyObj(of())
   };
 
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, HttpClientModule],
         providers: [
-          { provide: HttpClient, useValue: httpMock }]
+          { provide: HttpClient, useValue: httpMock },
+          { provide: Router, useClass: RouterStub }]
     });
     service = TestBed.inject(CommentsService);
   });

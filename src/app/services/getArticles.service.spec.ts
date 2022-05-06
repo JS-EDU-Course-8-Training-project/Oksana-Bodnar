@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CreateArticle } from '../shared/models/createArticle.model';
@@ -10,6 +11,11 @@ import { GetArticleService } from './getArticles.service';
 
 describe('GetArticleService', () => {
   let service: GetArticleService;
+
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
   
   const draftArticles = {
     articles: [{
@@ -69,7 +75,9 @@ describe('GetArticleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [{ provide: HttpClient, useValue: httpMock }]
+      providers: [
+        { provide: HttpClient, useValue: httpMock },
+        { provide: Router, useClass: RouterStub }]
     });
     service = TestBed.inject(GetArticleService);
   });

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { CommentsService } from 'src/app/services/comments.service';
 import { FollowService } from 'src/app/services/follow.service';
@@ -68,13 +68,16 @@ describe('ArticleComponent', () => {
   const commentServiceStub = jasmine.createSpyObj('CommentsService', ['']);
   const userServiceStub = jasmine.createSpyObj('UserService', ['getNewUser', 'getToken', 'getLoggedUser']);
   const followServiceStub = jasmine.createSpyObj('FollowService', ['unFollow', 'follow']);
-  // articleServiceStub.getArticle.and.returnValue(of(article));
+
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ArticleComponent],
        imports: [
-        RouterTestingModule,
         HttpClientTestingModule,
       ],
         providers: [
@@ -82,6 +85,7 @@ describe('ArticleComponent', () => {
           { provide: CommentsService, useValue: commentServiceStub },
           { provide: UserService, useValue: userServiceStub },
           { provide: FollowService, useValue: followServiceStub },
+          { provide: Router, useClass: RouterStub }
       ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })

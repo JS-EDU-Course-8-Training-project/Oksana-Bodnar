@@ -1,18 +1,21 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { IsLoggedGuard } from './is-logged.guard';
 
 describe('IsLoggedGuard', () => {
   let guard: IsLoggedGuard;
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
         imports: [
-        RouterTestingModule,
         HttpClientTestingModule,
-      ]
+      ],
+      providers: [{ provide: Router, useClass: RouterStub }],
     });
     
     guard = TestBed.inject(IsLoggedGuard);

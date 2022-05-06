@@ -3,14 +3,14 @@
     <h2>Real World Project</h2>
     <p>A place to share your knowledge.</p>
 </div>
-
-    <button *ngIf="token" class="btn btn-link" type="button" (click)="showYourFeed()"
+<div class="buttons">
+    <button *ngIf="token" class="btn " type="button" (click)="showYourFeed()"
         [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
-    <button class="btn btn-link" type="button" (click)="showAllArticles()"
+    <button class="btn " type="button" (click)="showAllArticles()"
         [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
-    <button *ngIf="input" class="btn btn-link" type="button" (click)="DeleteTag()"
-            [ngClass]="{'btn-outline-success' : input}">Delete filter by {{input}}</button>
-
+    <button *ngIf="input" class="btn btn-outline-danger deleteTagBtn" type="button" (click)="DeleteTag()"
+            [ngClass]="{'btn-outline-success' : input}">{{input}} </button>
+</div>
  <div class="allArticles">
 
 <ul *ngIf="(articles$ | async) as articles"> 

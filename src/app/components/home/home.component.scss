@@ -104,3 +104,14 @@
   background-color: rgb(141, 245, 141);
 }
 
+.buttons button {
+  margin-left: 0.5rem;
+}
+
+.buttons {
+  margin-top: 0.5rem;
+}
+
+.deleteTagBtn::after {
+  content: "\2715";
+}

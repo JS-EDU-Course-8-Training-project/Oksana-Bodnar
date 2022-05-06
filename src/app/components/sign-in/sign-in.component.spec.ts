@@ -1,20 +1,25 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { SignInComponent } from './sign-in.component';
 
 describe('SignInComponent', () => {
   let component: SignInComponent;
   let fixture: ComponentFixture<SignInComponent>;
 
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SignInComponent],
         imports: [
-        RouterTestingModule,
         HttpClientTestingModule,
       ],
+        providers: [{ provide: Router, useClass: RouterStub }],
         schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
       .compileComponents();

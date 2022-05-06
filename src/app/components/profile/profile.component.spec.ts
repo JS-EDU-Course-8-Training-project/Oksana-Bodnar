@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProfileComponent } from './profile.component';
 
@@ -9,14 +9,19 @@ describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
 
+  class RouterStub {
+    url = '';
+    navigateByUrl(commands: any[], extras?: any) { }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProfileComponent],
        imports: [
-        RouterTestingModule,
-         HttpClientTestingModule,
+        HttpClientTestingModule,
         NgxPaginationModule
       ],
+      providers: [{ provide: Router, useClass: RouterStub }],
        schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
       .compileComponents();
