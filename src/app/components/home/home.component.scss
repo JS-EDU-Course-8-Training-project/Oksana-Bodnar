@@ -108,6 +108,10 @@
   margin-left: 0.5rem;
 }
 
+.buttons button:hover {
+  color: var(--primary-lightGreen-color);
+}
+
 .buttons {
   margin-top: 0.5rem;
 }

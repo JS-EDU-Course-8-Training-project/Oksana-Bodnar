@@ -42,7 +42,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       .subscribe({next: () => {},
             error: (error) => {
                 this.fieldError = error.fieldError;
-              this.problemError = error.problemError;
+                this.problemError = error.problemError;
         }
       })
   }

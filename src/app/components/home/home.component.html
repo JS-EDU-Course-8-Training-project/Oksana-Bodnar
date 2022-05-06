@@ -4,16 +4,16 @@
     <p>A place to share your knowledge.</p>
 </div>
 <div class="buttons">
-    <button *ngIf="token" class="btn " type="button" (click)="showYourFeed()"
+    <button *ngIf="token" class="btn" type="button" (click)="showYourFeed()"
         [ngClass]="{'btn-outline-success' : isOwnFeed}">Your Feed</button>
-    <button class="btn " type="button" (click)="showAllArticles()"
+    <button class="btn" type="button" (click)="showAllArticles()"
         [ngClass]="{'btn-outline-success' : isGlobal}">Global Feed</button>
     <button *ngIf="input" class="btn btn-outline-danger deleteTagBtn" type="button" (click)="DeleteTag()"
             [ngClass]="{'btn-outline-success' : input}">{{input}} </button>
 </div>
  <div class="allArticles">
 
-<ul *ngIf="(articles$ | async) as articles"> 
+<ul *ngIf="(articles$ | async) as articles; else noArticle"> 
     <li *ngFor="let article of articles | paginate: {
               itemsPerPage: pageSize,
               currentPage: page,
@@ -54,11 +54,17 @@
         </ng-template>
     </li>
 </ul>
-<pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
-
+        <ng-container *ngIf="(articles$ | async) as articles">
+                <ng-container *ngIf="articles.length">
+                    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+            </ng-container>
+        </ng-container>
     <div class="tags d-flex flex-column">
         <ul *ngFor="let tag of (tags$ | async)">
             <li><button class="tag btn btn-secondary btn-sm" type="button" (click)="onTag($event)">{{tag}}</button></li>
         </ul>
     </div>
 </div> 
+<ng-template #noArticle>
+    <p>No articles yet...</p>
+</ng-template>

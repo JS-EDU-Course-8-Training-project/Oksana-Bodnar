@@ -17,11 +17,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public isOwn = true;
   public user!: ResponseUser;
   public articles$!: BehaviorSubject<Articles[]>
-  public articles!: Articles[];
   public isLogged!: string | null;
   public page = 1;
   public count = 0;
   public pageSize = 3;
+  public noArticle = false;
   private subscriptionUser$!: Subscription;
   private subscriptionArticle$!: Subscription;
   private subscriptions$: Subscription[] = [];
@@ -30,8 +30,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.isLogged = this.userService.getToken();
-    this.articles$ = this.httpService.articles$;
-    this.getArticles();
     
     this.subscriptionUser$ = this.getNewUser().subscribe(data => {
         return this.user = data;
@@ -44,17 +42,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public getArticles(): void {
-     this.articles$ = this.httpService.articles$;
-     this.subscriptionArticle$ = this.httpService.getAllArticles(20, 0).subscribe(data => {
-        this.articles = data})
+    this.articles$ = this.httpService.articles$;
+    if (this.articles$) {
+      this.noArticle = false;
+    }
+    this.subscriptionArticle$ = this.httpService.getAllArticles(20, 0).subscribe()
     this.subscriptions$.push(this.subscriptionArticle$);
   }
 
   public getFavoritedArticles(): void {
     this.articles$ = this.httpService.articles$;
+    if (this.articles$) {
+      this.noArticle = false;
+    }
     if (this.user) {
       this.subscriptionArticle$ = this.httpService.getAllFavoritedArticles(20, 0, this.user.username)
-        .subscribe(data => {this.articles = data})
+        .subscribe()
     }
     this.subscriptions$.push(this.subscriptionArticle$);
   }

@@ -20,15 +20,6 @@
   content: "\2699";
 }
 
-.profileFeedsBtns {
-  color: var(--primary-light-color);
-  text-decoration: none;
-}
-
-.profileFeedsBtns:hover {
-  color: var(--primary-lightGreen-color);
-}
-
 .article {
   position: relative;
   width: 90%;
@@ -96,4 +87,16 @@
   border-radius: 50%;
   height: 90%;
   max-height: 2rem;
+}
+
+.buttons button {
+  margin-left: 0.5rem;
+}
+
+.buttons {
+  margin-top: 0.5rem;
+}
+
+.buttons button:hover {
+  color: var(--primary-lightGreen-color);
 }

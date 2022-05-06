@@ -21,26 +21,29 @@ export class GetArticleService {
   
   public getAllArticles(limit: number, offset: number): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}`)
-        .pipe(map((res: {articles: Articles[]}) => {
-          this.articles$.next(res.articles);
-          return res.articles;
-        }))
+      .pipe(map((res: { articles: Articles[] }) => {
+        this.articles$.next([]);
+        this.articles$.next(res.articles);
+        return res.articles;
+      }))
   }
 
   public getAllFavoritedArticles(limit: number, offset: number, userName: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&favorited=${userName}`)
-        .pipe(map((res: {articles: Articles[]}) => {
+      .pipe(map((res: { articles: Articles[] }) => {
+          this.articles$.next([]);
           this.articles$.next(res.articles);
           return res.articles;
-        }))
+      }))
   }
 
   public getAllArticlesByTag(limit: number, offset: number = 0, tag: string): Observable<Articles[]> {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}&tag=${tag}`)
-        .pipe(map((res: {articles: Articles[]}) => {
+      .pipe(map((res: { articles: Articles[] }) => {
+          this.articles$.next([]);
           this.articles$.next(res.articles);
           return res.articles;
-        }))
+      }))
   }
 
   public getTags(): Observable<Tags[]> {
@@ -68,10 +71,11 @@ export class GetArticleService {
 
   public getArticlesFeed(limit: number, offset: number): Observable<Articles[]> {
     return this.http.get<{ articles: Articles[] }>(`${this.environment.url}/articles/feed/?limit=${limit}&offset=${offset}`)
-        .pipe(map((result: {articles: Articles[]}) => {
+      .pipe(map((result: { articles: Articles[] }) => {
+          this.articlesFeed$.next([]);
           this.articlesFeed$.next(result.articles);
           return result.articles;
-        }))
+      }))
   }
 
   public postArticle(article: CreateArticle): Observable<Articles> {
@@ -84,9 +88,9 @@ export class GetArticleService {
     
   public postUpdatedArticle(article: CreateArticle, slug: string | null): Observable<Articles> {
     return this.http.put<{article: Articles}>(`${this.environment.url}/articles/${slug}`, { article })
-       .pipe(map((res: { article: Articles }) => {
-        this.router.navigateByUrl('');
-        return res.article;
+      .pipe(map((res: { article: Articles }) => {
+      this.router.navigateByUrl('');
+      return res.article;
       }))
   }
 }
