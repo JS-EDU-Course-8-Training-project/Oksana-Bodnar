@@ -13,9 +13,18 @@
   a:active {
     color: black;
   }
+
+  .active {
+    color: var(--primary-dark-color);
+  }
 }
 
 .logo {
   color: var(--home-color);
   font-weight: 700;
+}
+
+.image {
+  max-width: 1rem;
+  margin-right: 0.3rem;
 }

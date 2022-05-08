@@ -1,63 +1,55 @@
 <div *ngIf="user">
-<div class="hero">
-    <img class="profileAvatar" src="{{user.image}}" alt="">
-    <h2 *ngIf="user">{{user.username}}</h2>
-    <a class="profileEditBtn btn btn-light" [routerLink]="['/settings']">Edit Profile Settings</a>
-</div>
-<div class="buttons">
-    <button class="btn" type="button" (click)="showOwnArticles()" [ngClass]="{'btn-outline-success' : isOwn}">My Articles</button>
-    <button class="btn" type="button" (click)="showFavouriteArticles()" [ngClass]="{'btn-outline-success' : isFavourite}">Favourite Articles</button>
-</div>
-
-<ul *ngIf="(articles$ | async) as articles; else noArticle">
-    <li *ngFor="let article of articles | paginate: {
+    <div class="hero">
+        <img class="profileAvatar" src="{{user.image}}" alt="">
+        <h2 *ngIf="user">{{user.username}}</h2>
+        <a class="profileEditBtn btn btn-light" [routerLink]="['/settings']">Edit Profile Settings</a>
+    </div>
+    <div class="buttons">
+        <button class="btn" type="button" (click)="showOwnArticles()" [ngClass]="{'btn-outline-secondary' : isOwn}">My
+            Articles</button>
+        <button class="btn" type="button" (click)="showFavouriteArticles()"
+            [ngClass]="{'btn-outline-secondary' : isFavourite}">Favourite Articles</button>
+    </div>
+    <ul *ngIf="(articles$ | async) as articles">
+        <li *ngFor="let article of articles | paginate: {
               itemsPerPage: pageSize,
               currentPage: page,
-              totalItems: count
-            }">
-
-        <div *ngIf="user && isFavourite && isLogged">
-                <ng-container *ngTemplateOutlet="estimateTemplate">
-                </ng-container>
-        </div>
-
-        <div *ngIf="user && article.author.username === user.username && isOwn && isLogged">
-                <ng-container *ngTemplateOutlet="estimateTemplate">
-                </ng-container>
-        </div>
-                    <ng-template #estimateTemplate>
-                            <a [routerLink]="['/article', article.slug]">
-                                    <article class="article">
-                                        <div class="d-flex align-items-center">
-                                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
-                                            <div class="d-flex flex-column">
-                                                <a class="articleAuthorName" href="">{{article.author.username}}</a>
-                                                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
-                                            </div>
-                                        </div>
-                                        <h3>{{article.title}}</h3>
-                                        <p class="articleText">{{article.body}}</p>
-                                        <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-                                        <span class="articleHeart"> {{article.favoritesCount}}</span>
-                                        <div class="articleTags">
-                                            <ul *ngFor="let tag of article.tagList">
-                                                <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
-                                            </ul>
-                                        </div>
-                                    </article>
-                                </a>
-                    </ng-template>
-                 </li>
-        </ul>
-
-        <ng-container *ngIf="(articles$ | async) as articles"> 
-        <ng-container *ngFor="let article of articles">
-                <ng-container *ngIf="article.author.username === user.username || isFavourite">
-                    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
-                </ng-container>
-        </ng-container>
-        </ng-container>
+              totalItems: articles.length}">
+            <div *ngIf="user && isOwn && isLogged">
+                <ng-container *ngTemplateOutlet="estimateTemplate"></ng-container>
+            </div>
+            <div *ngIf="user && isFavourite && isLogged">
+                <ng-container *ngTemplateOutlet="estimateTemplate"></ng-container>
+            </div>
+            <ng-template #estimateTemplate>
+                <a [routerLink]="['/article', article.slug]">
+                    <article class="article">
+                        <div class="d-flex align-items-center">
+                            <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
+                            <div class="d-flex flex-column">
+                                <a class="articleAuthorName" href="">{{article.author.username}}</a>
+                                <p class="articleDate">{{article.createdAt | date:'longDate'}}</p>
+                            </div>
+                        </div>
+                        <h3>{{article.title}}</h3>
+                        <p class="articleText">{{article.body}}</p>
+                        <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
+                        <span class="articleHeart"> {{article.favoritesCount}}</span>
+                        <div class="articleTags">
+                            <ul *ngFor="let tag of article.tagList">
+                                <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+                            </ul>
+                        </div>
+                    </article>
+                </a>
+            </ng-template>
+        </li>
+    </ul>
+    <ng-container *ngIf="length; else noArticle">
+    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+    </ng-container>
 </div>
-<ng-template #noArticle>
-    <p>No articles yet...</p>
-</ng-template>
+
+        <ng-template #noArticle>
+            <p class="noArticle">Select My Articles or Favourite articles to show existing articles</p>
+        </ng-template>

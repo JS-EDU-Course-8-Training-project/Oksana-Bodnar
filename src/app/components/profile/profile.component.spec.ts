@@ -38,7 +38,14 @@ describe('ProfileComponent', () => {
   it('getFavoritedArticles should be called', () => {
     let spy = spyOn(component, 'getFavoritedArticles').and.callThrough();
     spy.calls.reset();
-    component.getFavoritedArticles();
+    component.getFavoritedArticles(50, 0, 'username');
+    expect(spy).toBeTruthy();
+  });
+
+  it('getArticles should be called', () => {
+    let spy = spyOn(component, 'getArticles').and.callThrough();
+    spy.calls.reset();
+    component.getArticles('username', 50, 0);
     expect(spy).toBeTruthy();
   });
   
@@ -53,6 +60,13 @@ describe('ProfileComponent', () => {
     let spy = spyOn(component, 'showFavouriteArticles').and.callThrough();
     spy.calls.reset();
     component.showFavouriteArticles();
+    expect(spy).toBeTruthy();
+  });
+
+  it('handlePageChange should be called', () => {
+    let spy = spyOn(component, 'handlePageChange').and.callThrough();
+    spy.calls.reset();
+    component.handlePageChange(1);
     expect(spy).toBeTruthy();
   });
 });

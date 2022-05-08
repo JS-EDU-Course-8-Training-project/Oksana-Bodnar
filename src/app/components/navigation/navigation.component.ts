@@ -44,7 +44,7 @@ export class NavigationComponent implements OnInit{
   public getNewUser(): Observable<ResponseUser> {
     return this.userService.getLoggedUser()
   }
-  
+
   ngOnDestroy() {
    if(this.subscriptionUser$) {this.subscriptionUser$.unsubscribe()}
   }

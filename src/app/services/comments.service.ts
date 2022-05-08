@@ -24,8 +24,10 @@ export class CommentsService {
   
   public getComments(): Observable<Comments[]> {
       return this.http.get< {comments: Comments[]} >(`${this.environment.url}/articles/${this.slug}/comments`)
-        .pipe(map((res: {comments: Comments[]}) => {
-          res.comments.forEach((value: Comments) => { return this.id = value.id });
+        .pipe(map((res: { comments: Comments[] }) => {
+          if (res.comments) {
+            res.comments.forEach((value: Comments) => { return this.id = value.id });
+          }
           this.comments$.next(res.comments);
             return res.comments;
         }))

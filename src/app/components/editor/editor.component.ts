@@ -87,6 +87,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.newArticle = { ... this.newArticleForm.value };
     }
     this.subscriptionPublishArticle$ = this.getArticleService.postArticle(this.newArticle).subscribe();
+    this.subscriptionArticle$ = this.getArticleService.getAllArticles(50, 0).subscribe(val => {console.log(val);});
     this.subscriptions$.push(this.subscriptionPublishArticle$);
   }
   

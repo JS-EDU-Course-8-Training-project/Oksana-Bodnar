@@ -8,7 +8,6 @@ import { FollowService } from 'src/app/services/follow.service';
 import { GetArticleService } from 'src/app/services/getArticles.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/app/shared/models/articles.model';
-import { Comments } from 'src/app/shared/models/comments.model';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 import { ArticleComponent } from './article.component';
 

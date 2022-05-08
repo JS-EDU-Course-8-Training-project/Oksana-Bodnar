@@ -1,12 +1,12 @@
 .btn-primary {
-  background-color: var(--primary-lightGreen-color);
+  background-color: var(--primary-lightBlue-color);
   color: white;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:visited {
-  background-color: var(--primary-darkGreen-color);
+  background-color: var(--primary-darkBlue-color);
 
   color: white;
 }
@@ -16,5 +16,5 @@
 }
 
 .ref {
-  color: var(--primary-darkGreen-color);
+  color: var(--primary-darkBlue-color);
 }

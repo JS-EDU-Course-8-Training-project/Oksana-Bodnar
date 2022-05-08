@@ -63,10 +63,10 @@ describe('HomeComponent', () => {
     expect(spy).toBeTruthy();
   });
   
-  it('DeleteTag should be called', () => {
-    let spy = spyOn(component, 'DeleteTag').and.callThrough();
+  it('deleteTag should be called', () => {
+    let spy = spyOn(component, 'deleteTag').and.callThrough();
     spy.calls.reset();
-    component.DeleteTag();
+    component.deleteTag();
     expect(spy).toBeTruthy();
   });
   

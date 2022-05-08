@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public token!: string | null;
   public isOwnFeed = false;
   public isGlobal = true;
-  public articles!: Articles[];
+  public length!: number;
   public input!: string | null;
   public page = 1;
   public count = 0;
@@ -32,13 +32,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subscriptionTags$!: Subscription;
   private subscriptions$: Subscription[] = [];
   
-  constructor(private httpService: GetArticleService,
+  constructor(private getArticleService: GetArticleService,
   private userService: UserService) { }
 
   ngOnInit() {
     this.isLogged$ = this.userService.loggedUserModels$;
-    this.tags$ = this.httpService.tags$;
-    this.articles$ = this.httpService.articles$
+    this.tags$ = this.getArticleService.tags$;
     this.token = this.getToken();
     this.getArticles(50, this.page);
     this.getTags();
@@ -49,20 +48,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public getArticles(limit: number, page: number): void {
-      this.articles$ = this.httpService.articles$;
-      this.subscriptionArticle$ = this.httpService.getAllArticles(limit, page).subscribe();
+      this.articles$ = this.getArticleService.articles$;
+      this.subscriptionArticle$ = this.getArticleService.getAllArticles(limit, page).subscribe(value => this.length = value.length);
       this.subscriptions$.push(this.subscriptionArticle$);
   }
 
   public getArticlesByTag(limit: number, page: number, tag: string): void {
-      this.articles$ = this.httpService.articles$;
-      this.subscriptionArticle$ = this.httpService.getAllArticlesByTag(limit, page, tag).subscribe();
+      this.articles$ = this.getArticleService.articles$;
+      this.subscriptionArticle$ = this.getArticleService.getAllArticlesByTag(limit, page, tag).subscribe(value => this.length = value.length);
       this.subscriptions$.push(this.subscriptionArticle$);
   }
 
   public getArticlesYourFeed(limit: number, page: number): void {
-      this.articles$ = this.httpService.articlesFeed$;
-      this.subscriptionArticleFeed$ = this.httpService.getArticlesFeed(limit, page).subscribe(val => this.articles = val);
+      this.articles$ = this.getArticleService.articlesFeed$;
+      this.subscriptionArticleFeed$ = this.getArticleService.getArticlesFeed(limit, page).subscribe(value => this.length = value.length);
       this.subscriptions$.push(this.subscriptionArticleFeed$);
    }
 
@@ -71,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   public getTags(): void {
-    this.subscriptionTags$ = this.httpService.getTags().subscribe();
+    this.subscriptionTags$ = this.getArticleService.getTags().subscribe();
     this.subscriptions$.push(this.subscriptionTags$);
   }
 
@@ -100,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  public DeleteTag(): void {
+  public deleteTag(): void {
     this.input = null;
     this.showAllArticles();
   }
