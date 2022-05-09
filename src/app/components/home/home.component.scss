@@ -15,7 +15,7 @@
 }
 
 .articleHeart::before {
-  content: "\1F49A";
+  content: "\2764";
 }
 
 .articleAuthorAvatar {
@@ -111,4 +111,8 @@
 
 .deleteTagBtn::after {
   content: "\2715";
+}
+
+.noArticle {
+  margin: 0.5rem;
 }

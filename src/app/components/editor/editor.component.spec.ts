@@ -58,14 +58,21 @@ describe('EditorComponent', () => {
     let spy = spyOn(component, 'update').and.callThrough();
     spy.calls.reset();
     component.update();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('publish should be called', () => {
     let spy = spyOn(component, 'publish').and.callThrough();
     spy.calls.reset();
     component.publish();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('generateForm should be called', () => {
+    let spy = spyOn(component, 'generateForm').and.callThrough();
+    spy.calls.reset();
+    component.generateForm(draftArticles.article);
+    expect(spy).toHaveBeenCalledOnceWith(draftArticles.article);
   });
   
   it('gettingArticleData should have Subscription', () => {
