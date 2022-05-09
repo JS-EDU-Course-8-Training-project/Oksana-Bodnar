@@ -68,13 +68,6 @@ describe('CommentsService', () => {
     let a = service.getArticleSlug('slug-there');
     expect(a).toBe('slug-there', 'should be slug-there')
   });
-    
- it('deleteCommentService should be called', waitForAsync(() => {    
-   const spy = spyOn(httpMock, 'delete').and.returnValue(of());
-   const data = service.deleteCommentService().subscribe();
-   expect(data).toBeTruthy();
-  }));
-
  
   it('postCommentService() should execute http request', waitForAsync(() => {    
     const spy = spyOn(httpMock, 'post').and.returnValue(of(draftComments));

@@ -29,6 +29,6 @@ describe('IsLoggedGuard', () => {
     let spy = spyOn(guard, 'canActivate').and.callThrough();
     spy.calls.reset();
     guard.canActivate(new ActivatedRouteSnapshot(), <RouterStateSnapshot>{url: 'login'});
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

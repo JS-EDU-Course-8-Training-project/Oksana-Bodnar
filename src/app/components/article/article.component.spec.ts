@@ -148,7 +148,7 @@ describe('ArticleComponent', () => {
       expect(spy).toHaveBeenCalled();
   });
 
-  it('deleteArticle should be called', () => {
+  it('deleteArticle should have Subscription', () => {
       articleServiceStub.deleteArticle.and.returnValue(of(null))
       component.deleteArticle();
       const subscription = component.subscriptionDeleteArticle$ instanceof Subscription;

@@ -23,7 +23,6 @@ export class GetArticleService {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?limit=${limit}&offset=${offset}`)
       .pipe(map((res: { articles: Articles[] }) => {
         this.articles$.next(res.articles);
-        console.log(res.articles)
         return res.articles;
       }))
   }
@@ -32,7 +31,6 @@ export class GetArticleService {
     return this.http.get < {articles: Articles[]} >(`${this.environment.url}/articles?author=${author}&limit=${limit}&offset=${offset}`)
       .pipe(map((res: { articles: Articles[] }) => {
         this.articles$.next(res.articles);
-        console.log(res.articles)
         return res.articles;
       }))
   }

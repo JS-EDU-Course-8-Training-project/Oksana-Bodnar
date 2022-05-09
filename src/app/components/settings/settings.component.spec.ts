@@ -46,20 +46,20 @@ describe('SettingsComponent', () => {
     let spy = spyOn(component, 'doUserLogout').and.callThrough();
     spy.calls.reset();
     component.doUserLogout();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('publish should be called', () => {
     let spy = spyOn(component, 'publish').and.callThrough();
     spy.calls.reset();
     component.publish();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('updareForm should be called', () => {
     let spy = spyOn(component, 'updareForm').and.callThrough();
     spy.calls.reset();
     component.updareForm(draftResUser);
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledOnceWith(draftResUser);
   });
 });

@@ -35,12 +35,6 @@ describe('NavigationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('doUserLogout should be called', () => {
-    spyOn(component, 'doUserLogout').and.callThrough();
-    let a = component.doUserLogout();
-    expect(a).toBeFalsy();
-  });
   
   it('getNewUser should be called', () => {
     spyOn(component, 'getNewUser').and.callThrough();
@@ -52,6 +46,6 @@ describe('NavigationComponent', () => {
     component['subscriptionUser$'] = of().subscribe();
     const unsubscriptionSpy = spyOn(component['subscriptionUser$'], 'unsubscribe');
     component.ngOnDestroy();
-    expect(unsubscriptionSpy).toHaveBeenCalled();
+    expect(unsubscriptionSpy).toHaveBeenCalledTimes(1);
   });
 });

@@ -4,6 +4,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
+import { Articles } from '../shared/models/articles.model';
 import { CreateArticle } from '../shared/models/createArticle.model';
 import { Tags } from '../shared/models/tags.model';
 
@@ -17,7 +18,7 @@ describe('GetArticleService', () => {
     navigateByUrl(commands: any[], extras?: any) { }
   }
   
-  const draftArticles = {
+  const draftArticles: { articles: Articles[]} = {
     articles: [{
       slug: 'slug',
       title: 'title',
@@ -34,24 +35,7 @@ describe('GetArticleService', () => {
         image: 'image',
         following: false,
       }
-    },
-    {
-      slug: 'slug',
-      title: 'title',
-      description: 'description',
-      body: 'body',
-      tagList: ['tagList'],
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-      favorited: true,
-      favoritesCount: 123,
-      author: {
-        username: 'username',
-        bio: 'bio',
-        image: 'image',
-        following: false,
-      }
-      }]
+    }]
   }
   
   let httpMock = {
@@ -61,8 +45,8 @@ describe('GetArticleService', () => {
     delete: jasmine.createSpyObj(of())
   };
 
-  const draftTags: Tags = {
-    tags: ['tag'],
+  const draftTags: { tags: Tags[]} = {
+    tags: []
   };
 
  const draftNewArticle: CreateArticle = {
@@ -96,25 +80,25 @@ describe('GetArticleService', () => {
     
  it('deleteArticle should be called', waitForAsync(() => {    
    const spy = spyOn(httpMock, 'delete').and.returnValue(of());
-   const data = service.deleteArticle().subscribe();
-   expect(data).toBeTruthy();
+   service.deleteArticle();
+   expect(spy).toHaveBeenCalled();
   }));
 
   it('getTags() should execute http request', waitForAsync(() => {
     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftTags));
     service.getTags().subscribe((data) => {
-    expect(data).toBeTruthy();
+    expect(data).toEqual(draftTags.tags);
     });
   }));
   
   it('postArticle() should execute http request', waitForAsync(() => {
-    const spy = spyOn(httpMock, 'post').and.returnValue(of(draftArticles));
-    const data = service.postArticle(draftNewArticle).subscribe();
+    const spy = spyOn(httpMock, 'put').and.returnValue(of());
+    const data = service.postUpdatedArticle(draftNewArticle, 'slug').subscribe();
     expect(data).toBeTruthy();
   }));
 
   it('postUpdatedArticle() should execute http request', waitForAsync(() => {
-    const spy = spyOn(httpMock, 'put').and.returnValue(of(draftArticles));
+    const spy = spyOn(httpMock, 'put').and.returnValue(of());
     const data = service.postUpdatedArticle(draftNewArticle, 'slug').subscribe();
     expect(data).toBeTruthy();
     }));
@@ -122,34 +106,28 @@ describe('GetArticleService', () => {
   it('should check if getAllFavoritedArticles return articles', waitForAsync(() => {
     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
     service.getAllFavoritedArticles(50, 0, 'name').subscribe((data) => {
-      expect(data).toBeTruthy();
+    expect(data).toEqual(draftArticles.articles);
     });
   }))
 
   it('should check if getAllArticles return articles', waitForAsync(() => {
-      const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
-      service.getAllArticles(50, 0).subscribe((data) => {
-        expect(data).toBeTruthy();
+    const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
+    service.getAllArticles(50, 0).subscribe((data) => {
+    expect(data).toEqual(draftArticles.articles);
     });
   }))
   
   it('should check if getAllArticlesByTag return articles', waitForAsync(() => {
-     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
-      service.getAllArticlesByTag(50, 0, 'tag').subscribe((data) => {
-        expect(data).toBeTruthy();
-      });
+    const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
+    service.getAllArticlesByTag(50, 0, 'tag').subscribe((data) => {
+    expect(data).toEqual(draftArticles.articles);
+    });
   }));
-  
-  it('should check if getArticle return article', waitForAsync(() => {
-      const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
-      const data = service.getArticle('Welcome-to-RealWorld-project-1').subscribe();
-      expect(data).toBeTruthy();
-  }))
 
   it('should check if getArticlesFeed return articles', waitForAsync(() => {
-     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
-      service.getArticlesFeed(50, 0).subscribe((data) => {
-        expect(data).toBeTruthy();
+    const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
+    service.getArticlesFeed(50, 0).subscribe((data) => {
+    expect(data).toEqual(draftArticles.articles);
     });
   }));
 });

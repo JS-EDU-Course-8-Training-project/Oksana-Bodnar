@@ -70,7 +70,7 @@ describe('EditorComponent', () => {
   
   it('gettingArticleData should have Subscription', () => {
     articleServiceStub.getArticle.and.returnValue(of(draftArticles));
-    component.slug = 'slug'
+    component.slug = 'slug';
     component.gettingArticleData();
     const subscription = component.subscriptionArticle$ instanceof Subscription;
     expect(subscription).toBeTrue();

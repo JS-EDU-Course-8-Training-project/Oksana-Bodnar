@@ -18,15 +18,15 @@ describe('FollowService', () => {
   });
   
   it('follow should be called', () => {
-    spyOn(service, 'follow').and.callThrough();
-    let a = service.follow('someName');
-    expect(a).toBeTruthy();
+    let spy = spyOn(service, 'follow').and.callThrough();
+    service.follow('someName');
+    expect(spy).toHaveBeenCalledOnceWith('someName');
   });
 
   it('unFollow should be called', () => {
-    spyOn(service, 'unFollow').and.callThrough();
-    let a = service.unFollow('someName');
-    expect(a).toBeTruthy();
+    let spy = spyOn(service, 'unFollow').and.callThrough();
+    service.unFollow('someName');
+    expect(spy).toHaveBeenCalledOnceWith('someName');
   });
   
 });

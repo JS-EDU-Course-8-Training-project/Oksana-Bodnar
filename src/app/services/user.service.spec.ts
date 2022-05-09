@@ -70,40 +70,33 @@ describe('UserService', () => {
   it('doLogout should be called', () => {
     const spy = spyOn(service, 'doLogout').and.callThrough();
     service.doLogout();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('setUser should be called', () => {
     const spy = spyOn(service, 'setUser').and.callThrough();
     service.setUser('someName','someEmail','somePassword');
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledWith('someName','someEmail','somePassword');
   });
 
   it('register should be called', waitForAsync(() => {    
     const spy = spyOn(httpMock, 'post').and.returnValue(of(draftResUser));
     service.register(user).subscribe((data) => {
-      expect(data).toEqual(draftResUser.user);
+    expect(data).toEqual(draftResUser.user);
     });
   }));
 
   it('logUser should be called', waitForAsync(() => {
     const spy = spyOn(httpMock, 'post').and.returnValue(of(draftResUser));
     service.logUser(user).subscribe((data) => {
-      expect(data).toEqual(draftResUser.user);
+    expect(data).toEqual(draftResUser.user);
     });
   }));
   
   it('getLoggedUser should be called', waitForAsync(() => {
     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftResUser));
     service.getLoggedUser().subscribe((data) => {
-      expect(data).toEqual(draftResUser.user);
-    });
-  }));
-
-  it('postNewSettings should be called', waitForAsync(() => {
-    const spy = spyOn(httpMock, 'put').and.returnValue(of(draftResUser));
-    service.postNewSettings(draftNewUser).subscribe((data) => {
-      expect(data).toEqual(data);
+    expect(data).toEqual(draftResUser.user);
     });
   }));
 });

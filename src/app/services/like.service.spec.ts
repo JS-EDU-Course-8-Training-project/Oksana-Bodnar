@@ -11,7 +11,7 @@ describe('LikeService', () => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, RouterTestingModule ]
     });
-    
+
     service = TestBed.inject(LikeService);
   });
 
@@ -20,14 +20,14 @@ describe('LikeService', () => {
   });
 
   it('like should be called', () => {
-    spyOn(service, 'like').and.callThrough();
-    let a = service.like('someArticle');
-    expect(a).toBeTruthy();
+    const spy = spyOn(service, 'like').and.callThrough();
+    service.like('someArticle');
+    expect(spy).toHaveBeenCalledOnceWith('someArticle');
   });
 
   it('unFollow should be called', () => {
-    spyOn(service, 'likeDelete').and.callThrough();
-    let a = service.likeDelete('someArticle');
-    expect(a).toBeTruthy();
+    const spy = spyOn(service, 'likeDelete').and.callThrough();
+    service.likeDelete('someArticle');
+    expect(spy).toHaveBeenCalledOnceWith('someArticle');
   });
 });

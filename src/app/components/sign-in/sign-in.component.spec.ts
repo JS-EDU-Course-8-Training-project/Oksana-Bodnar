@@ -37,6 +37,6 @@ describe('SignInComponent', () => {
     let spy = spyOn(component, 'login').and.callThrough();
     spy.calls.reset();
     component.login();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

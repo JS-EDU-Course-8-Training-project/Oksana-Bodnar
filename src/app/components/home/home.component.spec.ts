@@ -39,41 +39,41 @@ describe('HomeComponent', () => {
     let spy = spyOn(component, 'getArticlesByTag').and.callThrough();
     spy.calls.reset();
     component.getArticlesByTag(50, 0, 'tag');
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledOnceWith(50, 0, 'tag');
   });
 
   it('getArticlesYourFeed should be called', () => {
     let spy = spyOn(component, 'getArticlesYourFeed').and.callThrough();
     spy.calls.reset();
     component.getArticlesYourFeed(50, 0);
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledOnceWith(50, 0);
   });
   
   it('showYourFeed should be called', () => {
     let spy = spyOn(component, 'showYourFeed').and.callThrough();
     spy.calls.reset();
     component.showYourFeed();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('showAllArticles should be called', () => {
     let spy = spyOn(component, 'showAllArticles').and.callThrough();
     spy.calls.reset();
     component.showAllArticles();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('deleteTag should be called', () => {
     let spy = spyOn(component, 'deleteTag').and.callThrough();
     spy.calls.reset();
     component.deleteTag();
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('handlePageChange should be called', () => {
     let spy = spyOn(component, 'handlePageChange').and.callThrough();
     spy.calls.reset();
     component.handlePageChange(1);
-    expect(spy).toBeTruthy();
+    expect(spy).toHaveBeenCalledOnceWith(1);
   });
 });
