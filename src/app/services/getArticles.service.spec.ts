@@ -110,6 +110,13 @@ describe('GetArticleService', () => {
     });
   }))
 
+  it('should check if getOwnArticles return articles', waitForAsync(() => {
+    const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
+    service.getOwnArticles('name', 50, 0).subscribe((data) => {
+    expect(data).toEqual(draftArticles.articles);
+    });
+  }))
+
   it('should check if getAllArticles return articles', waitForAsync(() => {
     const spy = spyOn(httpMock, 'get').and.returnValue(of(draftArticles));
     service.getAllArticles(50, 0).subscribe((data) => {
