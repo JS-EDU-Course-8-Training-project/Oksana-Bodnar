@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { GetArticleService } from 'src/app/services/getArticles.service';
+import { LikeService } from 'src/app/services/like.service';
 import { UserService } from 'src/app/services/user.service';
 import { Articles } from 'src/app/shared/models/articles.model';
 import { DOMEvent } from 'src/app/shared/models/domElement';
@@ -17,6 +18,7 @@ import { Tags } from 'src/app/shared/models/tags.model';
 export class HomeComponent implements OnInit, OnDestroy {
 
   public articles$!: BehaviorSubject<Articles[]>
+  public article!: Articles;
   public tags$!: Subject<Tags[] | null>;
   public isLogged$!: Subject<ResponseUser | null>;
   public token!: string | null;
@@ -26,14 +28,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   public input!: string | null;
   public page = 1;
   public count = 0;
-  public pageSize = 3;
+  public pageSize = 2;
+  public slug!: string;
+  public counter!: string;
   private subscriptionArticle$!: Subscription;
   private subscriptionArticleFeed$!: Subscription;
   private subscriptionTags$!: Subscription;
+  public subscriptionLike$!: Subscription;
+  public subscriptionDeleteLike$!: Subscription;
   private subscriptions$: Subscription[] = [];
   
-  constructor(private getArticleService: GetArticleService,
-  private userService: UserService) { }
+  constructor(
+  private getArticleService: GetArticleService,
+  private userService: UserService,
+  private likeService: LikeService) { }
 
   ngOnInit() {
     this.isLogged$ = this.userService.loggedUserModels$;
@@ -63,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.articles$ = this.getArticleService.articlesFeed$;
       this.subscriptionArticleFeed$ = this.getArticleService.getArticlesFeed(limit, page).subscribe(value => this.length = value.length);
       this.subscriptions$.push(this.subscriptionArticleFeed$);
-   }
+  }
 
   public getToken(): string | null {
     return this.userService.getToken();
@@ -75,16 +83,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public showYourFeed(): void {
+    this.length = 0;
     this.page = 1;
     this.isOwnFeed = true;
     this.isGlobal = false;
-    
     if (this.token) { 
       this.getArticlesYourFeed(50, this.page)
     }
   }
 
   public showAllArticles(): void {
+    this.length = 0;
     this.isOwnFeed = false;
     this.isGlobal = true;
     this.page = 1;
@@ -102,6 +111,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   public deleteTag(): void {
     this.input = null;
     this.showAllArticles();
+  }
+
+  public countChangedHandler(count: string): void {
+    this.counter = count;
+  }
+ 
+  public slugChangedHandler(slug: string): void {
+    this.slug = slug;
+        this.subscriptionArticle$ = this.getArticleService.getArticle(slug).subscribe(data => {
+        return this.article = data
+    })
   }
 
   ngOnDestroy() {

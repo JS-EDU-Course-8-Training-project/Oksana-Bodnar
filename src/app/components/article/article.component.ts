@@ -86,7 +86,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   public getComments(): void {
     this.comments$ = this.commentService.comments$;
-    this.subscriptionComments$ = this.commentService.getComments().subscribe();
+    this.subscriptionComments$ = this.commentService.getComments().subscribe(val => {
+      val.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    });
     this.subscriptions$.push(this.subscriptionComments$);
   }
 
@@ -100,14 +102,15 @@ export class ArticleComponent implements OnInit, OnDestroy {
     if (this.newCommentForm) {
       this.newComment = this.newCommentForm.value;
     }
-    this.subscriptionCommentsPublish$ =   this.commentService.postCommentService(this.newComment)
+    this.subscriptionCommentsPublish$ = this.commentService.postCommentService(this.newComment)
       .subscribe(() => this.getComments());
     this.subscriptions$.push(this.subscriptionCommentsPublish$);
+    this.newCommentForm.reset();
   }
 
   public onClickFollow(): void {
-      this.isFollow = !this.isFollow;
-      this.isFollow ? this.follow() : this.unFollow();
+    this.isFollow = !this.isFollow;
+    this.isFollow ? this.follow() : this.unFollow();
   }
 
   public onClickLike(): void {

@@ -103,49 +103,49 @@ describe('ArticleComponent', () => {
       let spy = spyOn(component, 'deleteComment').and.callThrough();
       spy.calls.reset();
       component.deleteComment();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('publishComment should be called', () => {
       let spy = spyOn(component, 'publishComment').and.callThrough();
       spy.calls.reset();
       component.publishComment();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('onClickFollow should be called', () => {
       let spy = spyOn(component, 'onClickFollow').and.callThrough();
       spy.calls.reset();
       component.onClickFollow();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('onClickLike should be called', () => {
       let spy = spyOn(component, 'onClickLike').and.callThrough();
       spy.calls.reset();
       component.onClickLike();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('follow should be called', () => {
       let spy = spyOn(component, 'follow').and.callThrough();
       spy.calls.reset();
       component.follow();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('unFollow should be called', () => {
       let spy = spyOn(component, 'unFollow').and.callThrough();
       spy.calls.reset();
       component.unFollow();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('likeDelete should be called', () => {
       let spy = spyOn(component, 'likeDelete').and.callThrough();
       spy.calls.reset();
       component.likeDelete();
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('deleteArticle should have Subscription', () => {

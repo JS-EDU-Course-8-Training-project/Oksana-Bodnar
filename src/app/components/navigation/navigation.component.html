@@ -1,18 +1,18 @@
-<nav class="d-flex justify-content-around">
+<nav class="d-flex justify-content-between">
     <a class="navbar-brand logo" href="">Real World</a>
     <ul class="navLinks d-flex justify-content-aroun align-items-center">
     <li ><a [routerLink]="['']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">Home</a></li>
-        <ng-container *ngIf="isLoggedUser$ | async">
+        <ng-container *ngIf="isLoggedUser">
             <li *ngFor="let item of itemsLogged" ><a [routerLink]="[item.url]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">{{item.name}}</a>
             </li>
         </ng-container>
-        <ng-container *ngIf="!(isLoggedUser$ | async)">
+        <ng-container *ngIf="!isLoggedUser">
             <li *ngFor="let item of itemsNotLogged" ><a [routerLink]="[item.url]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">{{item.name}}</a>
             </li>
         </ng-container>
-        <li *ngIf="(isLoggedUser$ | async) as user"> <a class="d-flex align-items-center" [routerLink]="['/profile', user.username]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><img class="image" src="{{user.image}}">{{user.username}}</a>
+        <li *ngIf="isLoggedUser as user"> <a class="d-flex align-items-center" [routerLink]="['/profile', user.username]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><img class="image" src="{{user.image}}">{{user.username}}</a>
         </li>
-        <li *ngIf="isLoggedUser$ | async"> <button class="btn btn-outline-dark btn-sm" type="button"
-                (click)="doUserLogout()">Log Out</button> </li>
+        <li *ngIf="isLoggedUser"> <button class="btn btn-outline-dark btn-sm " type="button"
+                (click)="doUserLogout()"><img class="logoutIcon" src="https://img.icons8.com/ios/50/000000/exit.png" /> Log Out</button> </li>
     </ul>
 </nav>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 import { NewUser } from 'src/app/shared/models/newUser.model';
@@ -68,4 +68,3 @@ export class UserService {
       }))
   }
 }
-

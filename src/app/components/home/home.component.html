@@ -1,13 +1,14 @@
 
+<div class="containerPosition">
 <div class="hero">
     <h2>Real World Project</h2>
     <p>A place to share your knowledge.</p>
 </div>
 <div class="buttons">
     <button *ngIf="token" class="btn" type="button" (click)="showYourFeed()"
-        [ngClass]="{'btn-outline-secondary' : isOwnFeed}">Your Feed</button>
-    <button class="btn" type="button" (click)="showAllArticles()"
-        [ngClass]="{'btn-outline-secondary' : isGlobal}">Global Feed</button>
+        [ngClass]="{'btn-outline-primary' : isOwnFeed}">Your Feed</button>
+    <button *ngIf="token" class="btn" type="button" (click)="showAllArticles()"
+        [ngClass]="{'btn-outline-primary' : isGlobal}">Global Feed</button>
     <button *ngIf="input" class="btn btn-outline-danger deleteTagBtn" type="button" (click)="deleteTag()">{{input}} </button>
 </div>
  <div class="allArticles">
@@ -23,8 +24,8 @@
     <ng-container *ngTemplateOutlet="estimateTemplate"></ng-container>
 </ng-container>                         
 <ng-template #estimateTemplate>
+    <article class="article">
     <a [routerLink]="['/article', article.slug]">
-        <article class="article">
             <div class="d-flex align-items-center">
                 <img class="articleAuthorAvatar" src="{{article.author.image}}" alt="">
                     <div class="d-flex flex-column">
@@ -35,26 +36,30 @@
         <h3>{{article.title}}</h3>
         <p class="articleText">{{article.body}}</p>
         <a class="articleReadMore" [routerLink]="['/article', article.slug]">Read more...</a>
-        <span class="articleHeart"> {{article.favoritesCount}}</span>
-    <div class="articleTags">
+    </a>
+       <div *ngIf="token"> <app-like-button class="likeButton" [count]=counter [slug]=slug (countChanged)="countChangedHandler($event)" (slugChanged)="slugChangedHandler(article.slug)"></app-like-button></div>
+        <div class="articleTags">
         <ul *ngFor="let tag of article.tagList">
-            <li><button class="articleTag btn btn-light btn-sm" type="button">{{tag}}</button></li>
+            <li><p class="articleTag btn btn-light btn-sm" (click)="onTag($event)" p>{{tag}}</p></li>
         </ul>
     </div>
         </article>
-    </a>
 </ng-template>
         </li>
     </ul>
-    <ng-container *ngIf="length; else noArticle">
-        <pagination-controls class="pagination" (pageChange)="handlePageChange($event)"></pagination-controls>
+    <div class="paginationPosition">
+    <ng-container *ngIf="length > pageSize">
+        <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+    </ng-container>
+    </div>
+    <ng-container *ngIf="length === 0">
+        <p class="noArticle">No articles yet...</p>
     </ng-container>
     <div class="tags d-flex flex-column">
+        <h4 class="tagsHead">Tags</h4>
         <ul *ngFor="let tag of (tags$ | async)">
-            <li><button class="tag btn btn-secondary btn-sm" type="button" (click)="onTag($event)">{{tag}}</button></li>
+            <li><button class="tag btn btn-light btn-sm" type="button" (click)="onTag($event)">{{tag}}</button></li>
         </ul>
     </div>
 </div> 
-        <ng-template #noArticle>
-            <p class="noArticle">No articles yet...</p>
-        </ng-template>
+</div>

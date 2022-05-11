@@ -1,6 +1,6 @@
-<div class="settingsMain" >
+<div *ngIf="user" class="settingsMain" >
     <h3>Your Settings</h3>
-    <form [formGroup]="newSettingsForm" (ngSubmit)="publish()">
+    <form [formGroup]="newSettingsForm">
         <input class="element form-control" type="text"  formControlName="image" placeholder="Your new image (url)">
         <input class="element form-control" type="text"  formControlName="username" placeholder="Your new name">
         <textarea class="element form-control" rows="10" formControlName="bio" placeholder="Your bio"></textarea>
@@ -9,4 +9,4 @@
     </form>
 </div>
 
-<button class="btn-outline-danger" type="button" (click)="doUserLogout()">Log Out</button>
+<!-- <button class="btn-outline-danger" type="button" (click)="doUserLogout()">Log Out</button> -->

@@ -11,6 +11,9 @@
             <div *ngIf="article">
             <button class="btn btn-success" type="button" (click)="update()">Update Article</button>
             </div>
+                                            <div *ngIf="fieldError && problemError" class="alert alert-danger">
+                                                <p>{{fieldError}}: {{problemError}}</p>
+                                            </div>
     </form>
 </div>
 

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { NewUser } from 'src/app/shared/models/newUser.model';
@@ -19,8 +18,7 @@ export class SignInComponent implements OnDestroy, OnInit  {
   public fieldError!: string;
   public problemError!: string;
 
-  constructor(private router: Router,
-  private userService: UserService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.authForm = new FormGroup({
@@ -40,7 +38,6 @@ export class SignInComponent implements OnDestroy, OnInit  {
         })
   }
   
-   // creation data for validation
   public get userEmail(): AbstractControl | null {
    return this.authForm.get('email');
   } 

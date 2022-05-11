@@ -22,13 +22,13 @@
 
 .article {
   position: relative;
-  width: 90%;
+  width: 100%;
 }
 
 .articleHeart {
   position: absolute;
   right: 0px;
-  top: 1.2rem;
+  top: 4.5rem;
 }
 
 .articleHeart::before {
@@ -37,15 +37,18 @@
 
 .articleTag {
   margin-top: 0.2rem;
+  margin-right: 0.4rem;
   font-size: 0.7rem;
 }
 
 .articleTags {
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
+  margin-top: 0.8rem;
+}
+
+.btn-link {
+  color: var(--primary-lightBlue-color);
+  margin-top: 1.1rem;
 }
 
 .article::before {
@@ -61,21 +64,25 @@
 
 .articleAuthorName {
   color: var(--primary-lightBlue-color);
+  margin-left: 0.3rem;
 }
 
 .articleDate {
   color: gray;
   font-size: 0.7rem;
   margin-bottom: 0px;
+  margin-left: 0.3rem;
 }
 
 .articleText {
-  color: gray;
+  color: var(--primary-dark-color);
   width: 90%;
+  margin-bottom: 0.75rem;
 }
 
 .articleReadMore {
   color: var(--primary-light-color);
+  font-size: 0.8rem;
 }
 
 .articleAuthorAvatar {
@@ -93,5 +100,33 @@
 }
 
 .noArticle {
-  margin: 0.5rem;
+  margin: 1rem;
+  text-align: center;
+}
+
+.containerPosition {
+  position: relative;
+  padding-bottom: 4rem;
+}
+
+.paginationPosition {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.btn-outline-primary {
+  color: var(--primary-lightBlue-color);
+  border-color: var(--primary-lightBlue-color);
+}
+
+.btn-outline-primary:hover {
+  color: var(--primary-lightBlue-color);
+  border-color: var(--primary-lightBlue-color);
+}
+
+.btn-light {
+  background-color: rgb(235, 238, 238);
+  color: rgba(0, 0, 0, 0.637);
 }

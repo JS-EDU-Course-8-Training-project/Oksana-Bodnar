@@ -8,6 +8,7 @@ import { NavigationComponent } from './navigation.component';
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
+  const userServiceStub = jasmine.createSpyObj('UserService', ['getNewUser', 'getToken', 'getLoggedUser']);
 
   class RouterStub {
     url = '';
@@ -36,10 +37,11 @@ describe('NavigationComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('getNewUser should be called', () => {
-    spyOn(component, 'getNewUser').and.callThrough();
-    let a = component.getNewUser();
-    expect(a).toBeTruthy();
+  it('doUserLogout should be called', () => {
+    let spy = spyOn(component, 'doUserLogout').and.callThrough();
+    spy.calls.reset();
+    component.doUserLogout();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   
   it('should unsubscribe', () => {
@@ -48,4 +50,5 @@ describe('NavigationComponent', () => {
     component.ngOnDestroy();
     expect(unsubscriptionSpy).toHaveBeenCalledTimes(1);
   });
+
 });

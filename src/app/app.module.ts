@@ -14,7 +14,6 @@ import { ErrorHandlerInterceptor } from './services/errorHandler.service';
   declarations: [
     AppComponent,
     NavigationComponent,
- 
   ],
   imports: [
     BrowserModule,

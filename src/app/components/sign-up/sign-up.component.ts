@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { NewUser } from 'src/app/shared/models/newUser.model';
-import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
 import { mustBePasswordValidator } from 'src/app/shared/mustBe-password.directive';
 
 @Component({
@@ -47,13 +46,14 @@ export class SignUpComponent implements OnInit, OnDestroy {
       })
   }
   
- // creation data for validation
   public get username(): AbstractControl | null {
    return this.authForm.get('username');
   } 
+
   public get userEmail(): AbstractControl | null {
    return this.authForm.get('email');
   } 
+  
   public get userPassword(): AbstractControl | null {
    return this.authForm.get('password');
   }

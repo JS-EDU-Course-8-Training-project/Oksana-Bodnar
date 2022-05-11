@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
@@ -13,7 +12,7 @@ import { ResponseUser } from 'src/app/shared/models/ResponseUser.model';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  public user!: ResponseUser;
+  public user!: ResponseUser | null;
   public user$!: Subject<ResponseUser | null>;
   public newSettingsForm!: FormGroup;
   public newUserSet!: ResponseUser;
@@ -23,9 +22,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private subscriptions$: Subscription[] = [];
   
   constructor(
-    private userService: UserService,
-    private http: HttpClient,
-    private router: Router) { }
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.gettingUserData();

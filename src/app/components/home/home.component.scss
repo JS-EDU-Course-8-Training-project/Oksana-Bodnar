@@ -14,10 +14,6 @@
   width: 85%;
 }
 
-.articleHeart::before {
-  content: "\2764";
-}
-
 .articleAuthorAvatar {
   border-radius: 50%;
   height: 90%;
@@ -33,25 +29,18 @@
   color: gray;
   font-size: 0.7rem;
   margin-bottom: 0px;
-}
-
-.articleHeart {
-  position: absolute;
-  right: 0px;
-  top: 1.2rem;
+  margin-left: 0.3rem;
 }
 
 .articleTag {
   margin-top: 0.2rem;
+  margin-right: 0.4rem;
   font-size: 0.7rem;
 }
 
 .articleTags {
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
+  margin-top: 0.8rem;
 }
 
 .btn-link {
@@ -71,12 +60,14 @@
 }
 
 .articleText {
-  color: gray;
+  color: var(--primary-dark-color);
   width: 78%;
+  margin-bottom: 0.75rem;
 }
 
 .articleReadMore {
   color: var(--primary-light-color);
+  font-size: 0.8rem;
 }
 
 .allArticles {
@@ -90,15 +81,14 @@
   top: 0px;
 }
 
-.tag {
-  margin-bottom: 0.1rem;
-  font-size: 0.7rem;
+.tagsHead {
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
-.tagsHead {
-  position: absolute;
+.tag {
   margin-bottom: 0.3rem;
-  margin-top: 0.3rem;
+  font-size: 0.7rem;
 }
 
 .buttons button {
@@ -114,5 +104,45 @@
 }
 
 .noArticle {
-  margin: 0.5rem;
+  margin: 1rem;
+  text-align: center;
+}
+
+.containerPosition {
+  position: relative;
+  padding-bottom: 4rem;
+}
+
+.paginationPosition {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.btn-outline-primary {
+  color: var(--primary-lightBlue-color);
+  border-color: var(--primary-lightBlue-color);
+}
+
+.btn-outline-primary:hover {
+  color: var(--primary-lightBlue-color);
+  border-color: var(--primary-lightBlue-color);
+}
+
+.btn-secondary {
+  border-color: var(--primary-lightGrey-color);
+  background-color: var(--primary-lightGrey-color);
+  color: rgba(0, 0, 0, 0.637);
+}
+
+.btn-light {
+  background-color: rgb(235, 238, 238);
+  color: rgba(0, 0, 0, 0.637);
+}
+
+.likeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

@@ -13,8 +13,20 @@
 
 .form {
   text-align: center;
+  max-width: 60%;
+  margin: auto;
+  margin-top: 5rem;
 }
 
 .ref {
-  color: var(--primary-darkBlue-color);
+  color: var(--primary-lightBlue-color);
+}
+
+.containerInput {
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  padding-right: 2rem;
+  padding-left: 2rem;
 }

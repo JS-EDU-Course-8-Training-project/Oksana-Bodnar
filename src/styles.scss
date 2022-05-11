@@ -6,6 +6,7 @@
   --primary-lightBlue-color: rgb(33, 153, 232);
   --home-color: rgb(33, 134, 201);
   --primary-darkBlue-color: rgb(4, 22, 49);
+  --primary-lightGrey-color: rgb(183, 184, 185);
 }
 
 ul,
@@ -42,4 +43,8 @@ p {
 
 body {
   color: var(--primary-light-color);
+}
+
+.container {
+  max-width: 1000px;
 }

@@ -21,6 +21,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   public slug!: string | null;
   public environment = environment;
   public article!: Articles;
+  public fieldError!: string;
+  public problemError!: string;
   public subscriptionArticle$!: Subscription;
   public subscriptionUpdateArticle$!: Subscription;
   public subscriptionPublishArticle$!: Subscription;
@@ -76,7 +78,12 @@ export class EditorComponent implements OnInit, OnDestroy {
     } else {
       this.newArticle = { ... this.newArticleForm.value };
     }
-    this.subscriptionUpdateArticle$ = this.getArticleService.postUpdatedArticle(this.newArticle, this.slug).subscribe(); 
+    this.subscriptionUpdateArticle$ = this.getArticleService.postUpdatedArticle(this.newArticle, this.slug).subscribe({next: () => {},
+          error: (error) => {
+            this.fieldError = error.fieldError;
+            this.problemError = error.problemError;
+          }
+        }); 
     this.subscriptions$.push(this.subscriptionUpdateArticle$);
   }
 

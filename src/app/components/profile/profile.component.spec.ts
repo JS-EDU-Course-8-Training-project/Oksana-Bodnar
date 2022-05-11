@@ -50,17 +50,35 @@ describe('ProfileComponent', () => {
   });
   
   it('showOwnArticles should be called', () => {
+
+      component.user = {
+      email: 'email',
+      token: 'token',
+      username: 'username',
+      bio: 'bio',
+      image: 'image'
+      };
+    
     let spy = spyOn(component, 'showOwnArticles').and.callThrough();
     spy.calls.reset();
     component.showOwnArticles();
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
   });
   
   it('showFavouriteArticles should be called', () => {
+    
+    component.user = {
+      email: 'email',
+      token: 'token',
+      username: 'username',
+      bio: 'bio',
+      image: 'image'
+    };
+
     let spy = spyOn(component, 'showFavouriteArticles').and.callThrough();
     spy.calls.reset();
     component.showFavouriteArticles();
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('handlePageChange should be called', () => {

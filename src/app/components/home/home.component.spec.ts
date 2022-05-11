@@ -42,12 +42,12 @@ describe('HomeComponent', () => {
     expect(spy).toHaveBeenCalledOnceWith(50, 0, 'tag');
   });
 
-  it('getArticlesYourFeed should be called', () => {
-    let spy = spyOn(component, 'getArticlesYourFeed').and.callThrough();
-    spy.calls.reset();
-    component.getArticlesYourFeed(50, 0);
-    expect(spy).toHaveBeenCalledOnceWith(50, 0);
-  });
+  // it('getArticlesYourFeed should be called', () => {
+  //   let spy = spyOn(component, 'getArticlesYourFeed').and.callThrough();
+  //   spy.calls.reset();
+  //   component.getArticlesYourFeed(50, 0);
+  //   expect(spy).toHaveBeenCalledOnceWith(50, 0);
+  // });
   
   it('showYourFeed should be called', () => {
     let spy = spyOn(component, 'showYourFeed').and.callThrough();
@@ -76,4 +76,20 @@ describe('HomeComponent', () => {
     component.handlePageChange(1);
     expect(spy).toHaveBeenCalledOnceWith(1);
   });
+
+  it('countChangedHandler should be called', () => {
+    let spy = spyOn(component, 'countChangedHandler').and.callThrough();
+    spy.calls.reset();
+    component.countChangedHandler('1');
+    expect(spy).toHaveBeenCalledOnceWith('1');
+  });
+
+  it('slugChangedHandler should be called', () => {
+    let spy = spyOn(component, 'slugChangedHandler').and.callThrough();
+    spy.calls.reset();
+    component.slugChangedHandler('1');
+    expect(spy).toHaveBeenCalledOnceWith('1');
+  });
+
+  
 });
