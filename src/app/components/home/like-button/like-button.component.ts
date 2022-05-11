@@ -17,6 +17,7 @@ export class LikeButtonComponent implements OnInit, OnDestroy {
     @Output() slugChanged: EventEmitter<string> = new EventEmitter();
   
   public isLike!: boolean;
+  public likeCounterMessage!: string;
   public likeCounter!: number;
   public article!: Articles;
   public resArticle: any;
@@ -35,6 +36,7 @@ export class LikeButtonComponent implements OnInit, OnDestroy {
   public onClickLike(event: string): void {
     this.subscriptionArticle$ = this.getArticleService.getArticle(event).subscribe(data => {
       this.isLike = data.favorited;
+      this.likeCounter = data.favoritesCount;
       this.article = data;
       this.isLike = !this.isLike;
       this.isLike ? this.like(event) : this.likeDelete(event);
@@ -43,13 +45,19 @@ export class LikeButtonComponent implements OnInit, OnDestroy {
 
   public like(href: string): void {
     this.subscriptionLike$ = this.likeService.like(href)
-      .subscribe((val) => { this.count = '+1'; this.resArticle = val });
+      .subscribe((val) => {
+        this.count = '+1'; this.likeCounter += 1; this.likeCounterMessage = `Total: ${this.likeCounter}`;
+        this.resArticle = val
+      });
     this.subscriptions$.push(this.subscriptionLike$);
   }
 
   public likeDelete(href: string): void {
     this.subscriptionDeleteLike$ = this.likeService.likeDelete(href)
-      .subscribe((val) => { this.count = '-1'; this.resArticle = val }); 
+      .subscribe((val) => {
+        this.count = '-1'; this.likeCounter -= 1; this.likeCounterMessage = `Total: ${this.likeCounter}`;
+        this.resArticle = val
+      }); 
     this.subscriptions$.push(this.subscriptionDeleteLike$);
   }
 

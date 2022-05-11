@@ -64,7 +64,7 @@ export class UserService {
     return this.http.put<{user: ResponseUser }>(`${this.environment.url}/user`, { user: newUserSet })
       .pipe(map((response: { user: ResponseUser }) => {
         localStorage.setItem('access_token', response.user.token);
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl(`profile/${response.user.username}`);
       }))
   }
 }

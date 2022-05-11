@@ -1,6 +1,7 @@
 <button type="button" class="articleHeart btn btn-outline-success btn-sm" 
 (click)="counter()" (click)="getSlug()" (click)="onClickLike(slug)">  
 <div *ngIf="resArticle && article.slug === resArticle.article.slug">
- {{count}}
+{{count}}
 </div>
+{{likeCounterMessage}}
 </button>
