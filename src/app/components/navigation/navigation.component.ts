@@ -28,7 +28,9 @@ export class NavigationComponent implements OnInit{
     }
     
     this.makeItems();
-    this.userService.getLoggedUser().subscribe();
+    if (this.token) {
+      this.userService.getLoggedUser().subscribe();
+    }
   }
   
   public makeItems(): void {
